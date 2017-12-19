@@ -1,0 +1,66 @@
+<div layout-margin>
+  <h3 matDialogTitle> Alunos matriculados </h3>
+</div>
+<mat-dialog-content>
+  <table td-data-table>
+    <th td-data-table-column>
+      <span>Nome</span>
+    </th>
+    <th td-data-table-column>
+      <span>RG</span>
+    </th>
+    <th td-data-table-column>
+      <span>E-mail</span>
+    </th>
+    <th td-data-table-column>
+      <span>Pagamento</span>
+    </th>
+    <th td-data-table-column>
+      <span>Lote</span>
+    </th>
+    <th td-data-table-column>
+      <span>Valor do lote</span>
+    </th>
+    <tr td-data-table-row *ngFor="let matricula of matriculas">
+      <td td-data-table-cell>
+        <span>{{matricula.aluno.nome}}</span>
+      </td>
+      <td td-data-table-cell>
+        <span>{{matricula.aluno.registroGeral}}</span>
+      </td>
+      <td td-data-table-cell>
+        <span>{{(matricula.aluno.email)? matricula.aluno.email : matricula.compra.responsavel.email}}</span>
+      </td>
+      <td td-data-table-cell>
+        <span>{{getStatusPagamento(matricula?.compra?.pagamento?.statusPagamento)}}</span>
+      </td>
+      <td td-data-table-cell>
+        <span>{{matricula.lote.nome}}</span>
+      </td>
+      <td td-data-table-cell>
+        <span>{{matricula.lote.preco | currencyformat}}</span>
+      </td>
+    </tr>
+  </table>
+  <div layout="row" flex>
+    <div flex></div>
+    <div layout="column">
+      <div class="push-top">
+        <b class="tc-grey-600">Valor total dos lotes aprovados: </b>
+        <b class="tc-grey-600">{{totalLotesAprovados | currencyformat}}</b>
+      </div>
+      <span class="md-caption tc-grey-600" matTooltip="O organizador irá receber este valor, decrescido dos 10% da TFC">Incluídos os 10% da TFC</span>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div layout="row" flex>
+    <div flex></div>
+    <button mat-button matDialogClose>
+      <b>FECHAR</b>
+    </button>
+    <button mat-button color="primary" (click)="generateComprasByTurmaId(turma.id)">
+      <b>EXPORTAR PARA XLS</b>
+    </button>
+  </div>
+</mat-dialog-actions>

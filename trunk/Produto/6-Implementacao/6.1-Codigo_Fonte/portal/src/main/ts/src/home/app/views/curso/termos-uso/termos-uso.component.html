@@ -1,0 +1,35 @@
+<div layout-align="center center" layout-gt-xs="row" layout-margin>
+  <div layout="row" flex-gt-xs="80" layout-margin>
+    <div flex layout-margin>
+
+      <mat-card layout-margin style="max-width: 1200px">
+        <mat-card-content>
+          <div layout-margin>
+            <!--cabeçalho div-->
+            <div layout="column" layout-margin flex>
+
+              <div layout="row" layout-align="start center">
+                <button class="md-headline tc-grey-500"
+                        type="button" routerLink="../"
+                        color="primary" mat-icon-button>
+                  <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div layout="row" layout-margin>
+                  <h1 class="md-headline tc-grey-500" flex>Termos de uso</h1>
+                </div>
+              </div>
+            </div>
+
+            <div layout-margin>
+              <td-markdown *ngIf='termosUso' flex>
+                {{termosUso}}
+              </td-markdown>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+    </div>
+  </div>
+</div>

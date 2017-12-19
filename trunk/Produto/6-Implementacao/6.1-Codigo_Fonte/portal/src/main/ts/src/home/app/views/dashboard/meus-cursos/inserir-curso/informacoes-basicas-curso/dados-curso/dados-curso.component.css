@@ -1,0 +1,16 @@
+.curso-imagem{
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    background-position: 50%;
+}
+
+.image-remove-button{
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.image-remove-mask{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}

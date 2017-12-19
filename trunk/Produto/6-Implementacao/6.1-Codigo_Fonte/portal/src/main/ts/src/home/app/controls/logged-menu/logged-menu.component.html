@@ -1,0 +1,90 @@
+<mat-nav-list class="pad-none" >
+  <mat-list class="pad-none">
+    <mat-list-item class="push-top push-bottom minha-conta" routerLink="/dashboard/minha-conta" routerLinkActive #rla="routerLinkActive" [ngClass]="{'menu-active-instrutor': rla.isActive && authenticatedUser?.isInstrutor, 'menu-active-aluno': rla.isActive && !authenticatedUser?.isInstrutor}">
+      <div layout="row" flex class="pad-left">
+        <span flex="10"></span>
+        <mat-icon matListAvatar class="bgc-blue-grey-500" flex>person</mat-icon>
+        <h3 matLine style="color: white" flex="85"> Minha conta </h3>
+      </div>
+    </mat-list-item>
+    <mat-divider class="bgc-blue-grey-300"></mat-divider>
+
+    <div>
+      <mat-list-item disableRipple>
+        <div layout="row" class="push-top push-bottom pad-left" flex>
+          <span flex="10"></span>
+          <span class="md-caption tc-blue-grey-100"> ALUNO </span>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item class="push-bottom" routerLink="/dashboard/minhas-compras" routerLinkActive #rlaMinhasMatriculas="routerLinkActive" [ngClass]="{'menu-active-instrutor': rlaMinhasMatriculas.isActive && authenticatedUser?.isInstrutor, 'menu-active-aluno': rlaMinhasMatriculas.isActive && !authenticatedUser?.isInstrutor}">
+        <div layout="row" flex class="pad-left">
+          <span flex="10"></span>
+          <mat-icon matListAvatar class="bgc-blue-grey-500" flex>class</mat-icon>
+          <h3 matLine style="color: white" flex="85">Matrículas</h3>
+        </div>
+      </mat-list-item>
+    </div>
+
+
+    <div *ngIf="authenticatedUser?.isInstrutor">
+      <mat-list-item disableRipple>
+        <div layout="row" class="push-top push-bottom pad-left" flex>
+          <span flex="10"></span>
+          <span class="md-caption tc-blue-grey-100"> INSTRUTOR </span>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item class="push-bottom" routerLink="/dashboard/meus-cursos" routerLinkActive #rlaMeusCursos="routerLinkActive" [ngClass]="{'menu-active-instrutor': rlaMeusCursos.isActive && authenticatedUser?.isInstrutor, 'menu-active-aluno': rlaMeusCursos.isActive && !authenticatedUser?.isInstrutor}">
+        <div layout="row" flex class="pad-left">
+          <span flex="10"></span>
+          <mat-icon matListAvatar class="bgc-blue-grey-500" flex>collections_bookmark
+          </mat-icon>
+          <h3 matLine style="color: white" flex="85">Meus cursos</h3>
+        </div>
+      </mat-list-item>
+    </div>
+    <div *ngIf="authenticatedUser?.isAdministrador">
+      <mat-list-item disableRipple>
+        <div layout="row" class="push-top push-bottom pad-left" flex>
+          <span flex="10"></span>
+          <span class="md-caption tc-blue-grey-100"> ADMINISTRATIVO </span>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item class="push-bottom" routerLink="/dashboard/cursos" routerLinkActive #rlaTodosOsCursos="routerLinkActive" [ngClass]="{'menu-active-instrutor': rlaTodosOsCursos.isActive && authenticatedUser?.isInstrutor, 'menu-active-aluno': rlaTodosOsCursos.isActive && !authenticatedUser?.isInstrutor}">
+        <div layout="row" flex class="pad-left">
+          <span flex="10"></span>
+          <mat-icon matListAvatar class="bgc-blue-grey-500" flex>book
+          </mat-icon>
+          <h3 matLine style="color: white" flex="85">Todos os cursos</h3>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item class="push-bottom" routerLink="/dashboard/alunos" routerLinkActive #rlaAlunos="routerLinkActive" [ngClass]="{'menu-active-instrutor': rlaAlunos.isActive && authenticatedUser?.isInstrutor, 'menu-active-aluno': rlaAlunos.isActive && !authenticatedUser?.isInstrutor}">
+        <div layout="row" flex class="pad-left">
+          <span flex="10"></span>
+          <mat-icon matListAvatar class="bgc-blue-grey-500" flex>supervisor_account</mat-icon>
+          <h3 matLine style="color: white" flex="85"> Alunos </h3>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item class="push-bottom" routerLink="/dashboard/instrutores" routerLinkActive #rlaInstrutores="routerLinkActive" [ngClass]="{'menu-active-instrutor': rlaInstrutores.isActive && authenticatedUser?.isInstrutor, 'menu-active-aluno': rlaInstrutores.isActive && !authenticatedUser?.isInstrutor}">
+        <div layout="row" flex class="pad-left">
+          <span flex="10"></span>
+          <mat-icon matListAvatar class="bgc-blue-grey-500" flex>school</mat-icon>
+          <h3 matLine style="color: white" flex="85"> Instrutores </h3>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item routerLink="/dashboard/compras" routerLinkActive #rlaCompras="routerLinkActive" [ngClass]="{'menu-active-instrutor': rlaCompras.isActive && authenticatedUser?.isInstrutor, 'menu-active-aluno': rlaCompras.isActive && !authenticatedUser?.isInstrutor}">
+        <div layout="row" flex class="pad-left">
+          <span flex="10"></span>
+          <mat-icon matListAvatar class="bgc-blue-grey-500" flex>shopping_cart</mat-icon>
+          <h3 matLine style="color: white" flex="85"> Todas as compras </h3>
+        </div>
+      </mat-list-item>
+    </div>
+
+  </mat-list>
+</mat-nav-list>

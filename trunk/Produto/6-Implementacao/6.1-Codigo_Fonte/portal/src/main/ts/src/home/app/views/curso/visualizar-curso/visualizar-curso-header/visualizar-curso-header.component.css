@@ -1,0 +1,19 @@
+.visualizar-curso-background{
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    background-position: 50%;
+    position: absolute;
+    z-index: -1;
+}
+
+.visualizar-curso-background-mask{
+    width: 100%;
+    height: 400px;
+    background-color: rgba(4, 142, 136, 0.9);
+}
+
+.area-conhecimento a {
+  text-decoration: none;
+  cursor: pointer;
+}

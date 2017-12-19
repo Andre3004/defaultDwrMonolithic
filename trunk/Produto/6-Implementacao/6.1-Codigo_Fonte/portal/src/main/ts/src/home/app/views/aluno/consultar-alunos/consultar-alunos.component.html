@@ -1,0 +1,168 @@
+<div *ngIf="selectedAlunos?.length == 0">
+  <mat-card class="push-none bgc-grey-50 filters-card">
+    <div layout="row" layout-align="center center">
+      <div layout="row" layout-align="center center" flex="90">
+
+        <td-chips placeholder="Pesquisar por nome, CPF/CNPJ ou e-mail" [(ngModel)]="filter" layout-margin flex-md="40" flex-gt-md="45"
+          flex-gt-lg="50" (add)="onChangeFilters()" (remove)="onChangeFilters()"></td-chips>
+
+        <div flex-gt-md></div>
+
+        <td-chips placeholder="Pesquisar por cidade" [(ngModel)]="cidadesFiltro" flex="30" (add)="onChangeFilters()" (remove)="onChangeFilters()"></td-chips>
+
+        <div flex-gt-md></div>
+
+        <button mat-raised-button class="bgc-blue-grey-50 push-right font-regular" (click)="toggleShowPesquisaAvancada()">
+          Pesquisa avançada
+        </button>
+
+        <button mat-mini-fab color="accent" routerLink="inserir" style="border-radius: 2px;">
+          <mat-icon>add</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+  </mat-card>
+
+  <!--Pesquisa avançada-->
+  <mat-card class="push-none bgc-grey-50 filters-card" *ngIf="showPesquisaAvancada">
+    <div layout="row" layout-align="center center">
+      <div layout="row" flex="90">
+        <div layout="row" layout-align="center center" flex>
+
+          <td-chips layout-margin flex-md="40" flex-gt-md="45" flex-gt-lg="50" (add)="onChangeFilters()" (remove)="onChangeFilters()"
+            placeholder="Áreas de interesse" [(ngModel)]="filtro.areaInteresse">
+          </td-chips>
+
+          <div flex></div>
+          <mat-form-field flex="20">
+            <mat-select placeholder="Tipo de aluno" [(ngModel)]="filtro.isEmpresa" (ngModelChange)="onChangeFilters()">
+              <mat-option [value]="false">Pessoa física</mat-option>
+              <mat-option [value]="true">Pessoa jurídica</mat-option>
+              <mat-option [value]="null">Todos</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div flex> </div>
+
+          <div layout-margin>
+            <span>Status</span>
+          </div>
+          <mat-slide-toggle [(ngModel)]="filtro.isBloqueado" (change)="onChangeFilters()" name="bloqueado">
+            <span> Bloqueado </span>
+          </mat-slide-toggle>
+
+          <div flex></div>
+
+          <button mat-icon-button (click)="hidePesquisaAvancada()">
+            <mat-icon>close</mat-icon>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+  </mat-card>
+</div>
+<!--Contagem da seleção-->
+<div *ngIf="selectedAlunos?.length > 0">
+  <mat-card class="push-none bgc-grey-50 selecao-card">
+    <div layout="row" class="selecao-card" layout-align="center center">
+      <div layout="row" flex="90" layout-align="center center">
+        <button mat-icon-button class="deselect-button" (click)="resetSelectedAlunos()">
+          <mat-icon class="tc-blue-grey-500">close</mat-icon>
+        </button>
+        <h3 class="tc-blue-grey-500" flex>{{selectedAlunos?.length}} {{(selectedAlunos?.length == 1)? "aluno selecionado" : "alunos selecionados"}}</h3>
+        <div flex></div>
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="tc-blue-grey-900">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="recomendarCursoParaAlunos(selectedAlunos)">
+            <mat-icon>email</mat-icon>
+            <span>Recomendar curso</span>
+          </button>
+          <button mat-menu-item *ngIf="!filtro.isBloqueado" (click)="bloquear(selectedAlunos)">
+            <mat-icon>lock</mat-icon>
+            <span>Bloquear alunos</span>
+          </button>
+          <button mat-menu-item *ngIf="filtro.isBloqueado" (click)="desbloquear(selectedAlunos)">
+            <mat-icon>lock_open</mat-icon>
+            <span>Desbloquear alunos</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<!--Listagem-->
+<div layout="row" layout-align="center start">
+
+  <div layout="column" flex="90">
+
+    <div class="tc-grey-500 size-height-50" layout="row" layout-align="start center">
+      <span> Resultado da pesquisa </span>
+      <div flex></div>
+      <span> {{ page?.totalElements}} resultados </span>
+    </div>
+
+    <mat-card class="push-none" [tdFade]="!alunos?.length">
+      <mat-nav-list>
+        <div *ngFor="let aluno of alunos">
+
+          <mat-list-item longPress (onLongPress)="toggleSelectAluno(aluno); showCheckBox(aluno, !aluno.showCheckBox)" (onShortPress)="goToVisualizarAluno(aluno)">
+            <!--avatar-->
+            <div matListAvatar (mouseenter)="showCheckBox(aluno, true)" (mouseleave)="showCheckBox(aluno, false)">
+              <!--foto-->
+
+              <div [ngClass]="{'hide': aluno.showCheckBox}" (click)="toggleSelectAluno(aluno); showCheckBox(aluno, !aluno.showCheckBox)"
+                stopPropagation matListAvatar layout="row" layout-align="center center">
+                <!--<img *ngIf="aluno?.foto" matListAvatar class="image-cover" src="{{aluno?.foto}}" alt="Foto">-->
+                <!--<img *ngIf="!aluno?.foto" matListAvatar class="image-cover" src="../static/images/avatar.png" alt="Avatar">-->
+                <avatar class="image-cover" *ngIf="aluno?.id" [usuario]="aluno" [size]="0.4"></avatar>
+              </div>
+              <!--checkbox-->
+              <div [ngClass]="{'hide': !aluno.showCheckBox}" (click)="toggleSelectAluno(aluno)" stopPropagation matListAvatar layout="row"
+                layout-align="center center">
+                <mat-checkbox stopPropagation [(ngModel)]="aluno.selected" (ngModelChange)="updateSelectedAlunos(aluno)"></mat-checkbox>
+              </div>
+            </div>
+
+            <h3 matLine> {{aluno.nome}} </h3>
+            <h4 matLine> {{aluno.email}} </h4>
+            <p *ngIf="!aluno?.isEstrangeiro" matLine> {{aluno.endereco?.cidade?.nome}} - {{aluno.endereco?.cidade?.estado?.uf}} </p>
+            <p *ngIf="aluno?.isEstrangeiro" matLine> {{aluno.endereco?.cidade?.nome}} - {{aluno.endereco?.cidade?.estado?.nome}}, {{aluno.endereco?.cidade?.estado?.pais?.nome}}
+            </p>
+            <button mat-icon-button [matMenuTriggerFor]="menu" stopPropagation class="tc-blue-grey-900">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="recomendarCursoParaAlunos([aluno])">
+                <mat-icon>email</mat-icon>
+                <span>Recomendar curso</span>
+              </button>
+              <button mat-menu-item *ngIf="!filtro.isBloqueado" (click)="bloquear([aluno])">
+                <mat-icon>lock</mat-icon>
+                <span>Bloquear aluno</span>
+              </button>
+              <button mat-menu-item *ngIf="filtro.isBloqueado" (click)="desbloquear([aluno])">
+                <mat-icon>lock_open</mat-icon>
+                <span>Desbloquear aluno</span>
+              </button>
+            </mat-menu>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </div>
+      </mat-nav-list>
+    </mat-card>
+
+    <div layout="row" class="push-top push-bottom">
+      <button mat-raised-button class="tc-grey-500 text-regular" (click)="showMore()" flex *ngIf="!page?.last">
+        VER MAIS
+      </button>
+    </div>
+
+  </div>
+</div>

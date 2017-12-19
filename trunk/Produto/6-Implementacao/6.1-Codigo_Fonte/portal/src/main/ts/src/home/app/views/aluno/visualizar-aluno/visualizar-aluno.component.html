@@ -1,0 +1,44 @@
+<div layout-align="center center" layout-gt-xs="row">
+  <div layout="row" flex-gt-xs="80" layout-margin>
+    <div flex layout-margin>
+
+      <mat-card class="bgc-grey-50" layout-margin style="max-width: 1200px">
+
+        <!--card informações-->
+        <mat-card-content>
+
+          <visualizar-dados-usuario [usuario]="usuario" *ngIf="usuario?.id" flex>
+            <!--is instrutor-->
+            <div flex layout="column">
+              <mat-slide-toggle layout-margin [(ngModel)]="usuario.isInstrutor" class="tc-blue-grey-900" name="is_instrutor" (change)="updateUsuarioChangingOpcoesInstrutor(usuario)">
+                <span> {{usuario.isInstrutor ? 'Instrutor' : 'Aluno'}} </span>
+              </mat-slide-toggle>
+            </div>
+            <!--div opções-->
+            <div layout="column" layout-align="start end">
+              <div layout="row">
+                <button mat-icon-button routerLink="alterar" class="tc-blue-grey-900">
+                  <mat-icon>mode_edit</mat-icon>
+                </button>
+                <button mat-icon-button [matMenuTriggerFor]="menu" class="tc-blue-grey-900">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item color="primary" (click)="bloquear()" *ngIf="usuario?.id != authenticatedUser?.id && !usuario.isBloqueado">
+                    <mat-icon>lock</mat-icon>
+                    <span>Bloquear</span>
+                  </button>
+                  <button mat-menu-item color="primary" (click)="desbloquear()" *ngIf="usuario?.id != authenticatedUser?.id && usuario.isBloqueado">
+                    <mat-icon>lock_open</mat-icon>
+                    <span>Desbloquear</span>
+                  </button>
+                </mat-menu>
+              </div>
+            </div>
+          </visualizar-dados-usuario>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

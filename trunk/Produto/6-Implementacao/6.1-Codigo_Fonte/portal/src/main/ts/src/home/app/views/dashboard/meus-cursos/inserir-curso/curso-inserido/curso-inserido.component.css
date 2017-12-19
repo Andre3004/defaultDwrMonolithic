@@ -1,0 +1,22 @@
+.curso-criado-container{
+    max-width: 600px;
+}
+
+.curso-inserido-button-text{
+    color: white;
+    font-size: 16px;
+}
+.curso-inserido-button{
+    height: 50px;
+}
+
+ .background-curso-inserido{
+     width: 100%;
+     height: 300px;
+     position: absolute;
+ }
+
+ .curso-inserido-card{
+     max-width: 800px;
+     margin-top: 50px;
+ }

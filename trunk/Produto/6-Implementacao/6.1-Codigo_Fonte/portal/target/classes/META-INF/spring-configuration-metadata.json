@@ -1,0 +1,22 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "br.com.turismo.portal.application.configuration.settings.DWRSettings",
+      "name": "dwr",
+      "type": "br.com.turismo.portal.application.configuration.settings.DWRSettings"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "br.com.turismo.portal.application.configuration.settings.DWRSettings",
+      "name": "dwr.debug",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "br.com.turismo.portal.application.configuration.settings.DWRSettings",
+      "name": "dwr.script-compressed",
+      "type": "java.lang.Boolean"
+    }
+  ]
+}

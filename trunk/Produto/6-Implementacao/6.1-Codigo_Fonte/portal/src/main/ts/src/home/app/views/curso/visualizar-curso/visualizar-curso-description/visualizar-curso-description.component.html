@@ -1,0 +1,38 @@
+<mat-card class="push-top" *ngIf="curso">
+  <mat-card-content>
+    <div class="pad">
+      <div>
+        <b class="md-headline tc-teal-500">Descrição</b>
+      </div>
+      <span class="visualizar-curso-text">
+        <div [innerHTML]="curso.descricao | safeHtml"></div>
+      </span>
+      <mat-divider class="divider"></mat-divider>
+
+      <div>
+        <b class="md-headline tc-teal-500">Conteúdo programático</b>
+      </div>
+      <span class="visualizar-curso-text">
+        <div [innerHTML]="curso.conteudo | safeHtml"></div>
+      </span>
+      <mat-divider class="divider"></mat-divider>
+
+      <div class="push-bottom">
+        <b class="md-headline tc-teal-500">Organizador</b>
+      </div>
+      <organizador-preview [curso]="curso" *ngIf="curso?.organizador"></organizador-preview>
+
+      <div class="turmas-disponiveis-container bgc-grey-200">
+        <div class="push-bottom">
+          <b class="md-headline tc-teal-500">Turmas disponíveis</b>
+        </div>
+        <turma-list *ngIf="curso.id" [curso]="curso"></turma-list>
+      </div>
+
+      <div class="push-bottom">
+        <b class="md-headline tc-teal-500">Avaliações</b>
+      </div>
+      <avaliacao-curso></avaliacao-curso>
+    </div>
+  </mat-card-content>
+</mat-card>

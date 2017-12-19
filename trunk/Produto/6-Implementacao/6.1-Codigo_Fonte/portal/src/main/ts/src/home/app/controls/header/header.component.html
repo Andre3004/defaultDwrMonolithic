@@ -1,0 +1,44 @@
+<mat-toolbar class="elevation-z2 toolbar-home">
+  <button mat-icon-button (click)="sidenav.toggle()" hide-gt-md>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <img routerLink="" src="../static/images/logo-large.png" class="size-height-50 logo-image" alt="Logo marca TFC">
+  <span flex> </span>
+  <button mat-button *ngIf="!aluno" class="font-regular" hide-xs (click)="login()">ENTRAR</button>
+
+  <button mat-button *ngIf="!aluno" class="font-regular" hide-xs routerLink="/conta/criar-conta/aluno">SEJA UM ALUNO</button>
+  <button mat-button *ngIf="!aluno" class="bgc-grey-200 push font-regular" hide-xs routerLink="/conta/criar-conta/instrutor">
+    SEJA UM INSTRUTOR
+  </button>
+  <label *ngIf="aluno" class="md-body-2 name-user" [matMenuTriggerFor]="menu">{{aluno?.nome}}</label>
+  <div *ngIf="aluno" class="avatar" style="cursor: pointer" [matMenuTriggerFor]="menu" layout-align="center center" layout-margin
+    layout="row">
+    <avatar style="margin-top:10px" [usuario]="aluno" [size]="0.4"></avatar>
+  </div>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item color="primary" (click)="toMyAccount()">
+      <mat-icon>dashboard</mat-icon>
+      <span>Dashboard </span>
+    </button>
+    <button mat-menu-item color="primary" (click)="logout()">
+      <mat-icon>power_settings_new</mat-icon>
+      <span>Sair</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over" class="elevation-z5 bgc-blue-grey-500" (click)="sidenav.toggle()">
+    <logged-menu *ngIf="aluno"></logged-menu>
+    <anonymous-menu *ngIf="!aluno"></anonymous-menu>
+  </mat-sidenav>
+  
+  <!--Tag será substiuída pelo content da tag pai chamada-->
+  <ng-content></ng-content>
+  
+</mat-sidenav-container>
+
+<button *ngIf="location.path(false) === '/cursos'" type="button" mat-button class="bgc-teal-500 elevation-z3 tc-white floating-button" @flyIn (click)="sugerirCurso()">
+  <mat-icon style="padding-right: 5px">message</mat-icon>
+  <span style="font-weight: 500">SUGERIR UM CURSO</span>
+</button>

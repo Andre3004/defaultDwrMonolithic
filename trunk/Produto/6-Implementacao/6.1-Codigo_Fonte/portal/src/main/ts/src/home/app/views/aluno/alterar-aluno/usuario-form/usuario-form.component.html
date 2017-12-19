@@ -1,0 +1,210 @@
+<div layout-align="center center" layout-gt-xs="row" layout-margin>
+  <div layout="row" flex-gt-xs="80" layout-margin>
+    <div flex layout-margin>
+      <mat-card class="bgc-grey-50" layout-margin style="max-width: 1200px">
+        <form [formGroup]="form" (ngSubmit)="saveUsuario(form)" novalidate>
+          <mat-card-content>
+            <div layout-margin>
+              <!--cabeçalho div-->
+              <div layout="column" layout-margin flex>
+
+                <div layout="row" layout-align="start center">
+                  <ng-content></ng-content>
+                </div>
+
+                <div layout="row" layout-margin>
+                  <h1 class="md-subhead tc-grey-500" flex>INFORMAÇÕES</h1>
+                </div>
+              </div>
+
+              <!--dados e foto div-->
+              <div layout-gt-xs="row" flex>
+                <!--dados div-->
+                <div layout="column" flex="60">
+                  <div layout="row" layout-margin>
+                    <mat-form-field flex>
+                      <input id="nome" name="nome" matInput [(ngModel)]="usuario.nome" placeholder="Nome" required maxlength="200" somenteLetras
+                        formControlName="nome">
+                      <mat-error>
+                        Esse campo é obrigatório
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div layout="row" layout-margin>
+                    <mat-form-field flex>
+                      <input type="email" id="email" required matInput name="email" placeholder="E-mail" maxlength="144" formControlName="email"
+                        [(ngModel)]="usuario.email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                      <mat-error *ngIf="form.controls['email'].hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                      <mat-error *ngIf="form.controls['email'].hasError('pattern')">
+                        E-mail inválido, utilize o formato "email@email.com"
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <mat-checkbox *ngIf="!usuario.isInstrutor" [(ngModel)]="usuario.isEstrangeiro"  (ngModelChange)="clearEnderecoFields()" [ngModelOptions]="{standalone: true}" [disabled]="true" style="margin-left: 15px" name="isEstrangeiro" flex>
+                      {{foundUser ? 'Aluno estrangeiro' : 'Sou estrangeiro' }}
+                    </mat-checkbox>
+                  </div>
+                  <div layout-gt-xs="row" layout-margin>
+                    <mat-form-field *ngIf="!usuario.isEstrangeiro" class="codigo-area" flex>
+                      <input matInput pattern="\d*" minlength="1" maxlength="2" [(ngModel)]="usuario.codigoArea" name="codigoArea" id="codigoArea"
+                        placeholder="DDD" required somenteNumerosNaturais formControlName="codigoArea">
+                      <mat-error *ngIf="form.controls['codigoArea'].hasError('max') || form.controls['codigoArea'].hasError('min')">
+                        Código de área inválido
+                      </mat-error>
+                      <mat-error *ngIf="form.controls['codigoArea'].hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="usuario.isEstrangeiro" flex>
+                      <input matInput minlength="1" maxlength="5" [(ngModel)]="usuario.codigoInternacional" name="codigoInternacional" id="codigoInternacional"
+                        placeholder="DDI" required somenteNumerosNaturais formControlName="codigoInternacional">
+                      <mat-error *ngIf="form.controls['codigoInternacional'].hasError('max') || form.controls['codigoInternacional'].hasError('min')">
+                        Código internacional inválido
+                      </mat-error>
+                      <mat-error *ngIf="form.controls['codigoInternacional'].hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field flex>
+                      <input [(ngModel)]="usuario.contatoTelefonico" pattern="\d*" name="contatoTelefonico" id="contatoTelefonico" matInput placeholder="Número do telefone"
+                        somenteNumerosNaturais required minlength="7" maxlength="9" formControlName="contatoTelefonico">
+                      <mat-error *ngIf="form.controls['contatoTelefonico'].hasError('max') || form.controls['contatoTelefonico'].hasError('min')">
+                        Telefone inválido
+                      </mat-error>
+                      <mat-error *ngIf="form.controls['contatoTelefonico'].hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                    </mat-form-field>
+                    <mat-form-field flex>
+                      <input [textMask]="{mask: masks.date, guide: false}" [(ngModel)]="usuario.dataNascimento" name="dataNascimento" id="dataNascimento"
+                        matInput placeholder="Data de nascimento" formControlName="dataNascimento" required>
+                      <mat-error *ngIf="form.controls['dataNascimento'].hasError('exception')">
+                        {{form?.controls['dataNascimento']?.errors.exception}}
+                      </mat-error>
+                      <mat-error *ngIf="form.controls['dataNascimento'].hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div layout-gt-xs="row">
+                    <div *ngIf="!usuario.isEstrangeiro" flex>
+                      <usuario-pessoa-juridica-form *ngIf="usuario.isEmpresa" [usuario]="usuario" [form]="form" flex>
+                      </usuario-pessoa-juridica-form>
+
+                      <usuario-pessoa-fisica-form *ngIf="!usuario.isEmpresa" [usuario]="usuario" [form]="form" flex>
+                      </usuario-pessoa-fisica-form>
+                    </div>
+                    
+                    <div *ngIf="!usuario.isEstrangeiro" layout-margin layout="column">
+                      <mat-checkbox style="margin-top: 30px" [(ngModel)]="usuario.isEmpresa" name="isEmpresa" [ngModelOptions]="{standalone: true}">
+                        Sou empresa
+                      </mat-checkbox>
+                    </div>
+                  </div>
+
+                  <documento-estrangeiro [usuario]="usuario" [form]="form"></documento-estrangeiro>
+
+                  <password-form *ngIf="usuario && (!usuario?.id || !usuario.lastLogin)" [usuario]="usuario" [form]="form">
+                  </password-form>
+                </div>
+
+                <!--foto div-->
+                <div flex>
+                  <div class="avatar" layout="column" flex layout-align="center center">
+                    <div flex>
+                      <avatar [usuario]="usuario"></avatar>
+                    </div>
+                    <div flex *ngIf="usuario?.foto">
+                      <button type="button" (click)="removeFoto()" class="tc-grey-500" mat-button>
+                        REMOVER FOTO
+                      </button>
+                    </div>
+                    <div flex *ngIf="!usuario?.foto">
+                      <td-file-upload defaultColor="primary" accept=".png, .gif, .jpg, .jpeg" #singleFileUpload (change)="fileChange($event)">
+                        <span>{{ singleFileUpload.files?.name }}</span>
+                        <ng-template td-file-input-label>
+                          <mat-icon>attach_file</mat-icon>
+                          <span>Adicionar foto</span>
+                        </ng-template>
+                      </td-file-upload>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div flex>
+
+                <div *ngIf="usuario.isInstrutor">
+                  <div layout="row" layout-margin flex>
+                    <mat-form-field layout-margin flex>
+                      <textarea [(ngModel)]="usuario.formacao" [ngModelOptions]="{standalone: true}" maxLength="4000" matInput class="size-72"
+                        placeholder="Formação" name="formacao" id="formacao"></textarea>
+                      <mat-hint align="end">{{usuario.formacao ? usuario.formacao.length: 0}} / 4000</mat-hint>
+                    </mat-form-field>
+                  </div>
+
+                  <div layout="row" layout-margin flex>
+                    <mat-form-field layout-margin flex>
+                      <textarea [(ngModel)]="usuario.resumo" id="resumo" [ngModelOptions]="{standalone: true}" maxLength="4000" matInput class="size-72"
+                        placeholder="Resumo profissional" name="resumo"></textarea>
+                      <mat-hint align="end">{{usuario.resumo ? usuario.resumo.length: 0}} / 4000</mat-hint>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <!--áreas de conhecimento div-->
+                <areas-conhecimento [usuario]="usuario" *ngIf="usuario"></areas-conhecimento>
+
+                <!--endereço div-->
+                <div flex class="push-top">
+                  <div layout="column" flex class="push-top">
+                    <div layout="row" layout-margin>
+                      <div flex>
+                        <h1 class="md-subhead tc-grey-500">ENDEREÇO</h1>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div layout="row" layout-margin *ngIf="usuario?.isInstrutor">
+                    <mat-form-field flex>
+                      <input name="linkProfisional" id="linkProfisional" maxlength="4000" matInput [(ngModel)]="usuario.linkProfissional" [ngModelOptions]="{standalone: true}"
+                        placeholder="Link profissional">
+                    </mat-form-field>
+                  </div>
+
+                  <maps-component *ngIf="usuario?.endereco" [isEstrangeiro]="usuario.isEstrangeiro" [showMap]="false" [endereco]="usuario?.endereco"
+                    [form]="form"></maps-component>
+                </div>
+                <div layout="column" layout-margin>
+                  <ng-content select="[termo]">
+                  </ng-content>
+                </div>
+              </div>
+
+              <!--actions div-->
+              <div flex layout-margin>
+
+                <div layout-gt-xs="row" flex layout-margin>
+
+                  <button mat-raised-button (click)="backRoute()" type="button" flex>
+                    Cancelar
+                  </button>
+                  <button mat-raised-button color="accent" flex>
+                    Salvar
+                  </button>
+                  <span flex="70"></span>
+
+                </div>
+
+              </div>
+            </div>
+          </mat-card-content>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

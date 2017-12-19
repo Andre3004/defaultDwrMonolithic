@@ -1,0 +1,27 @@
+<div [formGroup]="form.controls.documento">
+  <div layout-margin layout="row" class="select-tipo-documento" *ngIf="usuario.isEstrangeiro || usuario.isEstrangeiro">
+    <mat-form-field>
+      <mat-select (change)="changeTipoDocumento($event)" [(ngModel)]="selectTipoDocumento" [ngModelOptions]="{standalone: true}"
+        name="selectTipoDocumento" style="margin-top: 9.5px" placeholder="Tipo de documento">
+        <mat-option [value]="'Passaporte'">Passaporte</mat-option>
+        <mat-option [value]="'Outro'">Outro</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="custom-margin-align" *ngIf="selectTipoDocumento == 'Outro'" flex>
+      <input matInput #tipoDocumentoEstrangeiro [(ngModel)]="usuario.tipoDocumentoEstrangeiro" name="tipoDocumentoEstrangeiro"
+        placeholder="Tipo de documento" required formControlName="tipoDocumentoEstrangeiro">
+      <mat-error *ngIf="form.controls.documento.controls['tipoDocumentoEstrangeiro'].hasError('required')">
+        Este campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="custom-margin-align" *ngIf="usuario.isEstrangeiro" flex>
+      <input flex matInput [(ngModel)]="usuario.documentoEstrangeiro" somenteNumerosNaturais name="documentoEstrangeiro" placeholder="Documento"
+        required formControlName="documentoEstrangeiro" id="documentoEstrangeiro">
+      <mat-error *ngIf="form.controls.documento.controls['documentoEstrangeiro'].hasError('required')">
+        Este campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>

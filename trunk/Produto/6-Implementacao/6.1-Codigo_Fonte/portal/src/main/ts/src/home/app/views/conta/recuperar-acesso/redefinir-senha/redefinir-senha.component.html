@@ -1,0 +1,58 @@
+<div layout="column"
+     layout-align="center center"
+     style="height: 100%; background-size: cover; background-image: url('static/images/authentication-background.jpg');">
+    <div layout="column" layout-align="center center">
+
+      <mat-card style="width: 475px">
+
+        <mat-card-content>
+
+          <form #signinForm="ngForm" (ngSubmit)="redefinirSenha(newPassword, newPasswordConfirm)" ngNativeValidate>
+
+            <div layout="column" layout-margin style="margin: 25px; margin-left: 45px; margin-right: 45px;">
+
+              <div layout="column" layout-margin layout-align="center center">
+                <div layout="row" flex layout-margin>
+                  <h1 class="md-title tc-black-4" flex>
+                    <b>Redefinir senha</b>
+                  </h1>
+                </div>
+              </div>
+
+              <div layout="row" flex layout-margin style="margin-top: 45px;">
+                <h1 class="md-body-1 tc-grey-600" flex>
+                  <b>Para recuperar a senha insira seu login</b>
+                </h1>
+              </div>
+
+              <div layout="column" layout-margin class="dialog-container">
+                <mat-form-field flex>
+                  <input matInput type="password" minlength="6" password name="newPassword" [(ngModel)]="newPassword" matInput placeholder="Nova senha" required>
+                  <mat-hint class="mat-hint" *ngIf="newPassword?.length < 6">
+                    Mínimo 6 caracteres
+                  </mat-hint>
+                </mat-form-field>
+                <mat-form-field flex>
+                  <input matInput type="password" password name="newPasswordConfirm" [(ngModel)]="newPasswordConfirm" matInput placeholder="Confirme a nova senha"
+                         required>
+                  <mat-hint class="mat-hint-error" *ngIf="newPasswordConfirm && newPasswordConfirm != newPassword">
+                    As senhas não conferem
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+              <div layout="row" flex layout-margin style="margin-top: 20px;">
+                <button style="height: 55px" mat-raised-button color="accent" flex>
+                  ENVIAR NOVA SENHA
+                </button>
+              </div>
+
+
+            </div>
+          </form>
+        </mat-card-content>
+
+      </mat-card>
+  </div>
+</div>

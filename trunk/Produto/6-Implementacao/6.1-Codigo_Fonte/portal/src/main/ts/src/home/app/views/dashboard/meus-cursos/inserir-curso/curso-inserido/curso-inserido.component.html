@@ -1,0 +1,28 @@
+<div class="bgc-teal-500 background-curso-inserido mat-elevation-z1"></div>
+<div layout="row" layout-align="center center">
+  <mat-card class="curso-inserido-card" flex>
+    <mat-card-content>
+      <div layout="column" layout-margin layout-align="center center">
+        <img src="../static/images/curso-criado.png" class="push-top">
+        <h1 class="tc-teal-500" style="font-size: 34px" flex>Parabéns</h1>
+        <span class="tc-grey-700 text-center" style="line-height: 20px" flex>
+            Seu curso foi criado com sucesso! :)<br>
+            Para seu curso ser publicado é necessário informar mais alguns detalhes.
+          </span>
+        <span class="tc-grey-700 md-subhead" flex>
+            Deseja continuar?
+          </span>
+      </div>
+      <div layout="row" layout-align="center center">
+        <div class="curso-criado-container" flex>
+          <div layout="row" flex>
+            <button mat-raised-button color="primary" class="curso-inserido-button" routerLink="../alterar/turmas/inserir" flex><b class="curso-inserido-button-text">SIM, CONTINUAR A PUBLICAÇÃO</b></button>
+          </div>
+          <div layout="row" class="push-top push-bottom" flex>
+            <button mat-raised-button class="bgc-grey-400 curso-inserido-button" routerLink="../../" flex><span class="curso-inserido-button-text">VOU CONTINUAR MAIS TARDE</span></button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

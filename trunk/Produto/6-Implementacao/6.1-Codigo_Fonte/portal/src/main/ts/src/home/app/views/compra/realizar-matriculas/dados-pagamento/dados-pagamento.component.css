@@ -1,0 +1,10 @@
+@media only screen and (max-width: 600px){
+    .selo-pagseguro{
+        max-width: 100%;
+    }
+}
+
+.pagamento-title{
+    font-size: 18px;
+    line-height: 2em;
+}

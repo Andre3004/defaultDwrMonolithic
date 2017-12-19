@@ -1,0 +1,19 @@
+<div mat-dialog-content class="tfc-content-dialog">
+
+  <h1 matDialogTitle>Recusar curso</h1>
+
+  <div layout="column" flex>
+    <mat-form-field flex>
+      <textarea matInput placeholder="Justificativa" [(ngModel)]="justificativa"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div layout="row"  layout-margin>
+    <button [disabled]="!justificativa" mat-raised-button color="accent" flex (click)="dialogRef.close(justificativa)">
+      Recusar
+    </button>
+    <button mat-raised-button flex (click)="dialogRef.close()">
+      Cancelar
+    </button>
+  </div>
+</div>

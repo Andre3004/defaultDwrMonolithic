@@ -1,0 +1,43 @@
+<div>
+  <mat-card class="push-none bgc-grey-50 filters-card">
+    <div layout="row" layout-align="center center">
+      <div layout="row" layout-align="center center" flex="90">
+
+        <td-chips placeholder="Pesquisar por nome, Área de conhecimento" [(ngModel)]="filter" layout-margin flex-md="40" flex-gt-md="45"
+          flex-gt-lg="50" (add)="onChangeFilters()" (remove)="onChangeFilters()"></td-chips>
+
+        <div flex-gt-md></div>
+
+        <td-chips placeholder="Pesquisar por bairro, cidade, estado, " [(ngModel)]="cidadesFiltro" flex="35" (add)="onChangeFilters()"
+          (remove)="onChangeFilters()">
+        </td-chips>
+
+        <div flex-gt-md></div>
+
+        <md2-datepicker style="margin-top: 5px" placeholder="Busque por data" [(ngModel)]="filtro.dataCompra" (ngModelChange)="onChangeFilters()">
+        </md2-datepicker>
+
+      </div>
+    </div>
+
+  </mat-card>
+</div>
+
+<div layout="row" layout-align="center center">
+  <div flex="90" class="push-top">
+    <td-paging-bar #pagingBar [pageSize]="pageable?.size" [total]="page?.totalElements" (change)="changePage($event)">
+      <span td-paging-bar-label hide-xs>Compras por página:</span>
+      <mat-select [style.width.px]="50" *ngIf="pageable?.size" [(ngModel)]="pageable.size">
+        <mat-option *ngFor="let size of pageSizes" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+      {{pagingBar.range}}
+      <span hide-xs> de {{pagingBar.total}}</span>
+    </td-paging-bar>
+    <compra-card-status *ngFor="let compra of compras" style="display: inline" [compra]="compra"></compra-card-status>
+    <div *ngIf="compras?.length == 0" layout="row" layout-align="center center" flex>
+      <p>Nenhuma compra encontrada</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<svg *ngIf="size > 0.5" height="210" width="200" transform="scale(1)">
+  <defs>
+    <pattern height="1" id="person" patternUnits="objectBoundingBox" width="1" x="0" y="0">
+      <image xlink:href="../static/images/person.svg" height="140" width="140" x="0" y="0"></image>
+    </pattern>
+    <pattern id="foto" x="0" y="0" height="200" width="200" patternUnits="userSpaceOnUse">
+      <image width="200" height="200" preserveAspectRatio="xMidYMid slice" [attr.xlink:href]="usuario.foto"></image>
+    </pattern>
+  </defs>
+  <polygon *ngIf="usuario.isInstrutor && !usuario.foto" fill="#f44336" points="190,55 190,155 100,210 10,155 10,55 100,0"></polygon>
+
+  <polygon *ngIf="usuario.isInstrutor && usuario.foto" fill="url(#foto)" points="190,55 190,155 100,210 10,155 10,55 100,0"></polygon>
+
+  <circle *ngIf="!usuario.isInstrutor && !usuario.foto" fill="#5e7c8b" cx="100" cy="100" r="100"></circle>
+
+  <circle *ngIf="!usuario.isInstrutor && usuario.foto" fill="url(#foto)" cx="100" cy="100" r="100"></circle>
+
+  <circle *ngIf="!usuario.foto" fill="url(#person)" cx="100" cy="100" r="70"></circle>
+</svg>
+<svg *ngIf="size <= 0.5" height="44" width="43" >
+  <defs>
+    <pattern height="1" id="person" patternUnits="objectBoundingBox" width="1" x="0" y="0">
+      <image xlink:href="../static/images/person.svg" height="140" width="140" x="0" y="0"></image>
+    </pattern>
+    <pattern id="{{identifier}}" x="0" y="0" height="200" width="200" patternUnits="userSpaceOnUse">
+      <image width="200" height="200"  preserveAspectRatio="xMidYMid slice" [attr.xlink:href]="usuario.foto"></image>
+    </pattern>
+  </defs>
+  <polygon *ngIf="usuario.isInstrutor && !usuario.foto" transform="scale(0.21)" fill="#f44336" points="190,55 190,155 100,210 10,155 10,55 100,0"></polygon>
+
+  <polygon *ngIf="usuario.isInstrutor && usuario.foto" transform="scale(0.21)" [style.fill]="'url(#'+identifier+')'" points="190,55 190,155 100,210 10,155 10,55 100,0"></polygon>
+
+  <circle *ngIf="!usuario.isInstrutor && !usuario.foto" transform="scale(0.21)" fill="#5e7c8b" cx="100" cy="100" r="100"></circle>
+
+  <circle *ngIf="!usuario.isInstrutor && usuario.foto" transform="scale(0.21)" [style.fill]="'url(#'+identifier+')'" cx="100" cy="100" r="100"></circle>
+
+  <circle *ngIf="!usuario.foto" fill="url(#person)" transform="scale(0.21)" cx="100" cy="100" r="70"></circle>
+</svg>

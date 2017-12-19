@@ -1,0 +1,12 @@
+<usuario-form [usuario]="usuario" *ngIf="usuario.id" (save)="updateUsuario()">
+  <!--cabeçalho div-->
+  <button class="md-headline tc-grey-500" type="button" routerLink="../" color="primary" mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <div layout="row" layout-margin>
+    <h1 class="md-headline tc-grey-500" flex>
+      {{usuario?.isInstrutor ? 'Alterar instrutor' : 'Alterar aluno'}}
+    </h1>
+  </div>
+</usuario-form>

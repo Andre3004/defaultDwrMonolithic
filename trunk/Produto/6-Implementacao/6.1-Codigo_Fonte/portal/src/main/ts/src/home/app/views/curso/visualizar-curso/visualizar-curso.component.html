@@ -1,0 +1,21 @@
+<div *ngIf="curso">
+  <visualizar-curso-header withMenu="true" [curso]="curso"></visualizar-curso-header>
+  <home-container>
+    <div layout="column" layout-padding>
+      <div layout-gt-md="row" layout-align="center center" flex>
+        <div layout="row" layout-align="center center" flex-gt-md="65">
+          <img *ngIf="curso?.imagem" style="background-color: white" src="{{curso?.imagem}}" class="{{isProximaTurmaSemiPresencial()? 'curso-image-semipresencial' : 'curso-image'}} image-cover elevation-z2"
+            alt="Imagem do curso">
+          <div *ngIf="!curso?.imagem" layout="column" layout-align="center center" class="{{isProximaTurmaSemiPresencial()? 'curso-image-semipresencial' : 'curso-image'}} bgc-grey-300 image-cover elevation-z2">
+            <img src="../static/images/logo-large-grey.png" alt="logo tfc">
+            <span class="tc-grey-500 push" layout="row">Este curso não possui imagem</span>
+          </div>
+        </div>
+        <div flex></div>
+        <proxima-turma flex-gt-md="30" [curso]="curso" [cargaHoraria]="curso.cargaHoraria"></proxima-turma>
+        <div *ngIf="!curso?.imagem" flex></div>
+      </div>
+      <visualizar-curso-description [curso]="curso"></visualizar-curso-description>
+    </div>
+  </home-container>
+</div>

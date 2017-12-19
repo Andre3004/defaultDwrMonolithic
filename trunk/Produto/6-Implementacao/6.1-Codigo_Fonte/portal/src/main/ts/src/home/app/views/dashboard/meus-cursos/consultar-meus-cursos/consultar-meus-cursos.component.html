@@ -1,0 +1,51 @@
+<div>
+  <mat-card class="push-none bgc-grey-50 filters-card">
+    <div layout="row" layout-align="center center">
+      <div layout="row" layout-align="center center" flex="90">
+
+        <td-chips placeholder="Pesquisar por nome, categorias ou locais" [(ngModel)]="filters" layout-margin flex (add)="onChangeFilters()"
+          (remove)="onChangeFilters()">
+        </td-chips>
+
+        <mat-slide-toggle [(ngModel)]="isOrganizador" (ngModelChange)="onChangeFilters()" name="isOrganizador" class="push-right">
+          <span>Criados por mim</span>
+        </mat-slide-toggle>
+
+        <button mat-raised-button class="bgc-blue-grey-50 push-right font-regular" (click)="toggleShowPesquisaAvancada()">
+            Pesquisa avançada
+        </button>
+
+        <button mat-mini-fab color="accent" matTooltip="Inserir novo curso" (click)="insertCurso()" style="border-radius: 2px;">
+          <mat-icon>add</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+  </mat-card>
+  <!--Pesquisa avançada-->
+  <mat-card class="push-none bgc-grey-50 filters-card" *ngIf="showPesquisaAvancada">
+    <div layout="row" layout-align="center center">
+      <div layout="row" layout-align="center center" flex="90">
+
+        <md2-datepicker placeholder="Busque por data" [(ngModel)]="dataFilter" (ngModelChange)="onChangeFilters()"></md2-datepicker>
+        <div flex></div>
+
+        <button mat-icon-button (click)="hidePesquisaAvancada()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<div layout="row" layout-align="center center">
+  <div flex="90" class="push-top">
+    <p class="tc-teal-500 status-title">PUBLICADOS ({{cursosAprovados.length}})</p>
+    <curso-card-status *ngFor="let curso of cursosAprovados" style="display: inline" [curso]="curso"></curso-card-status>
+    <p class="tc-blue-grey-600 status-title">EM ANÁLISE ({{cursosPendentes.length}})</p>
+    <curso-card-status *ngFor="let curso of cursosPendentes" style="display: inline" [curso]="curso"></curso-card-status>
+    <p class="tc-grey-600 status-title">EM RASCUNHO ({{cursosRascunho.length}})</p>
+    <curso-card-status *ngFor="let curso of cursosRascunho" style="display: inline" [curso]="curso"></curso-card-status>
+  </div>
+</div>

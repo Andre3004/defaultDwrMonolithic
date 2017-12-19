@@ -1,0 +1,95 @@
+<form #loteForm="ngForm" ngNativeValidate (ngSubmit)="saveLote(loteForm)" class="bgc-grey-200" style="border-radius: 2px; padding: 16px">
+  <div layout="row" layout-margin>
+    <b class="tc-grey-800 lote-title" flex>{{lote?.id ? 'Alterar lote' : 'Inserir lote'}}</b>
+  </div>
+  <div layout="column">
+    <div layout="row" layout-margin>
+      <mat-form-field flex>
+        <input [(ngModel)]="lote.nome" name="nome" matInput flex placeholder="Nome do lote" required somenteAlfanumericos>
+        <mat-error>Este campo é obrigatório</mat-error>
+      </mat-form-field>
+      <mat-form-field flex>
+        <input currencyMask [(ngModel)]="lote.preco" name="preco" min="0" max="9999"
+               [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+               step="0.01" [required]="!lote?.turma?.curso?.isGratuito" matInput [formControl]="preco"  placeholder="Preço">
+        <mat-error *ngIf="preco.hasError('required')">
+          Este campo é obrigatório
+        </mat-error>
+        <mat-hint align="end" style="color: #009688" *ngIf="lote?.turma?.curso?.isGratuito">
+          Este curso é gratuito
+        </mat-hint>        
+        <mat-error *ngIf="preco.hasError('min')">
+          Preço inválido
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div layout="row" layout-margin>
+      <mat-form-field flex>
+        <input [(ngModel)]="lote.limiteMatriculas" matTooltip="{{tooltipLimiteMatriculas}}" type="number" min="{{lote?.vagasReservadas ? lote?.vagasReservadas : 0}}" max="{{(lote?.vagasReservadas ? lote?.vagasReservadas : 0) + (lote?.vagasReservadas ? maximoVagas - lote?.vagasReservadas : maximoVagas)}}"
+          name="minimoVagas" matInput flex [formControl]="limiteMatriculas" placeholder="Limite de matrículas">
+        <mat-error *ngIf="limiteMatriculas.hasError('min')">
+          O limite de vagas deve ser maior que as vagas reservadas
+        </mat-error>
+        <mat-error *ngIf="limiteMatriculas.hasError('max')">
+          O limite de vagas extrapola a quantidade de vagas não reservadas
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field flex>
+        <input [(ngModel)]="lote.vagasReservadas" matTooltip="{{tooltipVagasReservadas}}" type="number" min="0" max="{{maximoVagas}}" [formControl]="vagasReservadas" name="maximoVagas"
+          matInput flex placeholder="Vagas reservadas">
+        <mat-error *ngIf="vagasReservadas.hasError('min')">
+          Quantidade de vagas inválido
+        </mat-error>
+        <mat-error *ngIf="vagasReservadas.hasError('max')">
+          O máximo de vagas para reserva é {{maximoVagas}}
+        </mat-error>
+        <mat-hint align="end" style="color: #009688" *ngIf="(lote?.vagasReservadas ? maximoVagas - lote?.vagasReservadas : maximoVagas) > 0">Existem {{lote?.vagasReservadas ? maximoVagas - lote?.vagasReservadas : maximoVagas}} vagas não reservadas</mat-hint>
+      </mat-form-field>
+
+    </div>
+
+    <div layout="row" layout-align="start start" layout-margin flex>
+
+      <div layout="column" flex>
+        <md2-datepicker [(ngModel)]="lote.inicio" name="inicio" [max]="lote?.termino" [min]="tomorrow" type="date" placeholder="Início"></md2-datepicker>
+      </div>
+
+      <mat-form-field class="horario-input" flex>
+        <input matInput #horarioInicioForm="ngModel" [textMask]="{mask: masks.time, guide: false}" [(ngModel)]="horarioInicio" name="horarioInicio"
+          placeholder="Horário de início" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]">
+        <mat-error *ngIf="horarioInicioForm.errors?.pattern">Forneça um horário válido</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div layout="row" layout-align="start start" layout-margin flex>
+
+      <div layout="column" flex>
+        <md2-datepicker [(ngModel)]="lote.termino" name="termino" [min]="lote?.inicio" type="date" placeholder="Término"></md2-datepicker>
+      </div>
+
+      <mat-form-field class="horario-input" flex>
+        <input matInput #horarioTerminoForm="ngModel" [(ngModel)]="horarioTermino" [textMask]="{mask: masks.time, guide: false}" name="horarioTermino"
+          placeholder="Horário de término" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]">
+        <mat-error *ngIf="horarioTerminoForm.errors?.pattern">Forneça um horário válido</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div layout-gt-sm="row" flex class="push-top" layout-margin>
+    <div flex layout-margin>
+      <button mat-raised-button color="accent">
+        <b style="color: white">
+          SALVAR LOTE
+        </b>
+      </button>
+    </div>
+
+    <div flex-gt-sm="80">
+    </div>
+    <div flex layout-margin>
+      <button type="button" mat-raised-button class="bgc-blue-grey-300 tc-grey-50 text-upper" (click)="cancelar()">CANCELAR
+      </button>
+    </div>
+  </div>
+
+</form>

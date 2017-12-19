@@ -1,0 +1,46 @@
+<span matDialogTitle>
+  Código de incorporação HTML
+</span>
+<mat-dialog-content>
+  <h3 class="md-subhead">Escolha a turma:</h3>
+  <td-expansion-panel-group>
+    <td-expansion-panel label="label" *ngFor="let turma of curso.turmas; let i = index;">
+
+      <ng-template td-expansion-panel-header>
+        <div layout-gt-xs="row" layout-xs="column" layout-align="center center" layout-margin class="push-left push-right" flex>
+          <div layout-gt-xs="row" layout-align="center center">
+            <h3 class="md-subhead" *ngIf="turma.tipoTurma == tipoTurma.PRESENCIAL"> {{turma.endereco?.cidade?.nome}}</h3>
+            <h3 class="md-subhead" *ngIf="turma.tipoTurma == tipoTurma.DISTANCIA"> Curso a distância</h3>
+            <h3 class="md-subhead" hide-xs> - </h3>
+            <h3 class="md-subhead" style="white-space: pre" *ngIf="turma?.aulas"> {{turma?.aulas[0]?.inicio | date:'dd/MM/yy'}} à {{turma?.aulas[turma?.aulas.length-1]?.termino | date:'dd/MM/yy'}}</h3>
+          </div>
+          <div flex></div>
+          <h3 class="md-subhead"><b> {{turma.vagasDisponiveis}} vagas disponíveis</b></h3>
+        </div>
+      </ng-template>
+
+      <mat-divider></mat-divider>
+
+      <div class="pad">
+        <span>Copie o código abaixo e cole em seu site ou blog</span>
+        <div layout-gt-xs="row" class="push-top" flex>
+          <td-highlight lang="html" flex>
+            <![CDATA[
+              {{getCodigoIncorporacao(turma)}}
+            ]]>
+          </td-highlight>
+          <button mat-raised-button [ngClass]="{'bgc-blue-grey-500': !turma.isCodeCopied, 'bgc-teal-500': turma.isCodeCopied}" ngxClipboard
+            [cbContent]="getCodigoIncorporacao(turma)" (cbOnSuccess)="setCodeCopied(turma, true)"><span class="tc-grey-50">COPIAR</span></button>
+        </div>
+        <span class="md-caption tc-grey-800"> Para funcionar o seu site deve suportar iframes. </span>
+      </div>
+    </td-expansion-panel>
+  </td-expansion-panel-group>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div layout="row" flex>
+    <div flex></div>
+    <button mat-button matDialogClose><b>FECHAR</b></button>
+  </div>
+</mat-dialog-actions>

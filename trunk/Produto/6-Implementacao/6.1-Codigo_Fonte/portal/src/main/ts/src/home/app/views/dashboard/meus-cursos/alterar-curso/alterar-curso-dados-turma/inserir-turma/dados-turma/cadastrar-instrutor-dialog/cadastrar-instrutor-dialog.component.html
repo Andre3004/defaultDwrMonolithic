@@ -1,0 +1,31 @@
+<div layout-margin>
+  <h3 matDialogTitle> Inserir instrutor </h3>
+</div>
+<form (ngSubmit)="inserirInstrutor($event)" ngNativeValidate>
+<mat-dialog-content>
+  <div layout="row" layout-margin>
+    <mat-form-field flex>
+      <input matInput [(ngModel)]="instrutor.nome" flex name="nome" placeholder="Nome completo" required somenteLetras>
+    </mat-form-field>
+    <mat-form-field flex>
+      <input matInput [(ngModel)]="instrutor.email" type="email" flex name="email" placeholder="E-mail" (ngModelChange)="emailChanged()">
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-margin>
+    <mat-form-field flex>
+      <input matInput [(ngModel)]="instrutor.documento"  [textMask]="{mask: masks.cpf, guide: false}" flex name="cpf" placeholder="CPF" required>
+    </mat-form-field>
+    <mat-form-field flex>
+      <input matInput [(ngModel)]="instrutor.registroGeral" flex name="rg" placeholder="RG" required>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div layout="row" layout-align="end end" flex>
+    <div flex></div>
+    <button matDialogClose mat-button (click)="closeDialog()"><b>CANCELAR</b></button>
+    <button mat-button type="submit" color="primary"><b>INSERIR INSTRUTOR</b></button>
+  </div>
+</mat-dialog-actions>
+</form>

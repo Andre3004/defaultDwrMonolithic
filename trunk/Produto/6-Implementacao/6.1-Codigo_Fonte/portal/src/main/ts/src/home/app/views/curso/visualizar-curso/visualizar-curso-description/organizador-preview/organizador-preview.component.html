@@ -1,0 +1,27 @@
+<div layout="row" layout-align-gt-xs="start center" layout-align-xs="center center">
+  <div layout-gt-xs="row" layout-xs="column" layout-align="center center">
+    <div>
+      <div layout="column">
+        <div class="diamond-organizador elevation-z3 bgc-grey-50 size-50"
+             layout="column" layout-align="center center" *ngIf="organizador.isDiamante">
+          <img src="./static/images/diamond.png"
+               alt="organizador é diamante"
+               matTooltip="organizador é diamante"
+               matTooltipPosition="above">
+        </div>
+        <avatar [usuario]="organizador" *ngIf="organizador?.id"></avatar>
+      </div>
+      <div layout="row" layout-align="center center" layout-margin>
+        <button mat-button class="bgc-grey-200" (click)="openFaleComOrganizadorDialog()">Fale com o organizador</button>
+      </div>
+    </div>
+    <div class="pad-right" hide-xs></div>
+    <div layout="column" layout-align-xs="center center" flex>
+      <span class="md-title tc-blue-grey-900">{{organizador.nome}}</span>
+      <a *ngIf="organizador.linkProfissional" href="{{organizador.linkProfissional}}" target="_blank" class="tc-teal-500 pad-bottom link-lattes">PERFIL PROFISSIONAL</a>
+      <span class="tc-blue-grey-900 organizador-resumo">
+        {{organizador.resumo}}
+      </span>
+    </div>
+  </div>
+</div>

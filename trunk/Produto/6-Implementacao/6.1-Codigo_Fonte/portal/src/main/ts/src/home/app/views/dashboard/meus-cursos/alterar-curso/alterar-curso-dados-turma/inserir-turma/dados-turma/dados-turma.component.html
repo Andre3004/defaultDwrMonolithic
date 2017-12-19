@@ -1,0 +1,84 @@
+<form class="bgc-grey-200" style="border-radius: 2px; padding: 16px" (ngSubmit)="submit($event)" ngNativeValidate>
+  <div layout="row" layout-margin>
+    <b *ngIf="!turma?.id" class="tc-grey-800 turma-title" flex>Nova turma</b>
+    <b *ngIf="turma?.id" class="tc-grey-800 turma-title" flex>Alterar turma</b>
+  </div>
+  <div layout="row" flex layout-margin>
+    <mat-form-field *ngIf="turma" flex>
+      <input [(ngModel)]="turma.quantidadeVagas" min="1" max="10000" [formControl]="quantidadeVagas" name="quantidadeVagas" matInput type="number"
+        flex matTooltip="Número máximo de matrículas que podem ser realizadas nesta turma!" placeholder="Vagas" required>
+      <mat-error *ngIf="quantidadeVagas.hasError('min')">
+        Insira no mínimo uma vaga
+      </mat-error>
+      <mat-error *ngIf="quantidadeVagas.hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="turma" flex>
+      <input [(ngModel)]="turma.minimoMatriculas" flex name="minimoMatriculas" max="{{turma?.quantidadeVagas}}" type="number" required
+        matInput [formControl]="minimoMatriculas" matTooltip="Quantidade mínima de matrículas que devem ser realizadas para a aula acontecer"
+        placeholder="Mínimo de matrículas">
+      <mat-error *ngIf="minimoMatriculas.hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+      <mat-error *ngIf="minimoMatriculas.hasError('max')">
+        A quantidade mínima de vagas deve ser menor que {{turma?.quantidadeVagas}}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-margin>
+    <td-message flex sublabel="A TFC obtém 10% do valor de cada matrícula, o restante é depositado ao organizador." class="bgc-blue-grey-100 tc-blue-grey-800"
+      icon="error">
+    </td-message>
+  </div>
+
+  <div layout="row" layout-align="center center" layout-margin>
+    <td-chips [items]="instrutoresList" matTooltip="Caso não encontre o seu instrutor, cadastre-o clicando no botão ao lado" [(ngModel)]="instrutoresSelected" placeholder="Pesquisar Instrutores" requireMatch name="instrutores"
+      (add)="getFotoInstrutor($event)" (inputChange)="listInstrutoresByFilters($event)" class="pad-left-none pad-right-none"
+      style="padding-bottom: 10px" flex>
+      <ng-template td-chip let-chip="chip">
+        <div *ngIf="!chip.foto" class="tc-grey-100 bgc-teal-700" td-chip-avatar>{{chip.nome.substring(0, 1).toUpperCase()}}
+        </div>
+        <img *ngIf="chip.foto" class="image-cover" src="{{chip.foto}}" td-chip-avatar> {{chip.nome}}
+      </ng-template>
+      <ng-template td-autocomplete-option let-option="option">
+        {{option.nome}}
+      </ng-template>
+    </td-chips>
+    <div>
+      <button mat-raised-button (click)="cadastrarInstrutor()" type="button" class="bgc-blue-grey-300"><span style="color: white">Inserir instrutor</span></button>
+    </div>
+  </div>
+
+  <mat-radio-group *ngIf="turma" layout="row" layout-margin [(ngModel)]="turma.tipoTurma" name="tipoTurma" required flex>
+    <mat-radio-button value="PRESENCIAL" flex>Presencial</mat-radio-button>
+    <mat-radio-button value="DISTANCIA" flex>EAD</mat-radio-button>
+    <mat-radio-button value="SEMIPRESENCIAL" flex>Semipresencial</mat-radio-button>
+    <div flex="50"></div>
+  </mat-radio-group>
+
+  <div *ngIf="turma?.tipoTurma == 'DISTANCIA' || turma?.tipoTurma == 'SEMIPRESENCIAL'" layout="row" layout-margin>
+    <mat-form-field flex>
+      <input [(ngModel)]="turma.plataforma" name="plataforma" required matInput placeholder="Plataforma">
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="turma && (turma.tipoTurma == 'PRESENCIAL' || turma.tipoTurma == 'SEMIPRESENCIAL')">
+    <maps-component [(endereco)]="turma.endereco" flex></maps-component>
+  </div>
+
+  <div layout="row" flex layout-margin>
+    <div flex layout-margin>
+      <button *ngIf="turma" mat-raised-button color="primary" type="submit">
+        <b>SALVAR E CONTINUAR</b>
+      </button>
+    </div>
+    <div flex-gt-sm="80">
+    </div>
+    <div flex layout-margin>
+      <button type="button" mat-raised-button class="bgc-blue-grey-300 tc-grey-50 text-upper" (click)="cancelar()">CANCELAR
+      </button>
+    </div>
+  </div>
+</form>

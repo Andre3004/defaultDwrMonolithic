@@ -1,0 +1,61 @@
+<div *ngFor="let lote of turma?.lotes; let i = index;" style="margin-bottom: 10px">
+  <text-highlight [color]="'grey'">
+
+    <div layout-gt-xs="row" layout-xs="column" layout-align-gt-xs="center center" flex>
+
+      <div layout="column" class="push-top push-bottom">
+
+        <div *ngIf="!compra?.cupomDesconto" layout-gt-xs="row" layout-xs="column" layout-align-xs="start start" [ngClass]="(lote.vagasDisponiveis && lote.isPeriodoAtivo)? 'tc-grey-800' : 'tc-grey-500'"
+          class="lotes-list-line" flex>
+          <b>{{lote.nome}}</b>
+          <b style="white-space: pre" hide-xs> - </b>
+          <b>{{lote.preco | currencyformat}}</b>
+        </div>
+        <div *ngIf="compra?.cupomDesconto" layout-gt-xs="row" layout-xs="column" layout-align-xs="start start" [ngClass]="(lote.vagasDisponiveis && lote.isPeriodoAtivo)? 'tc-grey-800' : 'tc-grey-500'"
+          class="lotes-list-line" flex>
+          <b>{{lote.nome}}</b>
+          <b style="white-space: pre" hide-xs> - </b>
+          <b style="text-decoration: line-through">{{lote.preco | currencyformat}}</b>
+          <b style="white-space: pre" hide-xs> </b>
+          <b>{{ lote.preco - lote.preco * compra?.cupomDesconto?.valor / 100 | currencyformat}}</b>
+        </div>
+
+        <div>
+          <span *ngIf="lote.inicio" class="lotes-list-line" flex>A partir de {{lote.inicio | date:'dd/MM/yy' }} </span>
+          <span *ngIf="lote.termino" class="lotes-list-line" flex>até {{lote.termino | date:'dd/MM/yy' }}</span>
+        </div>
+
+        <div *ngIf="!lote.isVencido">
+          <b class="tc-teal-500 lotes-list-line">{{lote.vagasDisponiveis}} {{lote.vagasDisponiveis > 1? 'vagas disponíveis' : 'vaga disponível'}}</b>
+        </div>
+
+      </div>
+
+      <div flex></div>
+      <div layout="column" layout-align="start end" *ngIf="!readOnly &&( lote.vagasDisponiveis ) && ( lote.isPeriodoAtivo ) ">
+        <div layout="row" layout-align="start center">
+          <button mat-icon-button type="button" color="primary" (click)="removerMatricula(lote)" [disabled]="isVazio(lote)">
+            <mat-icon class="md-36">remove_circle_outline</mat-icon>
+          </button>
+          <h1 class="push-left push-right">{{ lote.quantidade? lote.quantidade : 0 }}</h1>
+          <button mat-icon-button type="button" color="primary" (click)="adicionarMatricula(lote)" [disabled]="isCheio(lote) || (compra?.cupomDesconto && totalMatriculas >= compra?.cupomDesconto?.quantidade - compra?.cupomDesconto?.quantidadeUsado) ">
+            <mat-icon class="md-36">add_circle_outline</mat-icon>
+          </button>
+        </div>
+        <mat-error [tdToggle]="!isCheio(lote)">
+          Limite de matrículas atingido
+        </mat-error>
+        <mat-error *ngIf="totalMatriculas >= compra?.cupomDesconto?.quantidade - compra?.cupomDesconto?.quantidadeUsado && compra?.cupomDesconto">
+          Cupom esgotado
+        </mat-error>
+      </div>
+
+
+      <div layout="column">
+        <span class="tc-grey-500" *ngIf="!(lote.vagasDisponiveis )">Vagas esgotadas</span>
+        <span class="tc-grey-500" *ngIf="lote.termino && today > lote.termino && !( lote.isPeriodoAtivo )">Incrições encerradas</span>
+        <span class="tc-grey-500" *ngIf="lote.inicio && today < lote.inicio && !( lote.isPeriodoAtivo )">Não iniciadas</span>
+      </div>
+    </div>
+  </text-highlight>
+</div>

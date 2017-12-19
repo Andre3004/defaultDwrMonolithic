@@ -1,0 +1,158 @@
+<div *ngIf="compra.pagamento">
+  <form (ngSubmit)="submit($event)" ngNativeValidate>
+    <div layout-gt-xs="row" layout-margin>
+      <mat-radio-group name="formaPagamento" [(ngModel)]="compra.pagamento.formaPagamento" layout="row" flex required>
+        <mat-radio-button name="formaPagamento" color="primary" [value]="'BOLETO'" flex>
+          <span class="tc-grey-800">Boleto</span>
+        </mat-radio-button>
+        <mat-radio-button name="formaPagamento" color="primary" [value]="'CARTAO'" flex>
+          <span class="tc-grey-800">Cartão de crédito</span>
+        </mat-radio-button>
+      </mat-radio-group>
+      <div flex></div>
+      <div layout="row">
+        <div layout="row" layout-align="center center">
+          <span>Pagamento via</span>
+        </div>
+        <a href="http://moip.com.br" target="_blank">
+          <img src="../static/images/moip.png" class="size-height-50 logo-image" alt="Logo marca MOiP">
+        </a>
+      </div>
+    </div>
+    <!-- Cartão de crédito -->
+    <div *ngIf="compra.pagamento.formaPagamento === 'CARTAO'">
+      <div layout="row" layout-margin>
+        <b class="tc-grey-800 pagamento-title" flex>Informações do cartão</b>
+      </div>
+      <div layout-gt-xs="row" layout-align="start center" layout-margin>
+        <mat-form-field flex>
+          <input matInput name="numeroCartao" [textMask]="{mask: masks.cardNumber, guide: false}" [(ngModel)]="compra.pagamento.numeroCartao"
+            placeholder="Número do cartão" required>
+          <mat-hint>
+            <span *ngIf="isInvalidBin" class="tc-red-600">
+              Número do cartão inválido!
+            </span>
+          </mat-hint>
+        </mat-form-field>
+        <div flex>
+          <img *ngIf="imagemBandeiraCartao" [src]="imagemBandeiraCartao" alt="logo cartao">
+        </div>
+      </div>
+
+      <div layout-gt-xs="row" layout-margin>
+        <mat-form-field flex>
+          <input matInput name="mesValidade" placeholder="Mês de validade" [(ngModel)]="compra.pagamento.mesValidade" [textMask]="{mask: masks.month, guide: false}"
+            required>
+        </mat-form-field>
+        <mat-form-field flex>
+          <input matInput name="anoValidade" placeholder="Ano de validade" [(ngModel)]="compra.pagamento.anoValidade" [textMask]="{mask: masks.year, guide: false}"
+            required>
+        </mat-form-field>
+        <mat-form-field flex>
+          <input matInput name="codigoSeguranca" [(ngModel)]="compra.pagamento.codigoSeguranca" maxLength="10" placeholder="Código de segurança"
+            required>
+        </mat-form-field>
+      </div>
+
+      <div layout="row" layout-margin>
+        <b class="tc-grey-800 pagamento-title" flex>Dados do titular do cartão</b>
+      </div>
+      <div layout="row">
+        <div>
+          <div layout-gt-xs="row" layout-margin>
+            <mat-form-field flex>
+              <input name="nomeTitularCartao" [(ngModel)]="compra.pagamento.nomeTitularCartao" maxlength="80" placeholder="Nome (impresso no cartão)"
+                somenteLetras matInput required>
+            </mat-form-field>
+          </div>
+          <div layout-gt-xs="row" layout-margin>
+            <mat-form-field flex="35" *ngIf="compra.pagamento.isEmpresa">
+              <input matInput name="documentoTitularCartao" [textMask]="{mask: masks.cnpj, guide: false}" [(ngModel)]="compra.pagamento.documentoTitularCartao"
+                matInput placeholder="CNPJ" required>
+            </mat-form-field>
+
+            <mat-form-field flex="35" *ngIf="!compra.pagamento.isEmpresa">
+              <input matInput name="documentoTitularCartao" [textMask]="{mask: masks.cpf, guide: false}" [(ngModel)]="compra.pagamento.documentoTitularCartao"
+                matInput placeholder="CPF" required>
+            </mat-form-field>
+
+            <mat-form-field flex>
+              <input [textMask]="{mask: masks.date, guide: false}" name="dataNascimentoTitularCartao" [(ngModel)]="compra.pagamento.dataNascimentoTitularCartao"
+                matInput placeholder="Data de nascimento" required>
+            </mat-form-field>
+
+            <mat-checkbox class="push-left" style="margin-top: 26px" flex [(ngModel)]="compra.pagamento.isEmpresa" name="is-empresa">Sou empresa</mat-checkbox>
+          </div>
+        </div>
+        <div hide-xs flex></div>
+      </div>
+      <div *ngIf="parcelamentoOptions">
+        <div layout="row" layout-margin>
+          <b class="tc-grey-800 pagamento-title" flex>Parcelamento</b>
+        </div>
+        <div layout="row" layout-margin>
+          <mat-form-field style="padding-bottom: 16px;" flex>
+            <mat-select [(ngModel)]="compra.pagamento.parcelas" name="parcelamento" placeholder="Parcelas" required>
+              <mat-option [value]="parcelaOption.parcel" *ngFor="let parcelaOption of parcelamentoOptions">
+                <b>{{parcelaOption.parcel}}x</b> de {{parcelaOption.value | currencyformat}}, total: {{ parcelaOption.total
+                | currencyformat}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div flex hide-xs></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boleto -->
+    <div layout="row" layout-margin>
+      <b class="tc-grey-800 pagamento-title" flex>Informações do comprador</b>
+    </div>
+    <div layout="row">
+      <div layout-gt-xs="row" layout-margin>
+        <mat-form-field flex>
+          <input matInput pattern="\d*" minlength="1" maxlength="2" [(ngModel)]="compra.pagamento.codigoArea" name="codigoArea" id="codigoArea"
+            placeholder="DDD" required somenteNumerosNaturais>
+        </mat-form-field>
+        <mat-form-field flex>
+          <input [(ngModel)]="compra.pagamento.telefone" pattern="\d*" name="telefone" id="telefone" matInput placeholder="Número do telefone"
+            somenteNumerosNaturais minlength="7" maxlength="9" required>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div layout="row" layout-margin>
+      <b class="tc-grey-800 pagamento-title" flex>Endereço</b>
+    </div>
+
+    <maps-component [showMap]="false" [(endereco)]="compra.pagamento.endereco" [myAddresOption]="true"></maps-component>
+
+    <div *ngIf="tokenIsInvalid">
+      <td-message label="A criação do token do cartão de crédito com o pagseguro falhou!" sublabel="Alguma informação relacionada ao cartão de crédito deve estar errada"
+        color="warn" icon="warning"></td-message>
+    </div>
+
+    <div layout="column" layout-margin>
+
+      <termos-uso [termosUso]="termosUso"> e estou ciente de que é responsabilidade do Organizador(anunciante) a emissão de nota fiscal referente ao valor total
+        de cada inscrição neste curso/treinamento/evento</termos-uso>
+
+      <div layout="row" layout-margin flex>
+        <mat-error [tdToggle]="!termosUso.requiredError || termosUso.isAccepted" fa-file-text-o>
+          É necessário concordar com os termos de uso para finalizar a matrícula
+        </mat-error>
+        <mat-error [tdToggle]="cardCredit?.valid" fa-file-text-o>
+          Cartão de crédito inválido. Verifique o número, código de segurança, mês e ano de validade
+        </mat-error>
+      </div>
+
+    </div>
+
+    <div layout="row" layout-align="center" layout-margin>
+      <button mat-raised-button class="bgc-light-green-800" type="submit" flex>
+        <b style="color: white">FINALIZAR MATRÍCULA</b>
+      </button>
+    </div>
+
+  </form>
+</div>

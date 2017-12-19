@@ -1,0 +1,23 @@
+.turma-preco-text{
+    font-size: 27px;
+    line-height: 50px;
+}
+
+.price-icon{
+    font-size: 38px;
+}
+
+.item-divider{
+    margin-bottom : 10px;
+}
+
+.preco-novo
+{
+    font-size: 2em;
+    line-height: 1.2em;
+}
+
+.preco-velho
+{
+    text-decoration: line-through
+}

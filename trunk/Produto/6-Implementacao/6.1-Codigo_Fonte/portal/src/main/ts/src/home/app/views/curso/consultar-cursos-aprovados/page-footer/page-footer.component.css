@@ -1,0 +1,29 @@
+.page-footer-container{
+  height: 400px;
+  width: 100%;
+}
+
+.page-footer-background{
+  background-size: cover;
+  background-position:50%;
+}
+
+.page-footer-text{
+  font-size: 22px;
+  margin-bottom: 72px;
+}
+
+.page-footer-banner{
+  width: 492px;
+}
+
+@media only screen and (min-width: 600px) {
+  .page-footer-button{
+    width: 220px;
+    height: 60px;
+  }
+}
+
+.instrutor-button{
+  background-color: rgba(200, 200, 200, 0.2);
+}

@@ -1,0 +1,120 @@
+<!--dados deposito div-->
+<form (ngSubmit)="submit($event)" ngNativeValidate>
+  <div layout="column" flex>
+    <div flex layout="column">
+
+      <div layout-gt-xs="row" layout-margin layout-align="center center">
+        <mat-form-field layout-margin flex *ngIf="curso">
+          <input [(ngModel)]="curso.dadosDeposito.nomeTitular" matInput name="nomeTitular" maxlength="50" placeholder="Nome completo do titular"
+            somenteLetras required (ngModelChange)="onChangeEmit()">
+          <mat-error>
+            Esse campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <td-chips *ngIf="curso" [items]="bancosList" [(ngModel)]="bancoSelected" placeholder="Código e nome do banco" flex name="bancos"
+          (add)="addBanco($event)" requireMatch [chipAddition]="bancoSelected.length < 1" (inputChange)="listBancosByFilters($event)"
+          style="margin-top: -8px;">
+          <ng-template td-chip let-chip="chip">
+            {{chip?.codigo}} - {{chip?.nome}}
+          </ng-template>
+          <ng-template td-autocomplete-option let-option="option">
+            {{option?.codigo}} - {{option?.nome}}
+          </ng-template>
+        </td-chips>
+      </div>
+
+      <div layout-gt-xs="row" layout-margin layout-align="center center">
+        <mat-form-field flex layout-margin layout-align="center center" *ngIf="curso">
+          <!-- Agência -->
+          <input [(ngModel)]="curso.dadosDeposito.numeroAgencia" matInput name="numeroAgencia" maxlength="10" placeholder="Número da agência"
+            required (ngModelChange)="onChangeEmit()" type="number">
+          <mat-error>
+            Esse campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field flex layout-margin layout-align="center center" *ngIf="curso">
+          <!-- Agência -->
+          <input [(ngModel)]="curso.dadosDeposito.digitoAgencia" matInput name="digitoAgencia" maxlength="3" type="number" placeholder="Dígito da agência"
+            (ngModelChange)="onChangeEmit()">
+        </mat-form-field>
+
+        <mat-form-field flex layout-margin layout-align="center center" *ngIf="curso">
+          <input [(ngModel)]="curso.dadosDeposito.numeroConta" matInput name="numeroConta" placeholder="Número da conta" type="number"
+            maxlength="10" required (ngModelChange)="onChangeEmit()">
+          <mat-error>
+            Esse campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field flex layout-margin layout-align="center center" *ngIf="curso">
+          <input [(ngModel)]="curso.dadosDeposito.digitoConta" type="number" matInput name="digitoConta" placeholder="Dígito da conta"
+            required maxlength="3" (ngModelChange)="onChangeEmit()">
+          <mat-error>
+            Esse campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div layout-gt-xs="row" layout-margin layout-align="center center" *ngIf="curso">
+        
+        <mat-form-field flex layout-margin>
+          <mat-select [(ngModel)]="curso.dadosDeposito.tipoContaBancaria" [ngModelOptions]="{standalone: true}" required placeholder="Tipo de conta bancária">
+            <mat-option [value]="'CONTA_CORRENTE'">Conta Corrente</mat-option>
+            <mat-option [value]="'POUPANCA'">Poupança</mat-option>
+          </mat-select>
+          <mat-error>
+              Esse campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!curso.dadosDeposito.dadosDepositoIsEmpresa" flex layout-margin layout-align="center center">
+          <input [(ngModel)]="curso.dadosDeposito.documento" [textMask]="{mask: masks.cpf, guide: false}" name="cpf" matInput placeholder="CPF"
+            (ngModelChange)="onChangeEmit()" minLength="11" required>
+          <mat-error>
+            Esse campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="curso.dadosDeposito.dadosDepositoIsEmpresa" flex layout-margin layout-align="center center">
+          <input [(ngModel)]="curso.dadosDeposito.documento" [textMask]="{mask: masks.cnpj, guide: false}" name="cnpj" matInput placeholder="CNPJ"
+            (ngModelChange)="onChangeEmit()" minLength="11" required>
+          <mat-error>
+            Esse campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-checkbox [(ngModel)]="curso.dadosDeposito.dadosDepositoIsEmpresa" name="dadosDepositoIsEmpresa" layout-margin layout-align="center center"
+          (ngModelChange)="onChangeEmit()">Sou empresa
+        </mat-checkbox>
+
+        <div flex hide-xs>
+          <div layout="row">
+            <div class="push-left" layout="column" layout-margin>
+              <span style="margin-top: 5px">Integrado com</span>
+            </div>
+            <a href="http://moip.com.br" target="_blank" style="margin-top: -10px">
+              <img src="../static/images/moip.png" class="size-height-50 logo-image" alt="Logo marca MOiP">
+            </a>
+          </div>
+        </div>
+      </div>
+      <div layout="row"  layout-margin>
+        <mat-checkbox [(ngModel)]="curso.acceptAlunoEstrangeiro" [disabled]="true" name="acceptAlunoEstrangeiro" flex>Permitir alunos estrangeiros (Em breve)</mat-checkbox>
+      </div>
+
+      <div layout="row" layout-margin>
+        <td-message flex label="Para licenciamento e uso da plataforma, a The Full Class cobra uma taxa de serviço (10%) calculada em cada venda online processada através da nossa plataforma."
+          sublabel="Todos os impostos referentes ao montante total vendido, às devidas esferas públicas, são de responsabilidade única e exclusiva do organizador (anunciante) deste curso/treinamento/evento."
+          class="bgc-grey-200 tc-grey-800 pad-top pad-bottom md-caption" icon="error"></td-message>
+      </div>
+
+      <div layout="row" layout-margin>
+        <button mat-raised-button class="bgc-teal-500" flex>
+          <b style="color: white">CONCLUIR</b>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

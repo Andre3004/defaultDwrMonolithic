@@ -1,0 +1,12 @@
+.link-profissional{
+    font-size: 11px !important;
+}
+
+.divider-vertical {
+  width: 1px;
+  background-color: #ececec;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-top: -20px;
+  margin-bottom: -20px;
+}

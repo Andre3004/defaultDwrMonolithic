@@ -1,0 +1,53 @@
+<div layout-margin>
+    <h3 matDialogTitle flex> Sugerir curso </h3>
+</div>
+<form (ngSubmit)="sugerirCurso()" ngNativeValidate>
+    <mat-dialog-content class="dialog-container">
+        <div layout="row" layout-margin>
+            <mat-form-field flex>
+                <input matInput name="nomeCurso" [(ngModel)]="nomeCurso" placeholder="Nome do curso" required somenteAlfanumericos>
+            </mat-form-field>
+        </div>
+        <div layout="row" layout-margin>
+            <mat-form-field flex>
+                <textarea matInput name="descricaoCurso" [(ngModel)]="descricaoCurso" placeholder="Descrição do curso" required></textarea>
+            </mat-form-field>
+        </div>
+        <div layout="row" layout-margin>
+            <td-chips [items]="areaConhecimentoList" [(ngModel)]="areaConhecimentoSelected"
+                      placeholder="Área de conhecimento deste curso" [chipAddition]="areaConhecimentoSelected.length < 1"
+                      requireMatch name="areaConhecimento" (inputChange)="listAreaConhecimentoByFilters($event)" flex>
+                <ng-template td-chip let-chip="chip">
+                    {{chip.nome}}
+                </ng-template>
+                <ng-template td-autocomplete-option let-option="option">
+                    {{option.nome}}
+                </ng-template>
+            </td-chips>
+        </div>
+        <!-- Se existe usuário logado, não mostra o nome do usuário -->
+        <div *ngIf="!isUserAuthenticated">
+            <div layout="row" layout-margin>
+                <span class="tc-grey-600" flex>
+                    SUA IDENTIFICAÇÃO
+                </span>
+            </div>
+            <div layout="row" layout-margin *ngIf="aluno">
+                <mat-form-field flex>
+                    <input matInput name="nomeAluno" [(ngModel)]="aluno.nome" placeholder="Nome completo" required>
+                </mat-form-field>
+                <mat-form-field flex>
+                    <input matInput type="email" name="emailAluno" [(ngModel)]="aluno.email" placeholder="E-mail" required>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <div layout="row" layout-align="end end" flex>
+            <div flex></div>
+            <button matDialogClose mat-button type="button"><b>CANCELAR</b></button>
+            <button mat-button color="primary" type="submit"><b>SUGERIR</b></button>
+        </div>
+    </mat-dialog-actions>
+</form>

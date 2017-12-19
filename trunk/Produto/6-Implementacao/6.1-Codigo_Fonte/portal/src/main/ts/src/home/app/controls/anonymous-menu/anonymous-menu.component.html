@@ -1,0 +1,26 @@
+<mat-nav-list class="pad-none">
+  <mat-list class="pad-none">
+    <mat-list-item class="push-top push-bottom" (click)="login()">
+      <div layout="row" flex>
+        <span flex="10"></span>
+        <mat-icon matListAvatar class="bgc-blue-grey-500" style="color: white" flex>input</mat-icon>
+        <h3 matLine style="color: white" flex="85"> Entrar </h3>
+      </div>
+    </mat-list-item>
+    <mat-divider class="bgc-blue-grey-300"></mat-divider>
+    <mat-list-item class="push-top push-bottom" routerLink="/conta/criar-conta/instrutor">
+      <div layout="row" flex>
+        <span flex="10"></span>
+        <mat-icon matListAvatar class="bgc-blue-grey-500" style="color: white" flex>person_add</mat-icon>
+        <h3 matLine style="color: white" flex="85"> Cadastre-se </h3>
+      </div>
+    </mat-list-item>
+    <mat-list-item routerLink="/conta/criar-conta/aluno">
+      <div layout="row" flex>
+        <span flex="10"></span>
+        <mat-icon matListAvatar class="bgc-blue-grey-500" style="color: white" flex>school</mat-icon>
+        <h3 matLine style="color: white" flex="85">Seja um instrutor</h3>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-nav-list>

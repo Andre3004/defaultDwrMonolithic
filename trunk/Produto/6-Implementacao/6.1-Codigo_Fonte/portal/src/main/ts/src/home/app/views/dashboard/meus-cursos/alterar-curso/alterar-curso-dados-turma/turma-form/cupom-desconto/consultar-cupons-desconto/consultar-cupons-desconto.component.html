@@ -1,0 +1,20 @@
+<mat-nav-list>
+  <div *ngFor="let cupomDesconto of cuponsDesconto" (click)="alterarCupom(cupomDesconto)" class="push-bottom bgc-blue-grey-50">
+    <mat-list-item>
+      <div layout="row" layout-align="center center" flex>
+        <div layout="column">
+          <b class="tc-grey-800 lote-line" matLine>{{cupomDesconto?.identificador}} - {{cupomDesconto?.valor}}% </b>
+          <b class="md-caption tc-teal-500 lote-line" *ngIf="cupomDesconto?.dataInicio" matLine>Data de início: {{cupomDesconto?.dataInicio | date:'dd/MM/yy hh:mm:ss'}}</b>
+          <b class="md-caption tc-teal-500 lote-line" *ngIf="cupomDesconto?.dataTermino" matLine>Data de término: {{cupomDesconto?.dataTermino | date:'dd/MM/yy hh:mm:ss'}}</b>
+        </div>
+        <div flex></div>
+        <mat-icon stopPropagation (click)="removeCupom(cupomDesconto)" >delete</mat-icon>
+      </div>
+    </mat-list-item>
+  </div>
+</mat-nav-list>
+
+<div *ngIf="!cuponsDesconto?.length" layout="row" layout-align="center center" class="push-bottom pad bgc-blue-grey-50">
+  <mat-icon class="tc-grey-500">class</mat-icon>
+  <b class="tc-grey-500">Nenhum cupom cadastrado!</b>
+</div>

@@ -1,0 +1,65 @@
+<div layout-margin>
+  <h3 matDialogTitle flex> Fale com o instrutor </h3>
+</div>
+  <form *ngIf="sendEmail" [formGroup]="form" (ngSubmit)="submit()" ngNativeValidate>
+  <mat-dialog-content class="dialog-container">
+    <div layout="row" layout-margin>
+      <mat-form-field flex>
+        <textarea matInput id="mensagem" name="mensagem"
+                  [(ngModel)]="sendEmail.mensagem" required
+                  placeholder="Mensagem" formControlName="mensagem">
+        </textarea>
+        <mat-error *ngIf="form.controls['mensagem'].hasError('required')">
+          Este campo é obrigatório
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <!-- Se existe usuário logado, não mostra o nome do usuário -->
+    <div *ngIf="!sendEmail.isUserAuthenticated">
+      <div layout="row" layout-margin>
+        <span class="tc-grey-600" flex>
+            SUA IDENTIFICAÇÃO
+        </span>
+      </div>
+      <div layout="row" layout-margin *ngIf="sendEmail">
+        <mat-form-field flex>
+          <input id="nome" name="nome"
+                 [(ngModel)]="sendEmail.nome"
+                 placeholder="Nome" required
+                 maxlength="200" matInput
+                 formControlName="nome">
+          <mat-error>
+            Esse campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field flex>
+          <input type="email" id="email"
+                 required matInput name="email"
+                 placeholder="E-mail" maxlength="144"
+                 formControlName="email" [(ngModel)]="sendEmail.email"
+                 pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+          <mat-error *ngIf="form.controls['email'].hasError('required')">
+            Este campo é obrigatório
+          </mat-error>
+          <mat-error *ngIf="form.controls['email'].hasError('pattern')">
+            E-mail inválido, utilize o formato "email@email.com"
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-align="start center" layout-margin *ngIf="sendEmail">
+        <re-captcha  #reCaptcha *ngIf='!sendEmail.isUserAuthenticated && sendEmail.siteKey' layout-margin
+                    required name="recaptcha"  [(ngModel)]="recaptcha" [ngModelOptions]="{standalone: true}"
+                    (resolved)='resolved($event)' [siteKey]='sendEmail.siteKey'>
+        </re-captcha>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <div layout="row" layout-align="end end" flex>
+      <div flex></div>
+      <button matDialogClose mat-button type="button"><b>CANCELAR</b></button>
+      <button mat-button color="primary"><b>ENVIAR MENSAGEM</b></button>
+    </div>
+  </mat-dialog-actions>
+</form>

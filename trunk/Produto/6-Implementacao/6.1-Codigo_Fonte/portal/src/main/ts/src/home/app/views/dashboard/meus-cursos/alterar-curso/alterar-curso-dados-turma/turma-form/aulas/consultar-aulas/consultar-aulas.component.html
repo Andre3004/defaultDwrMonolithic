@@ -1,0 +1,29 @@
+<mat-nav-list [disableRipple]="readOnly">
+  <div *ngFor="let aula of aulas" (click)="alterarAula(aula)" class="push-bottom {{backgroundColor}}">
+    <mat-list-item [ngClass]="{'list-without-link' : readOnly}" class="responsive-list" layout="row" layout-align="start center">
+      <mat-icon color="primary" hide-xs>today</mat-icon>
+      <div flex></div>
+      <div layout="column">
+        <span matLine class="md-caption" style="line-height: 2em">Início</span>
+        <b class="tc-grey-800" matLine> {{aula?.inicio | date:'dd/MM/yy HH:mm'}}hrs </b>
+      </div>
+      <div flex></div>
+      <div layout="column">
+        <span matLine class="md-caption" style="line-height: 2em">Término</span>
+        <b class="tc-grey-800" matLine>{{aula?.termino | date:'dd/MM/yy HH:mm'}}hrs </b>
+      </div>
+      <div flex></div>
+      <div layout="column">
+        <span matLine class="md-caption" style="line-height: 2em" *ngIf="aula?.turma?.tipoTurma === 'SEMIPRESENCIAL'">Tipo da aula</span>
+        <b class="tc-grey-800" matLine *ngIf="aula?.turma?.tipoTurma === 'SEMIPRESENCIAL'">{{aula?.tipoAula == 'PRESENCIAL' ? 'Presencial' : 'EAD'}} </b>
+      </div>
+      <div hide-xs flex></div>
+      <mat-icon *ngIf="!readOnly" stopPropagation (click)="removeAula(aula)" class="tc-grey-700">delete</mat-icon>
+    </mat-list-item>
+  </div>
+</mat-nav-list>
+
+<div *ngIf="!aulas?.length" layout="row" layout-align="center center" class="push-bottom pad bgc-blue-grey-50">
+  <mat-icon class="tc-grey-500">class</mat-icon>
+  <b class="tc-grey-500">Nenhuma aula cadastrada!</b>
+</div>

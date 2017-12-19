@@ -1,0 +1,74 @@
+<td-expansion-panel-group>
+  <td-expansion-panel label="label" *ngFor="let turma of turmas; let i = index;" (expanded)="expandedEvent(turma)" [expand]="turma.isExpanded" flex>
+
+    <ng-template td-expansion-panel-header>
+      <div layout-gt-xs="row" layout-xs="column" layout-align="center center" layout-margin class="push-left push-right" flex>
+        <div layout-gt-xs="row" layout-align="center center">
+          <h3 class="md-subhead" *ngIf="turma?.tipoTurma == tipoTurma?.PRESENCIAL"> {{turma?.endereco?.cidade?.nome}} ({{turma?.endereco?.cidade?.estado?.uf}})</h3>
+          <h3 class="md-subhead" *ngIf="turma?.tipoTurma == tipoTurma?.DISTANCIA"> {{turma?.plataforma}} </h3>
+          <h3 class="md-subhead" *ngIf="turma?.tipoTurma == tipoTurma?.SEMIPRESENCIAL"> Turma semipresencial </h3>
+          <h3 class="md-subhead" style="white-space: pre" *ngIf="turma?.aulas?.length" hide-xs> - </h3>
+          <h3 class="md-subhead" style="white-space: pre" *ngIf="turma?.aulas?.length"><b>{{turma?.aulas[0]?.inicio | date:'dd/MM/yy'}}</b> à <b>{{turma?.aulas[turma?.aulas.length-1]?.termino | date:'dd/MM/yy'}}</b></h3>
+        </div>
+        <div flex></div>
+        <h3 class="md-subhead tc-teal-500 push-right"><b> {{turma.vagasDisponiveis}} vagas disponíveis</b></h3>
+        <button mat-raised-button color="accent" routerLink="realizar-matriculas/{{turma.id}}"><b>REALIZAR MATRÍCULA</b></button>
+      </div>
+      <mat-divider></mat-divider>
+    </ng-template>
+
+
+    <div layout="row" layout-md="column" layout-xs="column" class="pad">
+
+      <div flex>
+        <div layout="column">
+          <span class="tc-grey-600 md-caption">
+            DIAS DAS AULAS
+          </span>
+          <consultar-aulas *ngIf="turma?.isExpanded" [turma]="turma" [readOnly]="true"></consultar-aulas>
+        </div>
+
+        <div layout="column" class="pad-top pad-bottom" *ngIf="(turma?.tipoTurma == 'DISTANCIA' && turma?.plataforma) || turma?.tipoTurma == tipoTurma?.SEMIPRESENCIAL">
+          <span class="tc-grey-600 md-caption">
+            PLATAFORMA ONLINE
+          </span>
+          <a href="{{turma?.plataforma}}" style="margin-top: 10px" target="_blank" class="tc-teal-500" flex>{{turma?.plataforma | truncate: 60}}</a>
+        </div>
+
+
+        <div class="pad-top pad-bottom" *ngIf="turma?.tipoTurma == 'PRESENCIAL' || turma?.tipoTurma == tipoTurma?.SEMIPRESENCIAL">
+          <span class="tc-grey-600 md-caption push-bottom">
+            LOCAL
+          </span>
+          <!--o componente de mapas exige o ngIf-->
+          <map *ngIf="turma?.isExpanded" [endereco]="turma?.endereco"></map>
+        </div>
+        <mat-list class="pad-bottom">
+          <p *ngIf="turma.instrutores?.length > 0" class="tc-grey-600 md-caption">
+            INSTRUTORES
+          </p>
+          <instrutores-list *ngIf="turma?.isExpanded" [turma]="turma"></instrutores-list>
+        </mat-list>
+        <div layout="column" class="pad-bottom" *ngIf="getIsOwnerCurso()">
+          <span class="tc-grey-600 md-caption">
+            ALUNOS
+          </span>
+          <div>
+            <button mat-raised-button (click)="visualizarMatriculas(turma)" color="primary" class="push-top">Visualizar alunos</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider-vertical" hide-md hide-xs></div>
+
+      <div flex>
+        <div style="margin-bottom: 8px">
+          <span class="tc-grey-600 md-caption">
+            LOTES
+          </span>
+        </div>
+        <lotes-list *ngIf="turma?.lotes?.length > 0" [turma]="turma" [readOnly]="true"></lotes-list>
+      </div>
+    </div>
+  </td-expansion-panel>
+</td-expansion-panel-group>

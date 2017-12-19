@@ -1,0 +1,95 @@
+<div class="bgc-teal-500 visualizar-compra-background mat-elevation-z1"></div>
+<div layout="row" layout-align="center center">
+  <mat-card class="visualizar-compra-card" flex>
+    <mat-card-content>
+      <div layout="row" layout-align="center center">
+        <div class="visualizar-compra-container" flex>
+          <div layout="column" layout-margin layout-align="center center">
+            <img src="../static/images/big-check.png" class="push-top" alt="Imagem grande check">
+            <h1 class="tc-light-green-800" style="font-size: 34px" flex>Parabéns</h1>
+            <span class="tc-light-green-800 text-center md-title" style="line-height: 20px" flex>
+              Sua matrícula foi realizada com sucesso! :)
+            </span>
+            <span *ngIf="compra.pagamento" class="tc-light-green-800 text-center md-subhead" flex>
+              Para finalizar, basta efetuar o pagamento e aguardar a alteração do status da sua compra.
+            </span>
+            <a *ngIf="compra.pagamento && compra.pagamento.formaPagamento === 'BOLETO'" mat-raised-button href="{{compra.pagamento.linkPagamento}}"
+              target="_blank" color="primary">IMPRIMIR BOLETO</a>
+            <a mat-button routerLink="/dashboard/minhas-compras/{{compra.id}}">
+              <span class="tc-grey-400 md-subhead" style="line-height: 3em" flex>
+                INFORMAÇÕES DA COMPRA
+              </span>
+            </a>
+          </div>
+
+          <div class="bgc-grey-200" style="border-radius: 2px; padding: 26px; margin-bottom: 26px">
+            <div layout="column">
+              <div layout="column" class="pad-bottom" flex>
+                <span class="tc-blue-grey-600 md-title text-upper">{{curso?.nome}}</span>
+              </div>
+
+              <b class="tc-blue-grey-500 pad-top">Informações da turma</b>
+              <div layout-gt-xs="row" layout-align="start center" class="tc-teal-500">
+                <h3 class="md-subhead" *ngIf="turma?.tipoTurma === tipoTurma?.PRESENCIAL">
+                  {{turma?.endereco?.cidade?.nome}} ({{turma?.endereco?.cidade?.estado?.uf}}) </h3>
+                <h3 class="md-subhead text-truncate" *ngIf="turma?.tipoTurma === tipoTurma?.DISTANCIA">
+                  {{turma?.plataforma}}</h3>
+                <h3 class="md-subhead text-truncate" *ngIf="turma?.tipoTurma === tipoTurma?.SEMIPRESENCIAL">
+                  Turma semipresencial
+                </h3>
+                <h3 class="md-subhead" style="white-space: pre" hide-xs *ngIf="turma?.aulas?.length"> - </h3>
+                <h3 class="md-subhead" style="white-space: pre" *ngIf="turma?.aulas?.length" layout="row">
+                  <b>{{turma?.aulas[0]?.inicio | date:'dd/MM/yy'}}</b>
+                  <span> à </span>
+                  <b>{{turma?.aulas[turma?.aulas.length-1]?.termino | date:'dd/MM/yy'}}</b>
+                </h3>
+              </div>
+
+
+              <span class="tc-grey-800 md-caption" style="line-height: 3em">MATRÍCULAS</span>
+              <div *ngFor="let lote of lotes" layout="row" class="matriculas-list" flex>
+                <div layout="column" class="pad">
+                  <b class="tc-teal-500">
+                    {{lote?.nome}} - {{lote?.preco | currencyformat}}
+                  </b>
+                  <span>{{lote.matriculas.length}} {{(lote.matriculas.length > 1)? 'matrículas': 'matrícula'}}</span>
+                </div>
+              </div>
+
+              <mat-divider class="visualizar-compra-divider"></mat-divider>
+
+
+              <span class="tc-grey-800 md-caption" style="line-height: 3em">DIAS DAS AULAS</span>
+              <consultar-aulas [turma]="turma" [readOnly]="true" [backgroundColor]="'bgc-white'"></consultar-aulas>
+
+              <div *ngIf="turma?.tipoTurma === tipoTurma?.PRESENCIAL || turma?.tipoTurma === tipoTurma?.SEMIPRESENCIAL">
+                <mat-divider class="visualizar-compra-divider"></mat-divider>
+
+                <span class="tc-grey-800 md-caption" style="line-height: 3em">LOCAL</span>
+                <map [mapHeight]="'250px'" [endereco]="turma?.endereco" flex></map>
+
+              </div>
+            </div>
+
+            <div *ngIf="(turma?.tipoTurma == tipoTurma?.DISTANCIA || turma?.tipoTurma == tipoTurma?.SEMIPRESENCIAL) && turma?.plataforma">
+              <mat-divider class="visualizar-compra-divider"></mat-divider>
+
+              <span class="tc-grey-800 md-caption" style="line-height: 3em">PLATAFORMA ONLINE</span>
+              <div layout="row">
+                <a href="{{turma?.plataforma}}" target="_blank" class="text-truncate tc-teal-500" flex>{{turma?.plataforma}}</a>
+              </div>
+            </div>
+
+            <mat-divider *ngIf="turma.instrutores?.length" class="visualizar-compra-divider"></mat-divider>
+
+            <mat-list>
+              <span *ngIf="turma.instrutores?.length" class="tc-grey-800 md-caption" style="line-height: 3em">INSTRUTORES</span>
+
+              <instrutores-list [turma]="turma"></instrutores-list>
+            </mat-list>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

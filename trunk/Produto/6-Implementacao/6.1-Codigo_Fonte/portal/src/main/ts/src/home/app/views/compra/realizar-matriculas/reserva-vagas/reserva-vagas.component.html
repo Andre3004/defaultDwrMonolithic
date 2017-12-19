@@ -1,0 +1,119 @@
+<div *ngIf="compra.responsavel">
+  <form (ngSubmit)="submit($event)" ngNativeValidate>
+    <div layout-gt-xs="row" layout-margin>
+      <mat-form-field flex>
+        <input name="nome" [(ngModel)]="compra.responsavel.nome" matInput placeholder="Nome do Responsável" [disabled]="compra.responsavel.id"
+          required (ngModelChange)="formChanged()" somenteLetras>
+      </mat-form-field>
+      <mat-form-field flex>
+        <input type="email" name="email" maxlength="45" matInput [(ngModel)]="compra.responsavel.email" email required placeholder="E-mail"
+          [disabled]="compra.responsavel.id" (ngModelChange)="findByDocumentoOrEmailOrRegistroGeral(null); formChanged()">
+      </mat-form-field>
+    </div>
+    <div layout-gt-xs="row" layout-margin>
+      <mat-checkbox [(ngModel)]="compra.responsavel.isEstrangeiro" *ngIf="turma?.curso?.acceptAlunoEstrangeiro" [disabled]="compra.responsavel.id || true"
+        name="isEstrangeiro" flex>
+        <span class="tc-grey-600">Sou estrangeiro</span>
+      </mat-checkbox>
+      <mat-checkbox *ngIf="!compra.responsavel.isEstrangeiro" name="isEmpresa" [(ngModel)]="compra.responsavel.isEmpresa" [disabled]="compra.responsavel.id"
+        (ngModelChange)="formChanged()" flex>
+        <span class="tc-grey-600">Sou Empresa</span>
+      </mat-checkbox>
+    </div>
+
+    <div layout-gt-xs="row" layout-margin>
+      <mat-form-field *ngIf="compra.responsavel.isEmpresa && !compra.responsavel.isEstrangeiro" flex>
+        <input [textMask]="{mask: masks.cnpj, guide: false}" [disabled]="compra.responsavel.id" name="cnpj" mdinput required placeholder="CNPJ"
+          [(ngModel)]="compra.responsavel.documento" matInput (ngModelChange)="findByDocumentoOrEmailOrRegistroGeral(null); formChanged()">
+        <mat-hint>
+          <span [hidden]="!existsCnpj" class="tc-red-600">
+            Este CNPJ já existe
+          </span>
+        </mat-hint>
+      </mat-form-field>
+      <div *ngIf="compra.responsavel.isEmpresa && !compra.responsavel.isEstrangeiro" flex hide-xs></div>
+      <mat-form-field *ngIf="!compra.responsavel.isEmpresa && !compra.responsavel.isEstrangeiro" flex>
+        <input [textMask]="{mask: masks.cpf, guide: false}" [(ngModel)]="compra.responsavel.documento" [disabled]="compra.responsavel.id"
+          placeholder="CPF" name="cpf" required matInput (ngModelChange)="findByDocumentoOrEmailOrRegistroGeral(true); formChanged()">
+        <mat-hint>
+          <span [hidden]="!existsCpf" class="tc-red-600">
+            Este CPF já existe
+          </span>
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field *ngIf="!compra.responsavel.isEmpresa && !compra.responsavel.isEstrangeiro" flex>
+        <input name="rg" placeholder="RG" required matInput [(ngModel)]="compra.responsavel.registroGeral" [disabled]="compra.responsavel.id"
+          maxlength="20" (ngModelChange)="findByDocumentoOrEmailOrRegistroGeral(null); formChanged()">
+      </mat-form-field>
+
+      <!-- DOCUMENTO ESTANGEIRO -->
+      <mat-form-field style="margin-top: 0px" flex="25" *ngIf="compra.responsavel.isEstrangeiro">
+        <mat-select [disabled]="compra.responsavel.id" [(ngModel)]="compra.responsavel.selectTipoDocumento" name="selectTipoDocumento"
+          placeholder="Tipo de documento">
+          <mat-option [value]="'Passaporte'">Passaporte</mat-option>
+          <mat-option [value]="'Outro'">Outro</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="custom-margin-align" *ngIf="compra.responsavel.selectTipoDocumento == 'Outro' && compra.responsavel.isEstrangeiro"
+        flex>
+        <input matInput (ngModelChange)="findByDocumentoEstrangeiro(null); formChanged()" [(ngModel)]="compra.responsavel.tipoDocumentoEstrangeiro"
+          name="tipoDocumentoEstrangeiro" placeholder="Tipo de documento" [disabled]="compra.responsavel.id" required>
+        <mat-error>
+          Este campo é obrigatório
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="custom-margin-align" *ngIf="compra.responsavel.isEstrangeiro" flex>
+        <input flex (ngModelChange)="findByDocumentoEstrangeiro($event); formChanged()" matInput [(ngModel)]="compra.responsavel.documentoEstrangeiro"
+          somenteNumerosNaturais name="documentoEstrangeiro" placeholder="Documento" required [disabled]="compra.responsavel.id">
+        <mat-error>
+          Este campo é obrigatório
+        </mat-error>
+      </mat-form-field>
+      <button mat-icon-button flex="5" *ngIf="compra.responsavel.id && foundUser && !compra?.responsavel?.lastLogin" (click)="compra.responsavel = {selectTipoDocumento: 'Passaporte'}; foundUser = false">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="!turma.curso.isGratuito" layout="row" layout-margin>
+      <h3 class="tc-teal-500" flex>
+        CUPOM DE DESCONTO
+      </h3>
+    </div>
+    <div *ngIf="!turma.curso.isGratuito" layout-gt-xs="row" layout-margin>
+      <mat-form-field layout-margin flex>
+        <input style="text-transform: uppercase" [(ngModel)]="identificadorCupom" placeholder="Identificador" name="identificador"
+          matInput flex>
+      </mat-form-field>
+      <div flex>
+        <button *ngIf="!compra.cupomDesconto" [disabled]="!identificadorCupom" type="button" mat-raised-button [ngClass]="{'bgc-blue-grey-500' : identificadorCupom, 'bgc-grey-500' : !identificadorCupom}"
+          (click)="findCupomByIdentificador(); clearLotesList()" flex>
+          <b class="tc-grey-50">APLICAR</b>
+        </button>
+        <button *ngIf="compra.cupomDesconto" type="button" mat-raised-button class="bgc-red-500" (click)="removeCupom()" flex>
+          <b class="tc-grey-50">REMOVER</b>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="compra.cupomDesconto" layout="row" layout-margin>
+      <td-message flex sublabel="Este cupom lhe dará {{compra.cupomDesconto?.valor}}% de desconto sobre o valor total da compra" class="bgc-grey-200 tc-grey-800 md-caption"
+        icon="info"></td-message>
+    </div>
+    <div layout="row" layout-margin>
+      <h3 class="tc-teal-500" flex>
+        MATRÍCULAS
+      </h3>
+    </div>
+    <div layout="column" layout-margin>
+      <lotes-list #lotesList *ngIf="turma?.lotes?.length > 0" [compra]="compra" [turma]="turma" flex (onQuantidadeVagasChange)="quantidadeVagasChanged()">
+      </lotes-list>
+    </div>
+    <div layout-gt-xs="row" layout-margin>
+      <div flex>
+        <button mat-raised-button class="bgc-teal-500">
+          <b class="tc-grey-50">PRÓXIMO PASSO</b>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,302 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+@import '~@covalent/core/theming/all-theme';
+@import '../node_modules/roboto-fontface/css/roboto/roboto-fontface.css';
+@import '~@covalent/highlight/highlight-theme';
+@import '~@covalent/markdown/markdown-theme';
+
+@include covalent-highlight-theme();
+
+@include mat-core();
+
+$primary: mat-palette($mat-teal);
+$accent: mat-palette($mat-red);
+$warn: mat-palette($mat-red, 300);
+
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
+@include covalent-theme($theme);
+
+.home-container {
+  max-width: 1366px;
+}
+
+.tfc-content-dialog {
+  width: 600px;
+}
+
+.mat-hint-error {
+  color: #f44336;
+}
+
+.avatar {
+  img {
+    border-radius: 50%;
+  }
+}
+
+.size-155 {
+  height: 155px;
+  width: 155px;
+}
+
+.size-200 {
+  height: 200px;
+  width: 200px;
+}
+
+.size-40 {
+  height: 40px;
+  width: 40px;
+}
+
+mat-toolbar {
+  min-height: 64px;
+}
+
+.no-margin {
+  margin: 0
+}
+
+@media screen and (max-width: 800px) {
+  .tfc-content-dialog {
+    width: inherit;
+  }
+}
+
+.image-cover {
+  object-fit: cover;
+  object-position: 50%;
+}
+
+//Override
+.md2-datepicker-placeholder {
+  font-size: 16px;
+}
+
+.md2-datepicker-value{
+  font-size: 14px;
+}
+
+//Override
+.md2-datepicker-input-focused {
+  color: #009688 !important;
+  border-color: #009688 !important;
+}
+
+.app-container {
+  min-height: calc(100% - 80px); //100% menos a altura do footer
+}
+
+.hide {
+  display: none;
+}
+
+//Exibe enter e espaços extras
+.text-area {
+  white-space: pre-wrap;
+}
+
+.button-activate {
+  color: #f44336 !important;
+  min-height: 80px;
+}
+
+#consultar-cursos-datepicker {
+  padding-top: 15px;
+  .md2-datepicker-button {
+
+    top: inherit;
+    padding: 0;
+  }
+}
+
+.mat-nav-list-first-green {
+  mat-list-item {
+    h1 {
+      color: #009688
+    }
+  }
+
+  mat-nav-list {
+    padding: 0;
+  }
+}
+
+// Remove linha embaixo dos chips e alterar a cor
+.visualizar-area-conhecimento {
+  .mat-basic-chip{
+    background: #5e7c8b;
+    color: #FFFFFF !important;
+  }
+  .mat-form-field-underline.mat-disabled {
+    background-image: none !important;
+  }
+}
+
+// Referente ao autocomplete - Aumenta o tamanho do options exibido
+.mat-autocomplete-panel{
+  width: 800px !important;
+}
+
+// Referente ao toggle slider
+.mat-slide-toggle-thumb {
+  background-color:#5e7c8b;
+}
+
+.mat-slide-toggle-bar {
+  background-color: rgb(197, 207, 212);
+  width: 40px !important;
+  height: 25px !important;
+  border-radius: 77px !important;
+}
+
+.mat-slide-toggle-thumb-container {
+  top: 2px !important;
+  left: 2px !important;
+}
+
+.matricula-steps .td-circle.mat-active {
+  background-color: #009982;
+}
+
+.matricula-steps .td-step-header .mat-complete {
+   color: #009982;
+}
+
+.menu-active-instrutor {
+  background-color: #3a4e58 !important;
+  div{
+    mat-icon{
+      background-color: #f44336 !important;
+      color: #FFFFFF !important
+    }
+  }
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: #f44336;
+}
+
+.menu-active-aluno {
+  background-color: #6d8996 !important;
+  div{
+    mat-icon{
+      background-color: #FFFFFF !important;
+      color: #5e7c8b !important;
+    }
+  }
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: #FFFFFF;
+}
+
+//Override
+.alterar-curso-steps .td-circle.mat-active{
+  background-color: #69f0ae;
+}
+
+//Override
+.alterar-curso-steps .td-step-header .mat-complete {
+   color: #98d4cf;
+}
+
+//Override
+.list-without-link .mat-list-item-content{
+  cursor: default !important;
+}
+
+//Overrride
+.list-pad-none .mat-list-item-content{
+  padding: 0 !important;
+}
+
+//Override
+@media only screen and (max-width: 600px){ //xs
+  .responsive-list .mat-list-item-content{
+    flex-direction: column !important;
+  }
+}
+
+.cke_screen_reader_only{
+  width: 0px !important;
+  height: 0px !important;
+}
+
+.filters-card {
+  padding-top: 12px!important;
+  min-height: 83px;
+}
+
+.mat-list, .mat-nav-list {
+  padding-top: 0px! important;
+}
+
+.td-chips-wrapper .mat-form-field{
+  width: 200px;
+}
+
+.status-title{
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0px;
+  margin-top: 25px;
+}
+
+.hide-tab-header .mat-tab-label-container{
+  display: none !important;
+}
+
+.bgc-white{
+  background-color: white !important;
+}
+
+.tc-white{
+  color: white !important;
+}
+
+.curso-nome{
+  /* esconde o texto se tiver mais de N linhas  */
+  overflow: hidden;
+  /* valor usado para contar o numero de linhas */
+  line-height: 1.2em;
+  /* max-height = altura da linha (1.2) * numero máximo de linhas (2) */
+  max-height: 2.4em;
+  /*works just in webkit based browsers*/
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+}
+
+
+//Override covalent typography
+.md-display-4,.md-display-3,.md-display-2,.md-display-1,.md-headline,.md-title,.md-subhead,.md-body-1,.md-body-2,.mat-button,.md-caption{
+  font-weight: 400 !important;
+}
+
+.font-regular{
+  font-weight: 400 !important;
+}
+
+
+//Bug shadow z-index needs to be upper than 1
+.elevation-z1{
+  @extend .mat-elevation-z1;
+  z-index: 1 !important;
+}
+.elevation-z2{
+  @extend .mat-elevation-z2;
+  z-index: 2 !important;
+}
+.elevation-z3{
+  @extend .mat-elevation-z3;
+  z-index: 3 !important;
+}
+.elevation-z4{
+  @extend .mat-elevation-z4;
+  z-index: 4 !important;
+}
+.elevation-z5{
+  @extend .mat-elevation-z5;
+  z-index: 5 !important;
+}

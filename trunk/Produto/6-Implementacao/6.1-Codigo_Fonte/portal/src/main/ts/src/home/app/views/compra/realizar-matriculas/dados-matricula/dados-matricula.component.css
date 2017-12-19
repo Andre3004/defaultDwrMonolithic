@@ -1,0 +1,22 @@
+.icon-size{
+  font-size: 29px;
+  margin-right: 10px;
+}
+
+.matricula-title{
+    font-size: 18px;
+}
+
+.matricula-line{
+    line-height: 2em;
+}
+
+.select-tipo-documento
+{
+    margin-left: 15px;
+}
+
+.custom-margin-align
+{
+    margin-left: 20px;
+}

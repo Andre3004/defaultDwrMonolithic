@@ -1,0 +1,19 @@
+<div>
+  <mat-toolbar class="elevation-z1" style="background-color: white">
+    <button type="button" routerLink="../" class="bgc-grey-300 push-right" mat-icon-button>
+            <mat-icon class="tc-grey-600">arrow_back</mat-icon>
+          </button>
+    <h1 class="md-display-1 tc-grey-600">Novo curso</h1>
+  </mat-toolbar>
+  <div layout-align="center center" layout="row" class="push-top">
+    <div layout="row" style="max-width: 800px">
+      <div flex>
+        <mat-card class="bgc-grey-50">
+          <mat-card-content>
+            <informacoes-basicas-curso [isInserir]="true"></informacoes-basicas-curso>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<mat-toolbar class="elevation-z1" style="background-color: white">
+  <button type="button" routerLink="../" class="bgc-grey-300 push-right" mat-icon-button>
+            <mat-icon class="tc-grey-600">arrow_back</mat-icon>
+          </button>
+  <h1 class="md-display-1 text-upper tc-grey-600">{{curso?.nome}}</h1>
+</mat-toolbar>
+
+<div class="bgc-teal-500 background-alterar-curso mat-elevation-z1"></div>
+<div layout-align="center center" layout="column" class="push-top">
+  <div layout="row" style="max-width: 800px">
+    <div flex>
+      <div layout-gt-xs="row" layout-xs="column" layout-align-gt-xs="center center" class="push">
+
+        <step routerLink="./dados-curso" routerLinkActive #infBasicasStep="routerLinkActive" [active]="infBasicasStep.isActive" [complete]="true"
+          label="INFORMAÇÕES BÁSICAS" flex></step>
+
+        <mat-divider class="bgc-grey-50" hide-xs flex></mat-divider>
+        <div class="divider-vertical" hide-gt-xs flex></div>
+
+        <step [number]="2" routerLink="./turmas" routerLinkActive #turmasStep="routerLinkActive" [active]="turmasStep.isActive"
+          [complete]="isCursoPendente()" label="TURMAS" flex></step>
+
+        <mat-divider class="bgc-grey-50" hide-xs flex></mat-divider>
+        <div class="divider-vertical" hide-gt-xs flex></div>
+
+        <step [number]="3" routerLink="./curso-publicado" routerLinkActive #publicacaoStep="routerLinkActive" [active]="publicacaoStep.isActive"
+          [complete]="false" label="PUBLICAÇÃO" flex></step>
+
+      </div>
+      <mat-card class="bgc-grey-50">
+        <mat-card-content>
+          <router-outlet></router-outlet>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

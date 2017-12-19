@@ -1,0 +1,41 @@
+<mat-card class="push-none bgc-grey-50 filters-card">
+  <div layout="row" layout-align="center center">
+    <div layout="row" layout-align="center center" flex=90>
+
+      <td-chips placeholder="Pesquisar por nome, categorias ou locais" [(ngModel)]="filters" layout-margin (add)="onChangeFilters()"
+        (remove)="onChangeFilters()" flex>
+      </td-chips>
+      <mat-form-field class="push-top">
+        <mat-select placeholder="Status do curso" [(ngModel)]="statusCursoSelected" (ngModelChange)="onChangeFilters()">
+          <mat-option [value]="null">Todos</mat-option>
+          <mat-option [value]="'PENDENTE'">Em análise</mat-option>
+          <mat-option [value]="'APROVADO'">Publicado</mat-option>
+          <mat-option [value]="'RASCUNHO'">Rascunho</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <md2-datepicker placeholder="Busque por data" [(ngModel)]="dataFilter" (ngModelChange)="onChangeFilters()"></md2-datepicker>
+
+    </div>
+  </div>
+</mat-card>
+
+
+<div layout="row" layout-align="center center">
+  <div flex="90" class="push-top">
+    <td-paging-bar #pagingBar [pageSize]="pageable?.size" [total]="page?.totalElements" (change)="changePage($event)">
+      <span td-paging-bar-label hide-xs>Cursos por página:</span>
+      <mat-select [style.width.px]="50" *ngIf="pageable?.size" [(ngModel)]="pageable.size">
+        <mat-option *ngFor="let size of pageSizes" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+      {{pagingBar.range}}
+      <span hide-xs> de {{pagingBar.total}}</span>
+    </td-paging-bar>
+    <curso-card-status *ngFor="let curso of cursos" style="display: inline" [curso]="curso"></curso-card-status>
+    <div *ngIf="cursos?.length == 0" layout="row" layout-align="center center" flex>
+      <p>Nenhum curso encontrado</p>
+    </div>
+  </div>
+</div>

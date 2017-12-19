@@ -1,0 +1,63 @@
+<mat-card class="visualizar-curso-card" *ngIf="turma">
+  <mat-card-content layout="column" layout-align="center center">
+    <div flex>
+      <div class="push">
+        <span class="tc-grey-800 md-caption">VALOR DA COMPRA</span>
+      </div>
+      <div *ngIf="!compra.cupomDesconto" class="push-left push-right">
+        <text-highlight [color]="'light-green'">
+          <mat-icon class="price-icon push-right">shopping_cart</mat-icon>
+          <h1>{{ compra?.valor | currencyformat}}</h1>
+        </text-highlight>
+      </div>
+      <div *ngIf="compra.cupomDesconto" class="push-left push-right">
+        <text-highlight [color]="'light-green'">
+          <mat-icon class="price-icon push-right">shopping_cart</mat-icon>
+          <div layout="column" style="margin: 17px 0px 10px 0px">
+            <b class="preco-novo">{{ compra?.valor - compra?.valor * compra?.cupomDesconto?.valor / 100 | currencyformat}}</b>
+            <b class="md-subhead preco-velho">{{ compra?.valor | currencyformat}}</b>
+          </div>
+        </text-highlight>
+      </div>
+      <div class="push">
+        <span class="tc-grey-800 md-caption">MATRÍCULAS</span>
+      </div>
+      <div *ngFor="let lote of turma?.lotes; let loteIndex = index">
+        <div class="push-left push-right" *ngIf="lote?.quantidade > 0" [ngClass]="{'item-divider': loteIndex + 1 < lotesSelecionadoLength()}">
+          <!-- verifica se é o ultimo -->
+          <text-highlight [color]="'grey'" [blockquote]="true">
+            <div layout="column" class="pad-top pad-bottom">
+              <b *ngIf="!compra?.cupomDesconto">{{lote.nome}} - {{lote.preco | currencyformat}}</b>
+              <b *ngIf="compra?.cupomDesconto">{{lote.nome}} - {{lote.preco - lote.preco * compra?.cupomDesconto.valor / 100 | currencyformat}}</b>
+              <span>{{lote.quantidade}} {{(lote.quantidade > 1)? 'matrículas': 'matrícula'}}</span>
+            </div>
+          </text-highlight>
+        </div>
+      </div>
+
+      <div class="push-left push-right" *ngIf="lotesSelecionadoLength() == 0">
+        <text-highlight [color]="'grey'" [blockquote]="true">
+          <b class="pad-top pad-bottom tc-grey-500">Nenhum lote selecionado</b>
+        </text-highlight>
+      </div>
+      <div class="push">
+        <span class="tc-grey-800 md-caption">INFORMAÇÕES DA TURMA</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push">
+        <mat-icon class="tc-grey-500 push-right">event</mat-icon>
+        <span *ngIf="turma.aulas" flex>{{turma.aulas[0].inicio | date:'dd/MM/yy'}} à {{turma.aulas[1].termino | date:'dd/MM/yy' }}</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push" *ngIf="turma.tipoTurma == 'PRESENCIAL' || turma.tipoTurma == 'SEMIPRESENCIAL'">
+        <mat-icon class="tc-grey-500 push-right">place</mat-icon>
+        <span flex>{{turma?.endereco?.cidade?.nome}} - {{turma?.endereco?.cidade?.estado?.uf}}</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push" *ngIf="turma?.tipoTurma == 'DISTANCIA'  || turma?.tipoTurma == 'SEMIPRESENCIAL'"
+        matTooltip="Plataforma do curso a distância" [matTooltipShowDelay]="1000">
+        <mat-icon class="tc-grey-500 push-right">code</mat-icon>
+        <span class="text-truncate" flex>
+          <a href="{{turma?.plataforma}}" class="tc-grey-800">{{turma?.plataforma}}</a>
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

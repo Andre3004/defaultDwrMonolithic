@@ -1,0 +1,13 @@
+<div mat-dialog-content>
+
+  <h1 matDialogTitle>{{text}}</h1>
+
+  <div layout="row" layout-margin>
+    <button mat-raised-button color="accent" flex (click)="dialogRef.close(true)">
+      {{confirm}}
+    </button>
+    <button mat-raised-button flex (click)="dialogRef.close(false)">
+      {{cancel}}
+    </button>
+  </div>
+</div>

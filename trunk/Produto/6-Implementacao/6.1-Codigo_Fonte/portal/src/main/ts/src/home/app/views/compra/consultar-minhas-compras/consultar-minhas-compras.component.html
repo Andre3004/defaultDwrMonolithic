@@ -1,0 +1,91 @@
+<div>
+  <mat-card class="push-none bgc-grey-50 filters-card">
+    <div layout="row" layout-align="center center">
+      <div layout="row" layout-align="center center" flex="90">
+
+        <td-chips placeholder="Pesquisar por nome, Área de conhecimento"
+                  [(ngModel)]="filter" layout-margin
+                  flex-md="40" flex-gt-md="45" flex-gt-lg="50"
+                  (add)="onChangeFilters()" (remove)="onChangeFilters()"></td-chips>
+
+        <div flex-gt-md></div>
+
+        <td-chips placeholder="Pesquisar por bairro, cidade, estado, "
+                  [(ngModel)]="cidadesFiltro" flex="35"
+                  (add)="onChangeFilters()"
+                  (remove)="onChangeFilters()">
+        </td-chips>
+
+        <div flex-gt-md></div>
+
+
+        <button mat-raised-button class="bgc-blue-grey-50 font-regular"
+                (click)="toggleShowPesquisaAvancada()"
+                style="margin-top: 10px">
+          Pesquisa avançada
+        </button>
+
+      </div>
+    </div>
+
+  </mat-card>
+  <!--Pesquisa avançada-->
+  <div *ngIf="showPesquisaAvancada">
+    <mat-card class="push-none bgc-grey-50 filters-card" [tdFade]="!showPesquisaAvancada">
+      <div layout="row" layout-align="center center">
+        <div layout="row" flex="90">
+          <div layout="row" layout-align="center center" flex>
+
+            <div flex></div>
+
+            <mat-checkbox [(ngModel)]="filtro.registered" class="push-right"
+                         (change)="onChangeFilters()" name="registered"
+                         style="margin-top: 17px;margin-left: 13px; margin-right: 13px; min-width: 244px;">
+              Estou matriculado
+            </mat-checkbox>
+            <div flex></div>
+
+            <mat-checkbox [(ngModel)]="filtro.isResponsavel" class="push-right"
+                         (change)="onChangeFilters()" name="isResponsavel"
+                         style="margin-top: 17px;margin-left: 23px; min-width: 244px;">
+              Matrículas realizadas por mim
+            </mat-checkbox>
+            <div flex></div>
+
+            <md2-datepicker style="margin-top: 5px"
+                            placeholder="Início das aulas"
+                            [(ngModel)]="filtro.dataInicioAulas"
+                            (ngModelChange)="onChangeFilters()">
+            </md2-datepicker>
+            <div flex></div>
+
+            <md2-datepicker style="margin-top: 5px; margin-left: 35px"
+                            placeholder="Data da compra"
+                            [(ngModel)]="filtro.dataCompra"
+                            (ngModelChange)="onChangeFilters()">
+            </md2-datepicker>
+            <div flex="55"></div>
+
+            <button mat-icon-button (click)="hidePesquisaAvancada()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<!--Listagem-->
+<div layout="row" layout-align="center center">
+  <div flex="90" class="push-top">
+    <p class="tc-teal-500 status-title">APROVADAS ({{comprasAprovadas.length}})</p>
+    <compra-card-status *ngFor="let compra of comprasAprovadas" style="display: inline" [compra]="compra"></compra-card-status>
+    <p class="tc-blue-grey-600 status-title">EM ANÁLISE ({{comprasEmAnalise.length}})</p>
+    <compra-card-status *ngFor="let compra of comprasEmAnalise" style="display: inline" [compra]="compra"></compra-card-status>
+    <p class="tc-grey-600 status-title">CANCELADAS ({{comprasCanceladas.length}})</p>
+    <compra-card-status *ngFor="let compra of comprasCanceladas" style="display: inline" [compra]="compra"></compra-card-status>
+    <p class="tc-red-300 status-title">CONCLUÍDAS ({{comprasTurmaConcluida.length}})</p>
+    <compra-card-status *ngFor="let compra of comprasTurmaConcluida" style="display: inline" [compra]="compra"></compra-card-status>
+  </div>
+</div>

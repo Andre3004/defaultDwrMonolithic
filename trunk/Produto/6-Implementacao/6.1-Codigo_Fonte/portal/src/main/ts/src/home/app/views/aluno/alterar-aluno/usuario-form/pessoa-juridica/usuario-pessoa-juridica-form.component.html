@@ -1,0 +1,45 @@
+<div [formGroup]='form.controls.pessoaJuridica' layout='column'>
+  <div layout-gt-xs='row' layout-margin>
+    <mat-form-field flex>
+      <input matInput name='documentoRepresentante'
+             id='documentoRepresentante' required
+             [textMask]='{mask: masks.cpf, guide: false}'
+             [(ngModel)]='usuario.documentoRepresentante'
+             placeholder='CPF do representante'
+             formControlName='documentoRepresentante'>
+      <mat-error *ngIf="form?.controls?.pessoaJuridica?.controls['documentoRepresentante']?.hasError('exception')">
+        {{form?.controls?.pessoaJuridica?.controls['documentoRepresentante']?.errors?.exception}}
+      </mat-error>
+      <mat-error *ngIf="form?.controls?.pessoaJuridica?.controls['documentoRepresentante']?.hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field flex>
+      <input name='registroGeralRepresentante'
+             id='registroGeralRepresentante'
+             [(ngModel)]='usuario.registroGeralRepresentante'
+             somenteAlfanumericos maxlength='20' required
+             matInput formControlName='registroGeralRepresentante'
+             placeholder='Registro Geral (RG) do representante'>
+      <mat-error>
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div layout-gt-xs='row' layout-margin>
+    <mat-form-field flex='100'>
+      <input matInput name='cnpj' id='cnpj'
+             [textMask]='{mask: masks.cnpj, guide: false}'
+             [(ngModel)]='usuario.documento'
+             placeholder='CNPJ'
+             required formControlName='cnpj'>
+      <mat-error *ngIf="form?.controls?.pessoaJuridica?.controls['cnpj']?.hasError('exception')">
+        {{form?.controls?.pessoaJuridica?.controls['cnpj']?.errors?.exception}}
+      </mat-error>
+      <mat-error *ngIf="form?.controls?.pessoaJuridica?.controls['cnpj']?.hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>

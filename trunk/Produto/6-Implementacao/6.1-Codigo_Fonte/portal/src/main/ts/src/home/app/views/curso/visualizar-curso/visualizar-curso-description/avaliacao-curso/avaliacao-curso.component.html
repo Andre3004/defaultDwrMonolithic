@@ -1,0 +1,25 @@
+<div *ngIf="false" layout-gt-xs="row" layout-align="start center" class="push-bottom">
+  <div layout="row" layout-align="start center">
+    <div>
+      <div class="avatar-aluno-icon bgc-grey-500 push-right" layout="column" layout-align="center center">
+        <mat-icon class="tc-grey-50">person</mat-icon>
+      </div>
+    </div>
+    <div layout="column">
+      <span>Lucas Boz</span>
+      <span class="tc-blue-grey-500 md-caption">15/02/2017</span>
+    </div>
+  </div>
+  <div flex-gt-xs="5"></div>
+  <div layout="column" flex-gt-md="60" flex-md>
+    <rating-component [ngModel]="5" [readonly]="true" class="tc-teal-500"></rating-component>
+    <span class="tc-blue-grey-900">
+      This course is an engaging introduction to gut flora with suggestions on how to keep it healthy. I really like that it is straight to the point and I was able to learn a lot in a short period of time.
+    </span>
+  </div>
+</div>
+
+<div layout="row" layout-align="start center" class="pad bgc-blue-grey-50">
+  <mat-icon class="tc-grey-500 push-right">stars</mat-icon>
+  <b class="tc-grey-500">Nenhuma avaliação realizada ainda</b>
+</div>

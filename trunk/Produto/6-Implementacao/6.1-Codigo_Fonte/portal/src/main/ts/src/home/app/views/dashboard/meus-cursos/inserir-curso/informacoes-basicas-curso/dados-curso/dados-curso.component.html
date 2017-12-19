@@ -1,0 +1,132 @@
+<form #dadosCursoForm="ngForm" (ngSubmit)="submit(curso, dadosCursoForm, $event)" ngNativeValidate>
+
+  <!--dados div-->
+  <div layout="column" flex>
+    <div layout="row" layout-margin layout-align="start center">
+      <mat-form-field flex *ngIf="curso">
+        <input [(ngModel)]="curso.nome" name="nome" matInput placeholder="Nome do curso" maxlength="200" (ngModelChange)="onChangeEmit()"
+          style="text-transform: uppercase" required>
+        <mat-error>Este campo é obrigatório</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div layout-gt-xs="row" layout-margin layout-align="start center">
+      <mat-form-field flex-gt-xs="50" flex *ngIf="curso">
+        <input [(ngModel)]="curso.cargaHoraria" matInput placeholder="Carga horária (horas)" name="cargaHoraria" type="number" min="1"
+          max="9999" required [formControl]="cargaHoraria" (ngModelChange)="onChangeEmit()">
+        <mat-error *ngIf="cargaHoraria.hasError('required')">
+          Esse campo é obrigatório
+        </mat-error>
+        <mat-error *ngIf="cargaHoraria.hasError('pattern')">
+          Insira uma carga horária válida
+        </mat-error>
+      </mat-form-field>
+      <div layout="row" layout-margin>
+        <mat-checkbox (change)="verifyCursoHasLotePago()" [(ngModel)]="curso.isGratuito" name="isGratuito" flex>
+          Curso gratuito
+        </mat-checkbox>
+      </div>
+    </div>
+
+
+    <div layout="row" layout-margin>
+      <mat-checkbox [(ngModel)]="disponibilizarCertificado" (ngModelChange)="toggleFornecedorCertificado()" name="disponibilizarCertificado"
+        flex>Disponibilizar certificado</mat-checkbox>
+    </div>
+
+    <div layout="column" layout-margin [@tdCollapse]="!disponibilizarCertificado">
+      <h3 class="tc-grey-800" flex>Fornecedor do certificado</h3>
+      <mat-radio-group [(ngModel)]="curso.fornecedorCertificado" name="fornecedorCertificado" flex>
+        <mat-radio-button class="push-right" [value]="fornecedorCertificado.ORGANIZADOR">
+          Organizador (você)
+        </mat-radio-button>
+        <mat-radio-button disabled [value]="fornecedorCertificado.TFC">
+          TFC (Em breve)
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div layout="row" layout-margin layout-align="start center">
+      <td-chips [items]="areaConhecimentoList" [(ngModel)]="areaConhecimentoSelected" placeholder="Área de conhecimento deste curso"
+        [chipAddition]="areaConhecimentoSelected.length < 1" requireMatch name="areaConhecimento" flex (inputChange)="listAreaConhecimentoByFilters($event)"
+        (add)="addAreaConhecimento($event)" (remove)="removeAreaConhecimento()">
+        <ng-template td-chip let-chip="chip">
+          {{chip.nome}} ({{chip?.areaConhecimentoSuperior?.nome}})
+        </ng-template>
+        <ng-template td-autocomplete-option let-option="option">
+          {{option.nome}} ({{option?.areaConhecimentoSuperior?.nome}})
+        </ng-template>
+      </td-chips>
+    </div>
+
+    <div layout="row" layout-margin>
+      <div style="width: 100%" *ngIf="curso">
+        <h3 class="tc-grey-800">Descrição</h3>
+        <ckeditor [(ngModel)]="curso.descricao" [config]="editorOptions" (change)="onChangeEmit()" name="descricao"></ckeditor>
+        <div layout="row" layout-align="end center" layout-margin>
+          <mat-error *ngIf="curso.descricao?.length == 0">Esse campo é obrigatório</mat-error>
+          <mat-error *ngIf="curso.descricao?.length > 4000">Esse campo deve ter no máximo 4000 caracteres</mat-error>
+          <div flex></div>
+          <mat-hint class="md-caption tc-grey-500">{{curso.descricao ? curso.descricao.length: 0}} / 4000</mat-hint>
+        </div>
+      </div>
+    </div>
+
+    <div layout="row" layout-margin>
+      <div style="width: 100%" *ngIf="curso">
+        <h3 class="tc-grey-800">Conteúdo programático</h3>
+        <ckeditor [(ngModel)]="curso.conteudo" [config]="editorOptions" (change)="onChangeEmit()" name="conteudo"></ckeditor>
+        <div layout="row" layout-margin>
+          <mat-hint *ngIf="curso.conteudo?.length != 0 && curso.conteudo?.length < 4000">Esse texto será exibido no verso do certificado</mat-hint>
+          <mat-error *ngIf="curso.conteudo?.length == 0">Este campo é obrigatório</mat-error>
+          <mat-error *ngIf="curso.conteudo?.length > 4000">Esse campo deve ter no máximo 4000 caracteres</mat-error>
+          <div flex></div>
+          <mat-hint class="md-caption tc-grey-500">{{ curso.conteudo ? curso.conteudo.length: 0}} / 4000
+          </mat-hint>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--foto div-->
+  <div layout="column" layout-margin flex layout-align="center center">
+
+    <div *ngIf="curso?.imagem" (mouseover)="showRemoveButton(true)" (mouseleave)="showRemoveButton(false)" layout-margin style="background-color: white"
+      [style.background-image]="'url(' + curso.imagem + ')'" alt="Imagem do curso" class="curso-imagem">
+      <div [tdFade]="!isShowRemoveButton" layout="row" layout-align="center center" class="image-remove-mask">
+        <button type="button" (click)="removeImagem()" class="image-remove-button" mat-raised-button>
+          <mat-icon style="color: white">delete</mat-icon>
+          <b style="color: white">REMOVER FOTO</b>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!curso?.imagem" flex layout="column" layout-margin layout-align="center center" class="curso-imagem bgc-grey-300">
+
+      <mat-icon class="tc-grey-400" style="font-size: 150px">image</mat-icon>
+
+      <td-file-upload defaultColor="bgc-grey-50" accept=".png, .gif, .jpg, .jpeg" #singleFileUpload (change)="fileChange($event, singleFileUpload); onChangeEmit()">
+        <span>{{ singleFileUpload.files?.name }}</span>
+        <ng-template td-file-input-label>
+          <b class="tc-grey-700">Adicionar imagem do curso</b>
+        </ng-template>
+      </td-file-upload>
+
+      <span class="tc-grey-700 push">Utilize uma imagem no tamanho 800x400px nos formatos png, gif ou jpg</span>
+    </div>
+
+  </div>
+
+
+  <div *ngIf="!curso?.isGratuito" layout="row" layout-margin>
+    <button mat-raised-button color="primary">
+      <b style="color: white">PRÓXIMO PASSO</b>
+    </button>
+  </div>
+  <div *ngIf="curso?.isGratuito"layout="row" layout-margin>
+      <button mat-raised-button class="bgc-teal-500" flex>
+        <b style="color: white">CONCLUIR</b>
+      </button>
+    </div>
+  <!--action div-->
+</form>

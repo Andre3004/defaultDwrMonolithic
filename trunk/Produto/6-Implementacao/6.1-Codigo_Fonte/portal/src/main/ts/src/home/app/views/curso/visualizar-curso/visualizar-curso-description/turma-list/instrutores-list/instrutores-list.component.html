@@ -1,0 +1,12 @@
+<ng-template let-item let-last="last" ngFor [ngForOf]="turma?.instrutores">
+  <mat-list-item class="list-pad-none">
+    <div *ngIf="!item?.usuario?.foto" class="tc-grey-100 bgc-teal-700" layout="row" layout-align="center center" matListAvatar>
+      <span>{{item?.usuario?.nome?.substring(0, 1).toUpperCase()}}</span>
+    </div>
+    <img *ngIf="item?.usuario?.foto" src="{{item.usuario.foto}}" class="image-cover" matListAvatar>
+    <span matLine>{{item?.usuario?.nome}}</span>
+    <a *ngIf="item?.usuario?.linkProfissional" href="{{item?.usuario?.linkProfissional}}" target="_blank" matLine class="tc-teal-500"><span class="md-caption">Visualizar perfil profissional</span></a>
+    <img *ngIf="item?.usuario?.isDiamante" src="./static/images/diamond.png" alt="organizador é diamante" matTooltip="organizador é diamante"
+      matTooltipPosition="above">
+  </mat-list-item>
+</ng-template>

@@ -1,0 +1,51 @@
+<mat-card class="visualizar-curso-card" *ngIf="turma">
+  <mat-card-content>
+    <div>
+      <div class="push">
+        <span class="md-caption tc-grey-600">PRÓXIMA TURMA:</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push">
+        <mat-icon class="tc-teal-500 push-right">event</mat-icon>
+        <span class="tc-grey-800" *ngIf="turma?.aulas" flex>{{turma?.aulas[0]?.inicio | date:'dd/MM/yy'}} à {{turma?.aulas[1]?.termino | date:'dd/MM/yy' }}</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push" *ngIf="turma.tipoTurma == 'PRESENCIAL' || turma.tipoTurma == 'SEMIPRESENCIAL'">
+        <mat-icon class="tc-teal-500 push-right">place</mat-icon>
+        <span class="tc-grey-800" flex>{{turma?.endereco?.cidade?.nome}} - {{turma?.endereco?.cidade?.estado?.uf}}</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push" *ngIf="turma?.tipoTurma == 'DISTANCIA'  || turma?.tipoTurma == 'SEMIPRESENCIAL'"
+        matTooltip="Plataforma do curso a distância" [matTooltipShowDelay]="1000">
+        <mat-icon class="tc-teal-500 push-right">code</mat-icon>
+        <span class="text-truncate" flex><a href="{{turma?.plataforma}}" target="_blank"class="tc-grey-800">{{turma?.plataforma}}</a></span>
+      </div>
+      <div layout="row" layout-align="start center" class="push">
+        <mat-icon class="push-right tc-teal-500">person_pin</mat-icon>
+        <b flex>{{turma?.vagasDisponiveis}} vagas disponíveis</b>
+      </div>
+    </div>
+    <div layout="row" flex>
+      <button mat-raised-button class="matricula-button bgc-red-500 push" flex routerLink="realizar-matriculas/{{turma?.id}}">
+        <span class="matricula-button-text text-truncate md-title tc-white">
+          <b>REALIZAR MATRÍCULA</b>
+        </span>
+      </button>
+    </div>
+    <mat-divider style="margin: 20px -16px 20px -16px"></mat-divider>
+    <div>
+      <div layout="row" layout-align="start center" class="push">
+        <mat-icon class="tc-grey-500 push-right">access_time</mat-icon>
+        <span class="tc-grey-800" *ngIf="cargaHoraria" flex>{{curso?.cargaHoraria}} hrs de duração</span>
+      </div>
+      <div layout="row" *ngIf="curso.fornecedorCertificado == fornecedorCertificado.ORGANIZADOR" layout-align="start center" class="push">
+        <mat-icon class="tc-grey-500 push-right">stars</mat-icon>
+        <div layout="column" flex>
+          <span class="tc-grey-800">Certificado de conclusão</span>
+          <span class="tc-grey-600 md-caption">Fornecido pelo organizador</span>
+        </div>
+      </div>
+      <div layout="row" *ngIf="curso.fornecedorCertificado == fornecedorCertificado.TFC" layout-align="start center" class="push">
+        <mat-icon class="tc-grey-500 push-right">stars</mat-icon>
+        <span class="tc-grey-800" flex>Certificado de conclusão</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

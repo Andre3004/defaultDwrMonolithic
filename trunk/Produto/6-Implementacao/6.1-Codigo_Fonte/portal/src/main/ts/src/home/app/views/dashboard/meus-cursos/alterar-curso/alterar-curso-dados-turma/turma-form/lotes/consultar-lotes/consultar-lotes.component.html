@@ -1,0 +1,26 @@
+<mat-nav-list>
+  <div *ngFor="let lote of lotes" (click)="alterarLote(lote)" class="push-bottom bgc-blue-grey-50">
+    <mat-list-item>
+      <div layout="row" layout-align="center center" flex>
+        <div layout="column">
+          <b class="tc-grey-800 lote-line"  matLine>{{lote?.nome}} - {{lote?.preco| currencyformat}} </b>
+          <div *ngIf="lote?.inicio || lote?.termino" class="lote-line" matLine>
+            <span class="tc-grey-800" *ngIf="lote?.inicio">A partir de {{lote?.inicio | date:'dd/MM/yy HH:mm'}} </span>
+            <span class="tc-grey-800" *ngIf="lote?.termino"> até {{lote?.termino | date:'dd/MM/yy HH:mm'}} </span>
+          </div>
+          <b class="md-caption tc-teal-500 lote-line" *ngIf="lote?.limiteMatriculas" matLine>Limite de matrículas: {{lote?.limiteMatriculas}}</b>
+          <b class="md-caption tc-teal-500 lote-line" *ngIf="!lote?.limiteMatriculas" matLine>Sem limite de matriculas</b>
+          <b class="md-caption tc-teal-500 lote-line" *ngIf="lote?.vagasReservadas" matLine>{{lote?.vagasReservadas}} {{lote?.vagasReservadas == 1? 'vaga reservada' : 'vagas reservadas'}}</b>
+          <b class="md-caption tc-teal-500 lote-line" *ngIf="!lote?.vagasReservadas" matLine>Nenhuma vaga reservada</b>
+        </div>
+        <div flex></div>
+        <mat-icon (click)="removeLote(lote)" stopPropagation>delete</mat-icon>
+      </div>
+    </mat-list-item>
+  </div>
+</mat-nav-list>
+
+<div *ngIf="!lotes?.length" layout="row" layout-align="center center" class="push-bottom pad bgc-blue-grey-50">
+  <mat-icon class="tc-grey-500">class</mat-icon>
+  <b class="tc-grey-500">Nenhum lote cadastrado!</b>
+</div>

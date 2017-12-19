@@ -1,0 +1,68 @@
+<div *ngIf="curso?.imagem" class="visualizar-curso-background" [style.background-image]="'url(' + curso.imagem + ')'" alt="Imagem de fundo do curso">
+  <div class="visualizar-curso-background-mask"></div>
+</div>
+
+<div *ngIf="!curso?.imagem" class="visualizar-curso-background" alt="Imagem de fundo do curso">
+  <div class="visualizar-curso-background-mask"></div>
+</div>
+<home-container>
+  <div layout="column" layout-align="start start" layout-padding>
+    <span *ngIf="areaConhecimento" class="tc-grey-300 md-body-2" flex>
+      <a>
+        {{areaConhecimento.areaConhecimentoSuperior.nome}} / </a>
+      <a>
+        {{areaConhecimento.nome}}</a>
+    </span>
+    <div layout="row" flex>
+      <span class="tc-grey-50 md-display-1 text-upper" style="cursor:pointer" *ngIf="curso?.nome" routerLink="/cursos/{{parseNomeUrl(curso?.nome, curso?.id)}}">{{curso.nome}}</span>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="withMenu && curso.aprovado ||
+           (curso.rascunho && (authenticatedUser?.id == curso?.organizador?.id || authenticatedUser?.isAdministrador)) ||
+           (curso.pendente && authenticatedUser?.isAdministrador) ||
+           (!curso.aprovado && authenticatedUser?.isAdministrador) ||
+           (curso.aprovado && (authenticatedUser?.id == curso?.organizador?.id || authenticatedUser?.isAdministrador)) ">
+        <mat-icon class="tc-white-4">more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button *ngIf="curso.aprovado" mat-menu-item shareButton="facebook" matTooltip="Compartilhar com o Facebook" matTooltipPosition="above">
+          <mat-icon>share</mat-icon>
+          <span>Compartilhar curso</span>
+        </button>
+        <button *ngIf="curso.rascunho && (authenticatedUser?.id == curso?.organizador?.id || authenticatedUser?.isAdministrador)"
+          mat-menu-item (click)="alterarCurso(curso)">
+          <mat-icon>mode_edit</mat-icon>
+          <span>Alterar curso</span>
+        </button>
+        <button *ngIf="curso.pendente && authenticatedUser?.isAdministrador" mat-menu-item (click)="updateCursoWithStatusAprovado(curso)">
+          <mat-icon>done</mat-icon>
+          <span>Aprovar curso</span>
+        </button>
+        <button *ngIf="!curso.aprovado && authenticatedUser?.isAdministrador" mat-menu-item (click)="removeCursoAndSendMailRecusado(curso)">
+          <mat-icon>delete_forever</mat-icon>
+          <span>Recusar curso</span>
+        </button>
+        <button *ngIf="curso.rascunho && (authenticatedUser?.id == curso?.organizador?.id || authenticatedUser?.isAdministrador)"
+          mat-menu-item (click)="removeCurso(curso)">
+          <mat-icon>delete</mat-icon>
+          <span>Remover curso</span>
+        </button>
+        <button *ngIf="curso.aprovado && (authenticatedUser?.id == curso?.organizador?.id || authenticatedUser?.isAdministrador)"
+          (click)="gerarCodigoIncorporacao()" mat-menu-item>
+          <mat-icon>code</mat-icon>
+          <span>Código de incorporação</span>
+        </button>
+        <button *ngIf="curso.rascunho && (authenticatedUser?.id == curso?.organizador?.id || authenticatedUser?.isAdministrador)"
+          (click)="enviarAprovacao(curso)" mat-menu-item>
+          <mat-icon>send</mat-icon>
+          <span>Enviar para aprovação</span>
+        </button>
+      </mat-menu>
+
+    </div>
+    <span class="tc-grey-50 md-body-2" flex>Criado por
+      <b>{{curso?.organizador?.nome}}</b>
+    </span>
+    <rating-component [ngModel]="curso?.avaliacao" [readonly]="true" class="tc-grey-50" flex></rating-component>
+  </div>
+</home-container>

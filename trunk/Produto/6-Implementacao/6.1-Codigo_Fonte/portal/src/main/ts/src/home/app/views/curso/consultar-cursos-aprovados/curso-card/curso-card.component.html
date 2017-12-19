@@ -1,0 +1,46 @@
+<div class="curso-card-container" clickWithoutMove (onClickWithoutMove)="goToVisualizarCurso(curso)">
+  <div *ngIf="curso?.turmas?.length > 1" class="turmas-circle z-2" layout="column" layout-align="center center">
+    <span class="turma-text" *ngIf="curso?.turmas">{{curso?.turmas?.length}}</span>
+    <span class="turma-small-text">Turmas</span>
+  </div>
+  <mat-card highlight class="curso-card z-1" #card>
+    <div *ngIf="curso?.imagem" mat-card-image class="curso-card-image image-cover bgc-grey-300" layout="row" layout-align="center center">
+      <img mat-card-image src="{{curso.imagem}}" class="curso-card-image image-cover" style="background-color: white">
+    </div>
+    <div *ngIf="!curso?.imagem" mat-card-image class="curso-card-image image-cover bgc-grey-300" layout="row" layout-align="center center">
+      <span class="md-caption tc-grey-400">Este curso não possui imagem</span>
+    </div>
+    <mat-card-content class="text-left">
+      <div layout="column">
+        <div layout="row" layout-align="start center" [title]="curso.nome" class="size-height-50">
+          <span #cursoNome class="md-title tc-grey-800 curso-nome text-upper">{{curso.nome}}</span>
+        </div>
+        <div layout="row" style="margin-bottom: 5px">
+          <rating-component class="tc-teal-500" [ngModel]="curso.avaliacao" [readonly]="true"></rating-component>
+        </div>
+      </div>
+      <div *ngIf="curso?.proximaTurma" class="proxima-turma-content">
+        <span class="tc-grey-800">Próxima turma no dia <b>{{curso?.proximaTurma?.primeiraAula?.inicio | date:'dd/MM/yy'}}</b></span>
+        <!--margin-top 20px-->
+        <div class="push-top">
+          <div layout="row" layout-align="start center" class="curso-card-line" *ngIf="curso?.proximaTurma?.tipoTurma == 'DISTANCIA'">
+            <mat-icon class="curso-card-icon md-18 tc-blue-grey-200">code</mat-icon>
+            <a href="{{curso?.proximaTurma?.plataforma}}" class="md-caption tc-grey-800">{{curso?.proximaTurma?.plataforma}}</a>
+          </div>
+          <div layout="row" layout-align="start center" class="curso-card-line" *ngIf="curso?.proximaTurma?.tipoTurma == 'PRESENCIAL' || curso?.proximaTurma?.tipoTurma == 'SEMIPRESENCIAL'">
+            <mat-icon class="curso-card-icon md-18 tc-blue-grey-200">place</mat-icon>
+            <span *ngIf="curso?.proximaTurma?.endereco?.cidade?.nome" class="md-caption tc-grey-800"> {{curso?.proximaTurma?.endereco?.cidade?.nome}} </span>
+            <span *ngIf="curso?.proximaTurma?.endereco?.cidade?.estado?.uf" class="md-caption tc-grey-800" style="white-space: pre"> - {{curso?.proximaTurma?.endereco?.cidade?.estado?.uf}}</span>
+          </div>
+          <div layout="row" layout-align="start center" class="curso-card-line">
+            <mat-icon class="curso-card-icon md-18 tc-blue-grey-200">person_pin</mat-icon>
+            <span class="md-caption tc-grey-800"><b>{{curso?.proximaTurma?.vagasDisponiveis}} vagas disponíveis</b></span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!curso?.proximaTurma" layout="row" layout-align="start end" class="proxima-turma-content">
+        <span class="md-caption" style="padding-bottom: 7px">Não possui turmas disponíveis</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

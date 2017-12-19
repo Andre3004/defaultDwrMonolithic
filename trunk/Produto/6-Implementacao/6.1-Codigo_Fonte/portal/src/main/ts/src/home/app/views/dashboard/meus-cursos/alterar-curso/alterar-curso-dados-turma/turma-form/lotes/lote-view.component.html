@@ -1,0 +1,11 @@
+<div layout="column">
+    <consultar-lotes [turma]="turma" (onAlterarLote)="initLoteToUpdate($event)" (onRemoveLote)="removeLote($event)" flex></consultar-lotes>
+    <inserir-lote [lote]="loteToInsert" (onSave)="resetLoteToInsert()" (onCancel)="resetLoteToInsert()" *ngIf="loteToInsert && !loteToUpdate"></inserir-lote>
+    <alterar-lote [lote]="loteToUpdate" (onSave)="resetLoteToUpdate()" (onCancel)="resetLoteToUpdate()" *ngIf="loteToUpdate && !loteToInsert"></alterar-lote>
+    <div flex>
+        <button mat-raised-button class="bgc-grey-200" *ngIf="!loteToInsert && !loteToUpdate" (click)="initLoteToInsert()"><b class="tc-grey-700">INSERIR LOTE</b></button>
+    </div>
+    <div class="push-top">
+        <button mat-raised-button (click)="continue()" class="bgc-teal-500" flex><b style="color: white">PRÓXIMO PASSO</b></button>
+    </div>
+</div>

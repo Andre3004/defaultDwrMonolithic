@@ -1,0 +1,60 @@
+<div layout="column"
+     layout-align="center center"
+     style="height: 100%; background-size: cover; background-image: url('static/images/authentication-background.jpg');">
+    <div layout="column" layout-align="center center">
+
+
+      <mat-card style="width: 475px">
+
+        <mat-card-content>
+
+          <form #signinForm="ngForm" (ngSubmit)="recuperarSenha(login)" ngNativeValidate>
+
+            <div layout="column" layout-margin style="margin: 25px; margin-left: 45px; margin-right: 45px;">
+
+              <div layout="column" layout-margin layout-align="center center">
+                <div layout="row" flex layout-margin>
+                  <h1 class="md-title tc-black-4" flex>
+                    <b>Recuperar senha</b>
+                  </h1>
+                </div>
+              </div>
+
+              <div layout="row" flex layout-margin style="margin-top: 45px;">
+                <h1 class="md-body-1 tc-grey-600" flex>
+                  <b>Para recuperar a senha insira seu login</b>
+                </h1>
+              </div>
+
+              <div layout="row" flex layout-margin style="margin-top: 20px;">
+                <mat-form-field flex>
+                  <input matInput placeholder="Seu e-mail, CPF/CNPJ, ou RG"
+                         [(ngModel)]="login" required name="email"/>
+                </mat-form-field>
+              </div>
+
+
+              <div layout="row" flex layout-margin style="margin-top: 20px;">
+                <button style="height: 55px" mat-raised-button color="accent" flex>
+                  ENVIAR NOVA SENHA
+                </button>
+              </div>
+
+
+            </div>
+          </form>
+        </mat-card-content>
+
+      </mat-card>
+  </div>
+  <div layout="column" layout-margin layout-align="center center">
+    <div layout="row" flex layout-margin>
+      <div layout="column" layout-align="center center">
+        <button layout-align="row" class="md-headline tc-grey-500" type="button" routerLink="/" color="primary" mat-button>
+          <mat-icon>arrow_back</mat-icon>
+          <span>Voltar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="page-footer-container page-footer-background" style="background-image: url(../static/images/page-footer-background.png)"
+  layout="column" layout-align="center center">
+  <div class="page-footer-banner text-center" layout="column">
+    <span class="page-footer-text tc-grey-50">Conheça todas as vantagens da <b>THE FULL CLASS</b> para os seus cursos. Junte se a nós!</span>
+
+    <div *ngIf="authenticatedUser" layout="row" layout-align="center center">
+      <button *ngIf="authenticatedUser.isInstrutor" mat-raised-button routerLink="/dashboard/meus-cursos/inserir" class="page-footer-button font-regular">PUBLIQUE SEU CURSO</button>
+      <button *ngIf="!authenticatedUser.isInstrutor" routerLink="/criar-conta/instrutor" mat-raised-button class="page-footer-button instrutor-button tc-grey-50 font-regular">SEJA UM INSTRUTOR</button>
+    </div>
+
+    <div *ngIf="!authenticatedUser" layout="row">
+      <button routerLink="/conta/criar-conta/aluno" mat-raised-button class="page-footer-button font-regular" (click)="goToSejaUmAluno()">SEJA UM ALUNO</button>
+      <div flex></div>
+      <button routerLink="/conta/criar-conta/instrutor" mat-raised-button class="page-footer-button instrutor-button tc-grey-50  font-regular" (click)="goToSejaUmInstrutor()">SEJA UM INSTRUTOR</button>
+    </div>
+  </div>
+</div>

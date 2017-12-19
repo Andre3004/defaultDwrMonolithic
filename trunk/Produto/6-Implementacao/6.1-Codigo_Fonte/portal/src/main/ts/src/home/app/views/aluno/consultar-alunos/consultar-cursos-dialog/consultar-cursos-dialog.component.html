@@ -1,0 +1,42 @@
+<div layout-margin>
+  <h4 matDialogTitle flex> Escolha um curso para recomendar </h4>
+</div>
+<mat-dialog-content class="dialog-container">
+  <div layout="row" layout-margin>
+    <td-chips name="curso-filter" (add)="listCursoByFilters(filters, pageable)" (remove)="listCursoByFilters(filters, pageable)"
+      placeholder="Pesquise o curso" [(ngModel)]="filters" flex>
+    </td-chips>
+  </div>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-nav-list *ngIf="cursos?.length > 0">
+  <div *ngFor="let curso of cursos">
+    <mat-list-item (click)="selectCurso(curso)">
+      <img *ngIf="curso?.imagem" matListAvatar class="image-cover" src="{{curso?.imagem}}" alt="Foto">
+      <mat-icon *ngIf="!curso?.imagem" matListAvatar>book</mat-icon>
+      <h3 class="text-upper" matLine> {{curso?.nome}} </h3>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </div>
+</mat-nav-list>
+<div *ngIf="cursos?.length == 0" layout="row" layout-align="center center" flex>
+  <p>Nenhum curso encontrado</p>
+</div>
+<td-paging-bar #pagingBar [pageSize]="pageable?.size" [total]="page?.totalElements" (change)="changePage($event)">
+  <span td-paging-bar-label hide-xs>Cursos por página:</span>
+  <mat-select *ngIf="pageable?.size" [style.width.px]="50" [(ngModel)]="pageable.size">
+    <mat-option *ngFor="let size of [8,7,6,5,4,3,2,1]" [value]="size">
+      {{size}}
+    </mat-option>
+  </mat-select>
+  {{pagingBar.range}}
+  <span hide-xs> de {{pagingBar.total}}</span>
+</td-paging-bar>
+<mat-dialog-actions>
+  <div layout="row" layout-align="end end" flex>
+    <div flex></div>
+    <button matDialogClose mat-button type="button">
+      <b>CANCELAR</b>
+    </button>
+  </div>
+</mat-dialog-actions>

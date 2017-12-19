@@ -1,0 +1,53 @@
+.visualizar-compra-card{
+    max-width: 800px;
+    margin-top: 50px;
+}
+
+.area-conhecimento a {
+ text-decoration: none;
+ cursor: pointer;
+}
+
+.turma-preco-text{
+ font-size: 27px;
+ line-height: 50px;
+}
+
+.price-icon{
+ font-size: 38px;
+}
+
+.matriculas-list
+{
+ border-left-style: solid;
+ border-left-color: #00796b;
+}
+
+.visualizar-compra-divider
+{
+ margin: 20px -30px 20px -30px;
+}
+
+.compra-title{
+    font-size: 18px;
+    line-height: 3em;
+}
+
+.compra-content{
+    padding: 30px;
+}
+
+.compra-label{
+    margin-bottom: 5px;
+}
+
+.responsavel-details{
+    font-size: 12px !important;
+}
+
+.notification{
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    margin: 10px;
+}

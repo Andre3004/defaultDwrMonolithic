@@ -1,0 +1,12 @@
+.visualizar-curso-card{
+    margin: 0px;
+}
+
+.matricula-button-text{
+    font-weight: bold;
+    white-space: normal;
+}
+
+.matricula-button{
+    min-height: 60px;
+}

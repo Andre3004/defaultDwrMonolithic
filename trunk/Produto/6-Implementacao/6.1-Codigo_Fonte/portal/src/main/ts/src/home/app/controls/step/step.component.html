@@ -1,0 +1,15 @@
+<button [disabled]="disabled" mat-button>
+  <div layout="row" layout-align="start center">
+    <div class="circle text-center {{active? colorActive + ' ' + 'tc-teal-500' : 'text-inactive circle-inactive'}} push-right" layout="row"
+      layout-align="center center">
+
+      <span *ngIf="!complete" flex>{{number}}</span>
+
+      <mat-icon *ngIf="complete" flex>check</mat-icon>
+    </div>
+
+    <b class="{{active? textColor : 'text-inactive'}}">
+      {{label}}
+    </b>
+  </div>
+</button>

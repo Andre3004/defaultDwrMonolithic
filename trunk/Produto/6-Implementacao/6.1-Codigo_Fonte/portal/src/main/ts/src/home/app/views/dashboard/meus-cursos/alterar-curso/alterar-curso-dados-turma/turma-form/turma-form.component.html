@@ -1,0 +1,40 @@
+<mat-vertical-stepper #stepper [linear]="true">
+  <mat-step #turmasStep>
+    <ng-template matStepLabel>
+      <div style="white-space: pre-line">
+        <b [ngClass]="{'tc-teal-500' : stepper.selectedIndex == 0, 'tc-grey-500':  stepper.selectedIndex != 0}">TURMA</b>
+        <span class="md-body-1 tc-grey-500">Informações gerais da turma, instrutores e modalidade do curso</span>
+      </div>
+    </ng-template>
+    <div layout="column" layout-margin>
+      <dados-turma [turma]="turma" (onSave)="save(stepper)" (onContinue)="aulasStep.open()" (onRemove)="remove()" (onCancel)="cancel()"></dados-turma>
+    </div>
+  </mat-step>
+  <mat-step #aulasStep>
+    <ng-template matStepLabel>
+      <div style="white-space: pre-line">
+        <b [ngClass]="{'tc-teal-500' : stepper.selectedIndex == 1, 'tc-grey-500':  stepper.selectedIndex != 1}">AULA</b>
+        <span class="md-body-1 tc-grey-500">Informações sobre aulas e horários</span>
+      </div>
+    </ng-template>
+    <aula-view [turma]="turma" (onContinue)="stepper.selectedIndex=2" (onCancel)="cancel()" *ngIf="turma.id"></aula-view>
+  </mat-step>
+  <mat-step #lotesStep>
+    <ng-template matStepLabel>
+      <div style="white-space: pre-line">
+        <b [ngClass]="{'tc-teal-500' : stepper.selectedIndex == 2, 'tc-grey-500':  stepper.selectedIndex != 2}">LOTE</b>
+        <span class="md-body-1 tc-grey-500">Informações de preços, matrículas e datas</span>
+      </div>
+    </ng-template>
+    <lote-view [turma]="turma" (onContinue)="stepper.selectedIndex=3" *ngIf="turma.id"></lote-view>
+  </mat-step>
+  <mat-step *ngIf="!turma.curso.isGratuito" #cuponsDescontoStep>
+    <ng-template matStepLabel>
+      <div style="white-space: pre-line">
+        <b [ngClass]="{'tc-teal-500' : stepper.selectedIndex == 3, 'tc-grey-500':  stepper.selectedIndex != 3}">CUPOM DE DESCONTO (Opcional)</b>
+        <span class="md-body-1 tc-grey-500">Informações de cupons de desconto</span>
+      </div>
+    </ng-template>
+    <cupom-desconto-view *ngIf="turma.id" [turma]="turma" (onContinue)="comeBack()"></cupom-desconto-view>
+  </mat-step>
+</mat-vertical-stepper>

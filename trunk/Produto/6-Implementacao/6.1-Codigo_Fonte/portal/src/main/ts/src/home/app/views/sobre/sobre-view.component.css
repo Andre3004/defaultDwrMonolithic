@@ -1,0 +1,6 @@
+.sobre-background {
+    background-image: url("../../../../../../resources/META-INF/resources/static/images/consultar-cursos-background.jpg");
+    background-size: cover;
+    background-position: 50%;
+    width: 100%;
+}

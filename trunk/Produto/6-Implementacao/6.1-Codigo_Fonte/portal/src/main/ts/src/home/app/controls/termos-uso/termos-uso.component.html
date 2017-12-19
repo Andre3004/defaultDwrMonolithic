@@ -1,0 +1,8 @@
+<div layout="row" layout-margin layout-align="start center" *ngIf="termosUso">
+  <mat-checkbox id="termosUso" name="termosUso" [(ngModel)]="termosUso.isAccepted" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+  <div flex>
+    <label for="termosUso"> Declaro concordar com os </label>
+    <b class="termos-uso-link tc-teal-500" (click)="$event.stopPropagation(); openTermosUsoDialog()"> Termos de uso</b>
+    <label for="termosUso">da The Full Class<ng-content></ng-content>.</label>
+  </div>
+</div>

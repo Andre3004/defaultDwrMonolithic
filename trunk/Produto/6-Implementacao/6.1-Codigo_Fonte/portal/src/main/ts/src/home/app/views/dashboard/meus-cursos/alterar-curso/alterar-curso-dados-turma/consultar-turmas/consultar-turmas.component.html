@@ -1,0 +1,33 @@
+<div *ngIf="turmas">
+  <mat-nav-list>
+    <div *ngFor="let turma of turmas; let i = index;" class="push-bottom bgc-blue-grey-50">
+      <mat-list-item routerLink="alterar/{{turma.id}}" flex>
+        <div layout-gt-xs="row" layout-xs="column" layout-align="center center" layout-margin class="push-left push-right" flex>
+          <div layout-gt-xs="row" layout-align="center center">
+            <h3 class="md-subhead tc-grey-800" *ngIf="turma?.endereco"><b>{{turma?.endereco?.cidade?.nome}} ({{turma?.endereco?.cidade?.estado?.uf}})</b></h3>
+            <h3 class="md-subhead tc-grey-800" style="white-space: pre" *ngIf="turma?.plataforma"> <b> {{turma?.plataforma | truncate: 50}}</b></h3>
+            <h3 class="md-subhead tc-grey-800" style="white-space: pre"> {{getTipoTurma(turma)}} </h3>
+          </div>
+          <div flex></div>
+          <h3 class="md-subhead tc-teal-500"><b>{{turma.quantidadeVagas}} vagas</b></h3>
+          <button mat-icon-button stopPropagation (click)="removeTurma(turma.id)" class="push-left">
+            <mat-icon class="tc-grey-500">delete</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </div>
+  </mat-nav-list>
+
+  <div *ngIf="!turmas?.length" flex layout="column" layout-margin layout-align="center center" class="nenhuma-turma-container bgc-grey-300">
+
+    <mat-icon class="tc-grey-400" style="font-size: 150px">class</mat-icon>
+    <span class="tc-grey-700 push">Nenhuma turma cadastrada!</span>
+
+    <button mat-raised-button routerLink="inserir" *ngIf="!turmas?.length"><b class="tc-grey-700">CADASTRAR NOVA TURMA</b></button>
+  </div>
+</div>
+<div layout="row" layout-margin>
+  <button mat-raised-button class="bgc-blue-grey-300" routerLink="inserir" *ngIf="turmas?.length"><b style="color: white">CADASTRAR NOVA TURMA</b></button>
+  <div flex></div>
+  <button mat-raised-button class="bgc-light-green-800" (click)="nextStep()" [disabled]="!turmas?.length"><b style="color: white">PRÓXIMO PASSO</b></button>
+</div>

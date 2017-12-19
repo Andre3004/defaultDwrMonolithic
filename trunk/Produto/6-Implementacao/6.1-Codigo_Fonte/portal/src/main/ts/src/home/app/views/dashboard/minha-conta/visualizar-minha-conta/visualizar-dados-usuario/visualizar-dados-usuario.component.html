@@ -1,0 +1,91 @@
+<!--div foto, informações e opções-->
+<div layout="row">
+
+  <div layout="column" style="min-width: 17px">
+    <button *ngIf="activatedRoute?.snapshot?.params?.id" class="md-headline tc-grey-500" type="button"
+            routerLink="../"
+            color="primary" mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+
+
+  <!--div foto e informações-->
+  <div layout-gt-xs="row" layout-align="start center" flex-gt-xs="80">
+
+    <div class="push-top push-right push-bottom" flex>
+      <avatar [usuario]="usuario"></avatar>
+    </div>
+
+    <div layout="row" layout-align="start center" layout-margin flex="60">
+      <div layout="column">
+        <h1 flex class="md-headline tc-blue-grey-800 no-margin">{{usuario?.nome }}</h1>
+        <h2 flex class="md-subhead tc-blue-grey-500 no-margin">{{usuario?.email}}</h2>
+        <h2 *ngIf="!usuario.isEstrangeiro" flex class="md-subhead tc-blue-grey-500 no-margin">{{usuario?.documento | documento}}</h2>
+        <h2 *ngIf="usuario.isEstrangeiro" flex class="md-subhead tc-blue-grey-500 no-margin">{{usuario?.tipoDocumentoEstrangeiro}} - 
+          {{usuario?.documentoEstrangeiro}}</h2>
+        <h2 flex class="md-subhead tc-blue-grey-500 no-margin">{{usuario?.contatoTelefonico}}</h2>
+
+        <h2 flex *ngIf="usuario?.isInstrutor && usuario?.linkProfissional"
+            class="md-subhead tc-blue-grey-500 no-margin">
+          {{usuario?.linkProfissional}}</h2>
+
+        <h2 *ngIf="!usuario?.isEstrangeiro" flex class="md-subhead tc-blue-grey-500 no-margin">{{usuario?.endereco?.cidade?.nome}} -
+          {{usuario?.endereco?.cidade?.estado?.uf}} </h2>
+        <h2 *ngIf="usuario?.isEstrangeiro" flex class="md-subhead tc-blue-grey-500 no-margin">{{usuario?.endereco?.cidade?.nome}} -
+          {{usuario?.endereco?.cidade?.estado?.nome}}, {{usuario?.endereco?.cidade?.estado?.pais?.nome}}</h2>
+      </div>
+    </div>
+  </div>
+  <!--div opções-->
+  <div layout="row" flex="40">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+
+<div>
+
+  <div *ngIf="usuario?.resumo && usuario?.isInstrutor" layout-margin>
+    <h2 flex class="md-subhead tc-blue-grey-800 no-margin">Resumo</h2>
+    <h2 flex class="md-subhead tc-blue-grey-500 no-margin text-area">{{usuario?.resumo}}</h2>
+  </div>
+
+  <div *ngIf="usuario?.formacao && usuario?.isInstrutor" layout-margin class="push-top">
+    <h2 flex class="md-subhead tc-blue-grey-800 no-margin">Formação</h2>
+    <h2 flex class="md-subhead tc-blue-grey-500 no-margin text-area">{{usuario?.formacao}}</h2>
+  </div>
+
+  <!--areas conhecimento-->
+  <div class="visualizar-area-conhecimento">
+    <!--{{usuario?.areasInteresse[0].areaConhecimento?.nome}}-->
+    <!--áreas de interesse-->
+    <div layout="column" layout-margin flex *ngIf="usuario?.areasInteresse?.length">
+      <h2 flex class="md-subhead tc-blue-grey-800 no-margin">Áreas de interesse</h2>
+      <td-chips [items]="areaInteresseSelected" [(ngModel)]="areasInteresse"
+                requireMatch name="areasInteresse" flex
+                [disabled]="true">
+        <ng-template td-chip let-chip="chip">
+            <span
+              *ngIf="chip?.areaConhecimentoSuperior?.id">{{chip?.nome}} ({{chip?.areaConhecimentoSuperior?.nome}})</span>
+          <span *ngIf="!chip?.areaConhecimentoSuperior?.id">{{chip?.nome}}</span>
+        </ng-template>
+      </td-chips>
+    </div>
+
+    <!--áreas de atuação-->
+    <div layout="column" layout-margin flex *ngIf="usuario?.isInstrutor && usuario?.areasAtuacao?.length">
+      <h2 flex class="md-subhead tc-blue-grey-800 no-margin">Áreas de atuação</h2>
+      <td-chips [items]="areaAtuacaoSelected" [(ngModel)]="areasAtuacao"
+                requireMatch name="areasAtuacao" flex
+                [disabled]="true">
+        <ng-template td-chip let-chip="chip">
+            <span
+              *ngIf="chip?.areaConhecimentoSuperior?.id">{{chip?.nome}} ({{chip?.areaConhecimentoSuperior?.nome}})</span>
+          <span *ngIf="!chip?.areaConhecimentoSuperior?.id">{{chip?.nome}}</span>
+        </ng-template>
+      </td-chips>
+    </div>
+  </div>
+
+</div>

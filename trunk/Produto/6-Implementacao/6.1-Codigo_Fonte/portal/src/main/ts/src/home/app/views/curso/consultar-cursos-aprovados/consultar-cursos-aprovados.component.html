@@ -1,0 +1,52 @@
+<div class="consultar-cursos-container" layout="row" layout-align="center start" style="background-image: url(../static/images/consultar-cursos-background.jpg)">
+  <div class="consultar-cursos-content text-center">
+    <div class="home-banner">
+      <img src="../static/images/logo-banner-white.png" class="logo-banner">
+      <h1 class="banner-title">Conheça a THE FULL CLASS!</h1>
+      <div class="banner-subtitle" hide-xs>
+        <!--São mais de <span class="banner-subtitle-featured">560 Cursos</span>, workshops e palestras por todo o Brasil!-->
+        <!--<div class="banner-subtitle-small">Explore e viva novas experiências!</div>-->
+        <div class="banner-subtitle-small">Somos uma plataforma de venda e publicação de cursos digitais e presenciais focada em produtividade e automação.</div>
+      </div>
+    </div>
+
+    <mat-card>
+
+      <mat-card-content>
+        <div layout-gt-xs="row">
+          <div layout="column" class="text-left" flex-gt-xs="40">
+            <span>Pesquisa</span>
+            <td-chips name="curso-filter" (add)="listCursoByFilters(filters, dataFilter, null, page.pageable)" (remove)="listCursoByFilters(filters, dataFilter, null, page.pageable)"
+              placeholder="Cursos, categorias, locais" [(ngModel)]="filters" class="input-consultar-cursos">
+            </td-chips>
+          </div>
+          <div class="divider-vertical" hide-xs></div>
+          <div layout="column" class="text-left" flex-gt-xs="30">
+            <span>Data</span>
+            <md2-datepicker name="data-filter" [(ngModel)]="dataFilter" placeholder="Busque por data"></md2-datepicker>
+          </div>
+          <div class="divider-vertical" hide-xs></div>
+          <div layout="row" layout-align-gt-xs="end" layout-align-xs="center" flex>
+            <button (click)="listCursoByFilters(filters, dataFilter, null, page.pageable)" type="button" mat-raised-button class="button-consultar-cursos bgc-red-500"
+              flex-gt-xs="100" flex-xs><b class="tc-grey-50">BUSCAR</b></button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div layout="row" layout-align="center center">
+  <div class="curso-list-container" layout="column">
+    <span class="curso-list-title" *ngIf="page.content?.length" flex>Cursos em destaque!</span>
+    <div *ngIf="!page.content?.length" layout="column" flex layout-align="center center" layout-margin>
+      <span flex>Nenhum curso encontrado!</span>
+      <button type="button" mat-raised-button flex-gt-xs="100" class="bgc-blue-grey-300 tc-grey-50 text-upper" (click)="sugerirCurso()">Sugerir um curso</button>
+    </div>
+    <div flex>
+      <curso-card *ngFor="let curso of page.content" [curso]="curso"></curso-card>
+    </div>
+  </div>
+</div>
+
+<page-footer></page-footer>

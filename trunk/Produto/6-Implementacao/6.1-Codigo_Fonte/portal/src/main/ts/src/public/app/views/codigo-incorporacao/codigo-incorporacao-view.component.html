@@ -1,0 +1,46 @@
+<mat-card flex *ngIf="turma">
+  <mat-card-content layout="column" layout-align="center center">
+    <div layout="row" layout-align="start center" class="push">
+      <a target="_blank" href="{{origin}}"><img src="../static/images/logo-large.png" class="size-height-50" alt="Logo marca TFC"></a>
+    </div>
+    <div flex>
+      <div class="push">
+        <span class="md-caption tc-grey-600">INFORMAÇÕES DA TURMA</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push">
+        <mat-icon class="tc-teal-500 push-right">event</mat-icon>
+        <span class="tc-grey-800" *ngIf="turma?.aulas" flex>{{turma?.aulas[0]?.inicio | date:'dd/MM/yy'}} à {{turma?.aulas[1]?.termino | date:'dd/MM/yy' }}</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push" *ngIf="turma.tipoTurma == 'PRESENCIAL' || turma.tipoTurma == 'SEMIPRESENCIAL'">
+        <mat-icon class="tc-teal-500 push-right">place</mat-icon>
+        <span class="tc-grey-800" flex>{{turma?.endereco?.cidade?.nome}} - {{turma?.endereco?.cidade?.estado?.uf}}</span>
+      </div>
+      <div layout="row" layout-align="start center" class="push" *ngIf="turma?.tipoTurma == 'DISTANCIA'  || turma?.tipoTurma == 'SEMIPRESENCIAL'"
+        matTooltip="Plataforma do curso a distância" [matTooltipShowDelay]="1000">
+        <mat-icon class="tc-teal-500 push-right">code</mat-icon>
+        <span class="text-truncate" flex><a href="{{turma?.plataforma}}" target="_blank"class="tc-grey-800">{{turma?.plataforma}}</a></span>
+      </div>
+      <div layout="row" layout-align="start center" class="push">
+        <mat-icon class="push-right tc-teal-500">person_pin</mat-icon>
+        <b flex>{{turma?.vagasDisponiveis}} vagas disponíveis</b>
+      </div>
+    </div>
+    <div layout="row" flex>
+      <button mat-raised-button class="matricula-button bgc-red-500 push" (click)="goToMatricula()" flex><b class="matricula-button-text tc-grey-50 md-title">REALIZAR MATRÍCULA</b></button>
+    </div>
+    <div flex>
+      <div layout="row" layout-align="start center" class="push">
+        <mat-icon class="tc-grey-500 push-right">access_time</mat-icon>
+        <span *ngIf="turma.curso" flex>{{curso?.cargaHoraria}} hrs de duração</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div *ngIf="!turma" flex layout="column" layout-margin layout-align="center center" class="turma-nao-existe-containter pad bgc-grey-300">
+
+  <img src="../static/images/logo-large-grey.png" alt="logo tfc">
+  <span class="tc-grey-700 push">Turma não encontrada!</span>
+
+  <a mat-raised-button target="_blank" href="{{origin}}"><b class="tc-grey-700">Ir à The Full Class</b></a>
+</div>

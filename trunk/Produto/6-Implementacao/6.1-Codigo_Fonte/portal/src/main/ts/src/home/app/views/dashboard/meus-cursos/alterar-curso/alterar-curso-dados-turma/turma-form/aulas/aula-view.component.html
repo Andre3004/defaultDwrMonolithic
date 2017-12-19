@@ -1,0 +1,11 @@
+<div layout="column" layout-margin>
+    <consultar-aulas [turma]="turma" (onAlterarAula)="initAulaToUpdate($event)" (onRemoveAula)="removeAula($event)" flex></consultar-aulas>
+    <inserir-aula [aula]="aulaToInsert" (onSave)="resetAulaToInsert()" (onCancel)="resetAulaToInsert()" *ngIf="aulaToInsert && !aulaToUpdate" flex></inserir-aula>
+    <alterar-aula [aula]="aulaToUpdate" (onSave)="resetAulaToUpdate()" (onCancel)="resetAulaToUpdate()" *ngIf="aulaToUpdate && !aulaToInsert"></alterar-aula>
+    <div flex>
+        <button mat-raised-button class="bgc-grey-200" *ngIf="!aulaToInsert" (click)="initAulaToInsert()"><b class="tc-grey-700">INSERIR AULA</b></button>
+    </div>
+    <div layout="row" class="push-top">
+        <button mat-raised-button (click)="continue()" color="primary"><b style="color: white">PRÓXIMO PASSO</b></button>
+    </div>
+</div>

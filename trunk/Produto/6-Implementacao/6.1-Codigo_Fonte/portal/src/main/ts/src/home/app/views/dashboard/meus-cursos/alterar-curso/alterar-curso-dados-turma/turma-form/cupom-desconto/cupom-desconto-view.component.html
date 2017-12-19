@@ -1,0 +1,11 @@
+<div layout="column" layout-margin>
+    <consultar-cupons-desconto [turma]="turma" (onAlterarCupom)="initCupomToUpdate($event)" (onRemoveCupom)="removeCupom($event)"flex></consultar-cupons-desconto>
+    <inserir-cupom-desconto [cupomDesconto]="cupomToInsert" (onSave)="resetCupomToInsert()" (onCancel)="resetCupomToInsert()" *ngIf="cupomToInsert && !cupomToUpdate" flex></inserir-cupom-desconto>    
+    <alterar-cupom-desconto [cupomDesconto]="cupomToUpdate" (onSave)="resetCupomToUpdate()" (onCancel)="resetCupomToUpdate()" *ngIf="cupomToUpdate && !cupomToInsert"></alterar-cupom-desconto>    
+    <div flex>
+        <button mat-raised-button class="bgc-grey-200" *ngIf="!cupomToInsert" (click)="initCupomToInsert()"><b class="tc-grey-700">INSERIR CUPOM</b></button>
+    </div>
+    <div layout="row" class="push-top">
+        <button mat-raised-button (click)="continue()" color="primary"><b style="color: white">FINALIZAR CADASTRO DE TURMA</b></button>
+    </div>
+</div>

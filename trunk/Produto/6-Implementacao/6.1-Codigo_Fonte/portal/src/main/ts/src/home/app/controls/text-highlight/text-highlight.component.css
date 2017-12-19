@@ -1,0 +1,8 @@
+.text-content{
+    border-radius: 2px;
+}
+
+.blockquote{
+    border-left-width: 4px;
+    border-left-style: inset;
+}

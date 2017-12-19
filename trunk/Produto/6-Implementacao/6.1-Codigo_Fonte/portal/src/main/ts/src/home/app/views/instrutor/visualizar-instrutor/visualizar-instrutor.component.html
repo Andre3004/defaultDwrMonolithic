@@ -1,0 +1,37 @@
+<div layout-align="center center" layout-gt-xs="row">
+  <div layout="row" flex-gt-xs="80" layout-margin>
+    <div flex layout-margin>
+
+      <mat-card class="bgc-grey-50" layout-margin style="max-width: 1200px">
+
+        <!--card informações-->
+        <mat-card-content>
+
+          <visualizar-dados-usuario [usuario]="usuario" *ngIf="usuario?.id" flex>
+            <!--is instrutor-->
+            <div flex layout="column">
+              <mat-slide-toggle layout-margin [(ngModel)]="usuario.isInstrutor"
+                               class="tc-blue-grey-900" name="is_instrutor"
+                               (change)="updateUsuarioChangingOpcoesInstrutor(usuario)">
+                <span> {{usuario.isInstrutor ? 'Instrutor' : 'Aluno'}} </span>
+              </mat-slide-toggle>
+            </div>
+            <!--div opções-->
+            <div layout="column" layout-align="start end">
+              <div layout="row">
+                <button mat-icon-button routerLink="alterar" class="tc-blue-grey-900">
+                  <mat-icon>mode_edit</mat-icon>
+                </button>
+                <!-- <button mat-icon-button [matMenuTriggerFor]="menu" class="tc-blue-grey-900">
+                  <mat-icon>more_vert</mat-icon>
+                </button> -->
+              </div>
+            </div>
+          </visualizar-dados-usuario>
+
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+</div>

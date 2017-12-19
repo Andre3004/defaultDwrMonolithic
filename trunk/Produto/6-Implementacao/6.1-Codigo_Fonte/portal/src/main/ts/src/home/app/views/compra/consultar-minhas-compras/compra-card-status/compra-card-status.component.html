@@ -1,0 +1,63 @@
+<div [tdFade]="!compra?.id" class="curso-card-container"
+     clickWithoutMove (onClickWithoutMove)="goToVisualizarCompra(compra.id)">
+  <mat-card highlight class="curso-card z-1" #card
+           [ngClass]="{'bgc-teal-500' : compra.aprovada, 'bgc-blue-grey-600' : compra.emAnalise, 'bgc-red-600' : compra.turmaConcluida}">
+    <div *ngIf="compra?.matriculas[0]?.lote?.turma?.curso?.imagem"
+         [style.background-image]="'url('+ compra?.matriculas[0]?.lote?.turma?.curso?.imagem +')'"
+         class="curso-card-image image-cover bgc-grey-300" mat-card-image
+         layout="row" layout-align="end start">
+    </div>
+    <div *ngIf="!compra?.matriculas[0]?.lote?.turma?.curso?.imagem" mat-card-image
+         class="curso-card-image image-cover bgc-grey-200" layout="row" layout-align="center center">
+      <span class="md-caption tc-grey-400">Este curso não possui imagem</span>
+    </div>
+    <mat-card-content class="text-left">
+      <div layout="row" layout-align="start center" class="size-height-50">
+        <!--ngClass verifica se o elemento excedeu o tamanho da div, se caso sim coloca as reticências-->
+        <span #compraNome class="md-title curso-nome text-upper"
+              [ngClass]="{'tc-grey-700': compra.cancelada, 'tc-grey-50': !compra.cancelada}">
+          {{compra?.matriculas[0]?.lote?.turma?.curso?.nome}}
+        </span>
+      </div>
+      <div>
+        <div class="curso-card-line"
+             [ngClass]="{'tc-blue-grey-200': compra.cancelada, 'tc-grey-50': !compra.cancelada}">
+          <span class="md-caption" [ngClass]="{'tc-grey-700': compra.cancelada, 'tc-grey-50': !compra.cancelada}">
+            Compra realizada em <b>{{compra?.created | date:'dd/MM/yy'}}</b>
+          </span>
+        </div>
+        <div class="curso-card-line">
+          <span class="md-caption" [ngClass]="{'tc-grey-700': compra.cancelada, 'tc-grey-50': !compra.cancelada}">
+            As aulas iniciam em <b>{{compra?.matriculas[0].lote?.turma?.aulas[0].inicio | date:'dd/MM/yy'}}</b>
+          </span>
+        </div>
+        <div layout="row" layout-align="start center" class="curso-card-line"
+             *ngIf="compra?.matriculas[0]?.lote?.turma?.tipoTurma == 'DISTANCIA'">
+          <mat-icon class="curso-card-icon md-18"
+                   [ngClass]="{'tc-blue-grey-200': compra.cancelada, 'tc-grey-50': !compra.cancelada}">code
+          </mat-icon>
+          <a href="{{compra?.matriculas[0]?.lote?.turma?.plataforma}}" class="md-caption"
+             [ngClass]="{'tc-grey-700': compra.cancelada, 'tc-grey-50': !compra.cancelada}">{{compra?.matriculas[0]?.lote?.turma?.plataforma}}</a>
+        </div>
+        <div layout="row" layout-align="start center" class="curso-card-line"
+             *ngIf="compra?.matriculas[0]?.lote?.turma?.tipoTurma == 'PRESENCIAL' || compra?.matriculas[0]?.lote?.turma?.tipoTurma == 'SEMIPRESENCIAL'">
+          <mat-icon class="curso-card-icon md-18" [ngClass]="{'tc-blue-grey-200': compra.cancelada, 'tc-grey-50': !compra.cancelada}">
+            place
+          </mat-icon>
+          <span *ngIf="compra?.matriculas[0]?.lote?.turma?.endereco?.cidade?.nome" class="md-caption"
+                [ngClass]="{'tc-grey-700': compra.cancelada, 'tc-grey-50': !compra.cancelada}">
+                {{compra?.matriculas[0]?.lote?.turma?.endereco?.cidade?.nome}}
+          </span>
+          <span *ngIf="compra?.matriculas[0]?.lote?.turma?.endereco?.cidade?.estado?.uf"
+                 [ngClass]="{'tc-grey-700': compra.cancelada, 'tc-grey-50': !compra.cancelada}">&nbsp;- {{compra?.matriculas[0]?.lote?.turma?.endereco?.cidade?.estado?.uf}}
+          </span>
+        </div>
+      </div>
+      <div style="margin-top: 10px" layout="row">
+        <span class="md-caption" [ngClass]="{'tc-grey-600' : compra.cancelada, 'tc-grey-50': !compra.cancelada}">{{(compra.cancelada)?'CANCELADA':(compra.emAnalise)?'EM ANÁLISE':(compra.aprovada)?'APROVADA':'CONCLUÍDA'}}</span>
+        <span flex=""></span>
+        <span class="md-caption" layout-align="end end" [ngClass]="{'tc-grey-600' : compra.cancelada, 'tc-grey-50': !compra.cancelada}">{{usuario.id == compra.responsavel.id ? (compra.valor | currencyformat):''}}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

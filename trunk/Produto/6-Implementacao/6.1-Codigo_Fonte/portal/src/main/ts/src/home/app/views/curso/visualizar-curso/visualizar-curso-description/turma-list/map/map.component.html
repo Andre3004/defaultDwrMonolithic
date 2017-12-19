@@ -1,0 +1,23 @@
+<div layout-gt-xs="row">
+  <div layout="column" flex>
+    <span class="tc-grey-800" style="line-height: 2em" *ngIf="endereco?.logradouro">{{endereco?.logradouro}}, {{endereco?.numero}}</span>
+    <span class="tc-grey-800" style="line-height: 2em" *ngIf="endereco?.bairro">{{endereco?.bairro}}</span>
+    <span class="tc-grey-800" style="line-height: 2em" *ngIf="endereco?.cep">CEP {{endereco?.cep}}</span>
+    <span class="tc-grey-800" style="line-height: 2em" *ngIf="endereco?.cidade">{{endereco?.cidade.nome}} ({{endereco?.cidade?.estado?.uf}})</span>
+    <span class="tc-grey-800" style="line-height: 2em" *ngIf="endereco?.complemento">{{endereco?.complemento}} </span>
+  </div>
+  <div flex>
+    <agm-map *ngIf="viewLoaded" 
+      [latitude]="endereco?.latitude" 
+      [longitude]="endereco?.longitude" 
+      [zoom]=15 
+      [disableDefaultUI]="false"
+      [zoomControl]="true" 
+      [style.height]="mapHeight">
+        <agm-marker 
+        [latitude]="endereco?.latitude" 
+        [longitude]="endereco?.longitude" 
+        [markerDraggable]=false></agm-marker>
+    </agm-map>
+  </div>
+</div>

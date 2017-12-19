@@ -1,0 +1,138 @@
+<div *ngIf="compra.matriculas">
+  <form (ngSubmit)="submit( $event )" ngNativeValidate>
+    <div *ngIf="!compra.responsavel.isEmpresa">
+      <div layout-gt-xs="row" layout-margin>
+        <span class="tc-grey-800 md-subhead" flex>O responsável é um aluno?</span>
+      </div>
+
+      <div layout-gt-xs="row" layout-xs="column" layout-align-gt-xs="start center" layout-align-xs="start start" layout-margin>
+        <mat-radio-group [(ngModel)]="isResponsavelAluno" (change)="isResponsavelAlunoChange()" name="isResponsavelAluno" [align]="'start'"
+          layout="row" layout-margin>
+          <mat-radio-button [value]="'SIM'" color="primary" class="push-right">
+            Sim
+          </mat-radio-button>
+          <mat-radio-button [value]="'NAO'" color="primary">
+            Não
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <div flex="15"></div>
+        <mat-form-field *ngIf="isResponsavelAluno === 'SIM'" layout-margin>
+          <mat-select placeholder="Marcar responsável como aluno" [(ngModel)]="loteSelected" name="lote" (change)="markReponsavelAsAluno(loteSelected, null)">
+            <mat-option *ngFor="let lote of lotes" [value]="lote">
+              {{lote?.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div flex></div>
+      </div>
+    </div>
+    <div *ngFor="let lote of turma.lotes; let indexLote = index">
+
+      <div *ngIf="lote.quantidade" layout="column" layout-margin>
+        <span class="tc-grey-500 md-caption" flex>LOTE</span>
+        <b class="matricula-title" flex>{{lote.nome}} ({{lote.quantidade}})</b>
+      </div>
+
+      <div *ngFor="let matricula of lote.matriculas; let indexMatricula = index" layout="row" layout-margin>
+        <div flex>
+          <text-highlight [color]="'grey'">
+            <div flex>
+              <div layout-gt-xs="row" layout-margin>
+                <!-- o index começa em 0 -->
+                <div layout="row" layout-align="start center" flex>
+                  <mat-icon color="primary" class="push-right icon-size">perm_identity</mat-icon>
+                  <b class="matricula-title matricula-line">Aluno {{indexMatricula + 1}} </b>
+                </div>
+              </div>
+              <div layout-gt-xs="row" layout-margin>
+                <mat-form-field flex>
+                  <input name="nomeAluno{{indexLote+'-'+indexMatricula+1}}" [(ngModel)]="matricula.aluno.nome" matInput placeholder="Nome do aluno"
+                    required (ngModelChange)="formChanged()" somenteLetras [disabled]="matricula.aluno.id || matricula.aluno.isResponsavel">
+                </mat-form-field>
+                <mat-checkbox flex *ngIf="turma?.curso?.acceptAlunoEstrangeiro" name="isEstrangeiro{{indexLote+'-'+indexMatricula+1}}" flex
+                  [disabled]="matricula.aluno.id || matricula.aluno.isResponsavel"
+                  [(ngModel)]="matricula.aluno.isEstrangeiro">
+                  Aluno estrangeiro
+                </mat-checkbox>
+
+
+                <div hide-xs flex>
+                </div>
+              </div>
+              <!-- DOCUMENTO ESTANGEIRO -->
+              <div layout-margin layout="row" class="select-tipo-documento">
+                <mat-form-field *ngIf="matricula.aluno.isEstrangeiro">
+                  <mat-select [disabled]="matricula.aluno.id || matricula.aluno.isResponsavel" [(ngModel)]="matricula.aluno.selectTipoDocumento"
+                    name="selectTipoDocumento{{indexLote+'-'+indexMatricula+1}}" placeholder="Tipo de documento" >
+                    <mat-option [value]="'Passaporte'">Passaporte</mat-option>
+                    <mat-option [value]="'Outro'">Outro</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="custom-margin-align" *ngIf="matricula.aluno.selectTipoDocumento == 'Outro' && matricula.aluno.isEstrangeiro"
+                  flex>
+                  <input matInput [(ngModel)]="matricula.aluno.tipoDocumentoEstrangeiro" name="tipoDocumentoEstrangeiro{{indexLote+'-'+indexMatricula+1}}"
+                    placeholder="Tipo de documento" (ngModelChange)="findAlunoByRg(indexLote, indexMatricula)" [disabled]="matricula.aluno.id || matricula.aluno.isResponsavel"
+                    required>
+                  <mat-error>
+                    Este campo é obrigatório
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="custom-margin-align" *ngIf="matricula.aluno.isEstrangeiro" flex>
+                  <input flex matInput [(ngModel)]="matricula.aluno.documentoEstrangeiro" somenteNumerosNaturais name="documentoEstrangeiro{{indexLote+'-'+indexMatricula+1}}"
+                    placeholder="Documento" (ngModelChange)="findAlunoByRg(indexLote, indexMatricula)" required [disabled]="matricula.aluno.id || matricula.aluno.isResponsavel">
+                  <mat-error>
+                    Este campo é obrigatório
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div layout-gt-xs="row" layout-margin>
+                <mat-form-field flex>
+                  <input type="email" name="emailAluno{{indexLote+'-'+indexMatricula+1}}" [(ngModel)]="matricula.aluno.email" matInput placeholder="E-mail"
+                    maxlength="45" email (ngModelChange)="formChanged(); emailChanged(matricula.aluno); findAlunoByRg(indexLote, indexMatricula)"
+                    [disabled]="matricula.aluno.id || matricula.aluno.isResponsavel">
+                </mat-form-field>
+                <mat-form-field *ngIf="!matricula.aluno.isEstrangeiro" flex>
+                  <input name="rgAluno{{indexLote+'-'+indexMatricula+1}}" [(ngModel)]="matricula.aluno.registroGeral" maxlength="20" matInput
+                    placeholder="RG" somenteAlfanumericos required (ngModelChange)="findAlunoByRg(indexLote, indexMatricula)"
+                    [disabled]="matricula.aluno.id || matricula.aluno.isResponsavel">
+                </mat-form-field>
+                <button mat-icon-button *ngIf="(matricula.aluno.id && !matricula.aluno.isResponsavel)" (click)="matricula.aluno = {selectTipoDocumento: 'Passaporte'};"
+                  flex="5">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+          </text-highlight>
+        </div>
+      </div>
+    </div>
+
+    <div layout="row" layout-margin>
+      <!--Se a turma for de graça finalizar a compra neste passo-->
+      <button *ngIf="compra.valor != 0 && compra.valor - compra.valor * compra?.cupomDesconto?.valor / 100 != 0" type="submit" mat-raised-button [disabled]="findingAluno" color="primary">
+        PRÓXIMO PASSO
+      </button>
+      <div *ngIf="compra.valor == 0 || compra.valor - compra.valor * compra?.cupomDesconto?.valor / 100 == 0" flex>
+        <div layout="column" layout-align="start start" layout-margin>
+
+          <termos-uso [termosUso]="termosUso"></termos-uso>
+
+          <div layout="row" layout-margin flex>
+            <mat-error [tdToggle]="!termosUso.requiredError || termosUso.isAccepted" fa-file-text-o>
+              É necessário concordar com os termos de uso para finalizar a matrícula
+            </mat-error>
+          </div>
+
+        </div>
+        <div layout="row" layout-align="center" layout-margin>
+          <button mat-raised-button class="bgc-light-green-800 tc-white" type="submit" flex>FINALIZAR MATRÍCULA</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

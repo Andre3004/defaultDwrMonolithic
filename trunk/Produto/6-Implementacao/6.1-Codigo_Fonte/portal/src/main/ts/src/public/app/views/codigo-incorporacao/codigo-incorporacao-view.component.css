@@ -1,0 +1,15 @@
+.matricula-button{
+    height: 60px;
+}
+
+.matricula-button-text{
+    font-weight: bold;
+}
+
+.curso-card-image{
+    height: 160px;
+}
+
+.turma-nao-existe-container{
+    height: 300px;
+}

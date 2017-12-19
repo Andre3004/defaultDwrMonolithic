@@ -1,0 +1,56 @@
+@import "../../app.component";
+
+html, body, material-app, mat-sidenav-container {
+  margin: 0;
+  width: 100%;
+  height: calc(100% - #{$min-height-toolbar});
+}
+
+.toolbar-home {
+  background-color : white;
+  position: relative;
+  min-height: $min-height-toolbar;
+  padding-top: 2px;
+
+  @media only screen and (max-width: 860px) {
+    padding-top: 2px;
+  }
+  @media only screen and (max-width: 600px) {
+    padding-top: 6px;
+    padding-left: $header-margin-xs;
+    padding-right: $header-margin-xs;
+  }
+  @media only screen and (min-width: 600px) {
+    padding-left: $header-margin;
+    padding-right: $header-margin;
+  }
+}
+
+.floating-button{
+  position: absolute;
+  bottom: 20px;
+  border-radius: 50px;
+  height: 40px;
+
+  @media only screen and (max-width: 600px) {
+    right: $header-margin-xs;
+  }
+  @media only screen and (min-width: 600px) {
+    right: $header-margin;
+  }
+}
+
+.logo-image {
+  cursor: pointer;
+}
+
+.name-user {
+  cursor: pointer;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.scrolling-content{
+  overflow: auto;
+  height: 100%;
+}

@@ -1,0 +1,246 @@
+<mat-toolbar class="elevation-z1" style="background-color: white">
+  <button type="button" routerLink="../" class="bgc-grey-300 push-right" mat-icon-button>
+    <mat-icon class="tc-grey-600">arrow_back</mat-icon>
+  </button>
+  <a mat-button routerLink="/cursos/{{curso?.id}}">
+    <h1 class="md-display-1 tc-grey-600 text-upper">{{curso?.nome}}</h1>
+  </a>
+</mat-toolbar>
+<div layout="row" layout-align="center center">
+  <mat-card class="visualizar-compra-card" flex>
+    <div layout="row" layout-align="center center">
+      <div class="visualizar-compra-container" flex>
+        <mat-tab-group [dynamicHeight]="true" #tabGroup [ngClass]="{'hide-tab-header': !(compra?.pagamento && (isUsuarioResponsavel || usuario?.isAdministrador))}">
+
+          <mat-tab label="TURMA E AULAS">
+            <div class="compra-content">
+              <div layout="column">
+
+                <div layout="column" flex>
+                  <span class="tc-grey-800 md-caption compra-label">RESPONSÁVEL PELA MATRÍCULA</span>
+                  <mat-list>
+                    <mat-list-item class="list-pad-none">
+                      <div *ngIf="!compra?.responsavel?.foto" class="tc-grey-100 bgc-teal-700" layout="row" layout-align="center center" matListAvatar>
+                        <span>{{compra?.responsavel.nome?.substring(0, 1).toUpperCase()}}</span>
+                      </div>
+                      <img *ngIf="compra?.responsavel?.foto" src="{{compra?.responsavel?.foto}}" class="image-cover" matListAvatar>
+                      <span matLine>{{compra?.responsavel?.nome}}
+                        <span *ngIf="isUsuarioResponsavel" class="md-caption tc-grey-600">(Você)</span>
+                      </span>
+                      <span class="responsavel-details tc-grey-600" matLine>{{compra?.responsavel?.email}}</span>
+                      <span *ngIf="compra?.responsavel?.codigoArea && compra?.responsavel?.contatoTelefonico" class="responsavel-details tc-grey-600"
+                        matLine>({{compra?.responsavel?.codigoArea}}){{compra?.responsavel?.contatoTelefonico}}</span>
+                    </mat-list-item>
+                  </mat-list>
+                  <mat-divider class="visualizar-compra-divider"></mat-divider>
+                </div>
+
+                <div *ngIf="compra?.matriculas && (isUsuarioResponsavel || usuario?.isAdministrador)">
+                  <span class="tc-grey-800 md-caption compra-label" style="line-height: 3em">{{(lotes?.length > 0)? "LOTES COMPRADOS": "LOTE COMPRADO"}}</span>
+                  <div class="push-bottom">
+                    <mat-accordion>
+                      <mat-expansion-panel *ngFor="let lote of lotes" class="matriculas-list bgc-grey-100" (opened)="listMatriculasByLoteIdAndCompraId(lote)">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <b class="tc-teal-500">{{lote.nome}} - {{lote.preco | currencyformat}}</b>
+                          </mat-panel-title>
+                          <mat-panel-description layout="row">
+                            <span flex></span>
+                            <span class="tc-grey-800">{{lote.matriculas?.length}} {{(lote.matriculas?.length > 1)? 'matrículas': 'matrícula'}}</span>
+                            <div hide-xs style="width: 100px"></div>
+                          </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div *ngFor="let matricula of lote.matriculas" style="background-color: white">
+                          <div layout-gt-xs="row" layout-margin>
+                            <div layout="column" flex>
+                              <span class="md-caption compra-label tc-grey-600">Nome</span>
+                              <span class="tc-grey-800">{{matricula?.aluno?.nome}}
+                                <span *ngIf="matricula?.aluno?.id == usuario?.id" class="md-caption tc-grey-600">(Você)</span>
+                              </span>
+                            </div>
+                            <div layout="column" flex>
+                              <span class="md-caption compra-label tc-grey-600">E-mail</span>
+                              <span class="tc-grey-800">{{matricula?.aluno?.email}}</span>
+                            </div>
+                            <div layout="column" *ngIf="!matricula?.aluno?.isEstrangeiro" flex>
+                              <span class="md-caption compra-label tc-grey-600">RG</span>
+                              <span class="tc-grey-800">{{matricula?.aluno?.registroGeral}}</span>
+                            </div>
+                            <div layout="column" flex *ngIf="!matricula?.aluno?.isEstrangeiro && lote?.turma?.curso?.acceptAlunoEstrangeiro"></div>
+                            <div layout="column" flex *ngIf="matricula?.aluno?.isEstrangeiro">
+                              <span class="md-caption compra-label tc-grey-600">Tipo de documento</span>
+                              <span class="tc-grey-800">{{matricula?.aluno?.tipoDocumentoEstrangeiro}}</span>
+                            </div>
+                            <div layout="column" flex *ngIf="matricula?.aluno?.isEstrangeiro">
+                              <span class="md-caption compra-label tc-grey-600">Documento</span>
+                              <span class="tc-grey-800">{{matricula?.aluno?.documentoEstrangeiro}}</span>
+                            </div>
+
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+
+                  <mat-divider class="visualizar-compra-divider"></mat-divider>
+                </div>
+
+                <div *ngIf="!(compra?.matriculas && (isUsuarioResponsavel || usuario?.isAdministrador))">
+
+                  <span class="tc-grey-800 md-caption compra-label" style="line-height: 3em">LOTE MATRICULADO</span>
+                  <div layout="row" class="matriculas-list bgc-grey-100" flex>
+                    <div layout="column" class="pad">
+                      <b class="tc-teal-500">
+                        {{loteMatriculado?.nome}} - {{loteMatriculado?.preco | currencyformat}}
+                      </b>
+                    </div>
+                  </div>
+                  <mat-divider class="visualizar-compra-divider"></mat-divider>
+                </div>
+
+                <span class="tc-grey-800 md-caption compra-label" style="line-height: 3em">DIAS DAS AULAS</span>
+                <consultar-aulas *ngIf="turma" [turma]="turma" [readOnly]="true" [backgroundColor]="'bgc-grey-100'"></consultar-aulas>
+
+                <div *ngIf="turma?.tipoTurma === tipoTurma?.PRESENCIAL || turma?.tipoTurma === tipoTurma?.SEMIPRESENCIAL">
+                  <mat-divider class="visualizar-compra-divider"></mat-divider>
+
+                  <span class="tc-grey-800 md-caption compra-label" style="line-height: 3em">LOCAL</span>
+                  <map [mapHeight]="'250px'" [endereco]="turma?.endereco" flex></map>
+
+                </div>
+
+                <div *ngIf="(turma?.tipoTurma == tipoTurma?.DISTANCIA || turma?.tipoTurma == tipoTurma?.SEMIPRESENCIAL) && turma?.plataforma">
+                  <mat-divider class="visualizar-compra-divider"></mat-divider>
+
+                  <span class="tc-grey-800 md-caption compra-label" style="line-height: 3em">PLATAFORMA ONLINE</span>
+                  <div layout="row">
+                    <a href="{{turma?.plataforma}}" target="_blank" class="text-truncate tc-teal-500" flex>{{turma?.plataforma}}</a>
+                  </div>
+                </div>
+
+                <mat-divider *ngIf="turma?.instrutores?.length > 0" class="visualizar-compra-divider"></mat-divider>
+
+                <mat-list>
+                  <span *ngIf="turma?.instrutores?.length > 0" class="tc-grey-800 md-caption compra-label" style="line-height: 3em">INSTRUTORES</span>
+
+                  <instrutores-list *ngIf="turma" [turma]="turma"></instrutores-list>
+                </mat-list>
+              </div>
+            </div>
+          </mat-tab>
+
+
+          <mat-tab *ngIf="compra?.pagamento && (isUsuarioResponsavel || usuario?.isAdministrador)">
+            <ng-template mat-tab-label>
+              <span>PAGAMENTO</span>
+              <div class="notification elevation-z1" [ngClass]="{'bgc-green-500' : compra?.pagamento?.statusPagamento === statusPagamento.APROVADA, 'bgc-yellow-800' : compra?.pagamento?.statusPagamento === statusPagamento.EM_ANALISE, 'bgc-red-500' : compra?.pagamento?.statusPagamento === statusPagamento.CANCELADA}"></div>
+            </ng-template>
+            <div class="compra-content">
+              <b class="tc-grey-800 compra-title">Informações da compra</b>
+              <div layout-gt-xs="row">
+                <div layout="column" matTooltip="valor={{compra?.valor}}, acréscimos={{compra?.pagamento?.jurosParcelamento}}" [matTooltipDisabled]="!compra?.pagamento?.parcelas" flex>
+                  <span class="md-caption compra-label tc-grey-600">Valor total da compra</span>
+                  <b class="tc-grey-800">{{ ( compra?.valor + compra?.pagamento?.jurosParcelamento ) | currencyformat}}</b>
+                </div>
+                <div layout="column" *ngIf="compra?.valor > 0 && compra?.pagamento?.parcelas" flex>
+                  <span class="md-caption compra-label tc-grey-600">Parcelamento</span>
+                  <span class="tc-grey-800">{{(compra?.pagamento?.parcelas == 1)? "À vista" : compra?.pagamento?.parcelas + "x"}}</span>
+                </div>
+                <div flex></div>
+              </div>
+              <div layout-gt-xs="row">
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Telefone</span>
+                  <span class="tc-grey-800">({{compra?.pagamento?.codigoArea}}) {{compra?.pagamento?.telefone}}</span>
+                </div>
+              </div>
+              <div layout-gt-xs="row">
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Forma de pagamento</span>
+                  <span class="tc-grey-800">{{getFormaPagamento(compra?.pagamento?.formaPagamento)}}</span>
+                </div>
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Status do pagamento</span>
+                  <b [ngClass]="{'tc-green-500' : compra?.pagamento?.statusPagamento === statusPagamento.APROVADA, 'tc-yellow-800' : compra?.pagamento?.statusPagamento === statusPagamento.EM_ANALISE, 'tc-red-500' : compra?.pagamento?.statusPagamento === statusPagamento.CANCELADA}">{{getStatusPagamento(compra?.pagamento?.statusPagamento)}}</b>
+                </div>
+                <div *ngIf="compra?.pagamento.formaPagamento == formaPagamento.BOLETO && compra?.pagamento?.statusPagamento == statusPagamento.EM_ANALISE"
+                  layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Link do boleto</span>
+                  <div>
+                    <a mat-raised-button color="accent" target="_blank" href="{{compra.pagamento.linkPagamento}}">Imprimir boleto</a>
+                  </div>
+                </div>
+                <div *ngIf="!(compra?.pagamento.formaPagamento == formaPagamento.BOLETO && compra?.pagamento?.statusPagamento == statusPagamento.EM_ANALISE)"
+                  flex>
+                </div>
+              </div>
+
+              <div *ngIf="compra?.pagamento.formaPagamento == formaPagamento.CARTAO">
+
+                <mat-divider class="visualizar-compra-divider"></mat-divider>
+
+                <div>
+                  <b class="tc-grey-800 compra-title" flex>Informações do cartão</b>
+                </div>
+                <div layout-gt-xs="row">
+                  <div layout="column" class="push-top" flex>
+                    <span class="md-caption compra-label tc-grey-600">Nome do titular</span>
+                    <span class="tc-grey-800">{{compra?.pagamento?.nomeTitularCartao}}</span>
+                  </div>
+                  <div layout="column" class="push-top" flex>
+                    <span class="md-caption compra-label tc-grey-600">Número</span>
+                    <consultar-bandeira-cartao *ngIf="compra?.pagamento?.numeroCartao" [numeroCartao]="compra?.pagamento?.numeroCartao"></consultar-bandeira-cartao>
+                  </div>
+                  <div flex></div>
+                </div>
+              </div>
+
+              <mat-divider class="visualizar-compra-divider"></mat-divider>
+
+              <div>
+                <b class="tc-grey-800 compra-title" flex>Endereço</b>
+              </div>
+              <div layout-gt-xs="row">
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">CEP</span>
+                  <span class="tc-grey-800">{{compra?.pagamento?.endereco?.cep}}</span>
+                </div>
+              </div>
+              <div layout-gt-xs="row">
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Logradouro</span>
+                  <span class="tc-grey-800">{{compra?.pagamento?.endereco?.logradouro}}</span>
+                </div>
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Número</span>
+                  <span class="tc-grey-800">{{compra?.pagamento?.endereco?.numero}}</span>
+                </div>
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Bairro</span>
+                  <span class="tc-grey-800">{{compra?.pagamento?.endereco?.bairro}}</span>
+                </div>
+              </div>
+              <div layout-gt-xs="row">
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Cidade</span>
+                  <span class="tc-grey-800">{{compra?.pagamento?.endereco?.cidade?.nome}}</span>
+                </div>
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Estado</span>
+                  <span class="tc-grey-800">{{compra?.pagamento?.endereco?.cidade?.estado?.nome}}</span>
+                </div>
+                <div flex></div>
+              </div>
+              <div layout-gt-xs="row" *ngIf="compra?.pagamento?.endereco?.complemento" class="push-top">
+                <div layout="column" class="push-top" flex>
+                  <span class="md-caption compra-label tc-grey-600">Complemento</span>
+                  <span class="tc-grey-800">{{compra?.pagamento?.endereco?.complemento}}</span>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </mat-card>
+</div>

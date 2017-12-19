@@ -1,0 +1,20 @@
+.circle{
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+@media only screen and (max-width: 600px){
+    .circle{
+        width: 33px !important;
+        height: 33px !important;
+    }
+}
+
+.circle-inactive{
+    border-style: solid;
+    border-color: #98d4cf;
+}
+
+.text-inactive{
+    color: #98d4cf;
+}

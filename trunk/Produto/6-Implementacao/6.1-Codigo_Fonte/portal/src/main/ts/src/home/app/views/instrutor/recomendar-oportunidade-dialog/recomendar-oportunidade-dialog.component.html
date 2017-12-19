@@ -1,0 +1,27 @@
+<div mat-dialog-content class="tfc-content-dialog">
+
+  <h1 matDialogTitle>Sugerir oportunidade de curso</h1>
+
+  <div layout="column" flex>
+    <mat-form-field flex>
+      <textarea matInput placeholder="Descrição da sugestão" [(ngModel)]="descricao"></textarea>
+    </mat-form-field>
+  </div>
+
+  <td-chips #chips flex 
+          [items]="areasConhecimentoList"
+          [(ngModel)]="areasConhecimento"
+          (keydown)="listAreaConhecimentoByFilters(chips._inputChild.value)"
+          placeholder="Áreas de conhecimento"
+          stacked>
+  </td-chips>
+  
+  <div layout="row"  layout-margin>
+    <button mat-raised-button  color="accent" flex (click)="dialogRef.close( {areasConhecimento: areasConhecimento,descricao:descricao})">
+      Enviar
+    </button>
+    <button mat-raised-button flex (click)="dialogRef.close()">
+      Cancelar
+    </button>
+  </div>
+</div>

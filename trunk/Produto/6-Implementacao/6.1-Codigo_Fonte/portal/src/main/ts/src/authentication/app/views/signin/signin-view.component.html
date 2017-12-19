@@ -1,0 +1,89 @@
+<div layout="column" layout-align="center center"
+     style="height: 100%; background-size: cover; background-image: url('static/images/authentication-background.jpg');">
+    <div layout="column" layout-align="center center">
+      <div layout="column" layout-margin layout-align="center center">
+        <div layout="row" flex layout-margin>
+          <img src="../static/images/logo-large-white.png" style="height: 120px;">
+        </div>
+
+        <div layout="row" flex layout-margin>
+          <h1 class="md-title tc-white-4" flex>
+            <b>Seja bem vindo a THE FULL CLASS</b>
+          </h1>
+        </div>
+      </div>
+
+      <mat-card style="width: 600px">
+
+        <mat-card-content>
+          <form #signinForm="ngForm">
+            <div layout="column" layout-margin>
+
+              <div layout="row" flex layout-margin>
+                <h1 class="md-body-1 tc-grey-600" flex>
+                  <b>Acesse sua conta THE FULL CLASS</b>
+                </h1>
+              </div>
+
+              <div layout="row" flex layout-margin style="margin-top: 34px;">
+                <mat-form-field flex>
+                  <input matInput placeholder="Acesse com seu email ou CPF/CNPJ"
+                         [(ngModel)]="usuario.email" required name="email"/>
+                </mat-form-field>
+              </div>
+
+              <div layout="column" flex layout-margin>
+                <div layout="row" flex="">
+                  <mat-form-field flex>
+                    <input type="password" matInput
+                           placeholder="Sua senha"
+                           [(ngModel)]="usuario.password"
+                           required name="password"/>
+                  </mat-form-field>
+                </div>
+                <div layout="row" layout-align="end start" flex="">
+                  <span class="tc-grey-600" style="margin-top:-12px;cursor: pointer">Esqueceu sua senha?</span>
+                </div>
+              </div>
+
+              <div layout="row" flex layout-margin>
+                <button style="height: 55px" mat-raised-button color="accent"
+                        (click)="onSignIn()" flex>
+                  Entrar
+                </button>
+              </div>
+
+              <div layout="row" flex layout-margin>
+                <div flex layout-align="center center" layout="row">
+                  <span class="tc-grey-600">Ou acesse com </span>
+                </div>
+              </div>
+
+              <div layout="row" flex layout-margin>
+
+                <button type="button" style="height: 55px; background-color: #d8deea" mat-raised-button
+                        (click)="onSignIn()" flex>
+                  <div flex>
+                    <img style="width: 20px; float: left; padding-top: 10px; padding-left: 15px"
+                         src="../static/images/facebook-icon.png">
+                  </div>
+                  <div flex>
+                    <b style="margin-left: -39px; color: #3c5a99">
+                      Facebook
+                    </b>
+                  </div>
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </mat-card-content>
+
+      </mat-card>
+         <div layout="row" flex style="cursor: pointer" layout-margin>
+          <h1 class="md-subhead tc-blue-grey-200" flex>
+            <u>NÃO POSSUI CONTA? CLIQUE AQUI</u>
+          </h1>
+      </div>
+  </div>
+</div>

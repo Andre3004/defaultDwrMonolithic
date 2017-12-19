@@ -1,0 +1,40 @@
+<div *ngIf="curso">
+  <visualizar-curso-header withMenu="false" [curso]="curso"></visualizar-curso-header>
+  <home-container>
+    <div layout-gt-md="row" layout-align="center start" flex>
+
+      <!-- Realizar Matricula -->
+      <mat-card flex-gt-md="65">
+        <mat-card-content>
+          <td-steps class="matricula-steps">
+            <td-step #reservaVagasStep sublabel="Quantidade de matrículas e informações do responsável" [state]="reservaVagasState" [active]="true">
+              <ng-template td-step-label> <b [ngClass]="{'tc-teal-500' : reservaVagasStep.active}">MATRÍCULAS E INFORMAÇÕES DE RESERVA</b></ng-template>
+              <div class="matricula-form-container">
+                <reserva-vagas [turma]="turma" [(compra)]="compra" (onComplete)="matriculasStep.disabled = false; matriculasStep.open(); goToMatriculasStep();"
+                               (onChange)="goToReservaVagasStep()" (onQuantidadeVagasChange)="goToReservaVagasStep(); resetDadosMatricula($event)"></reserva-vagas>
+              </div>
+            </td-step>
+            <td-step #matriculasStep sublabel="Informação dos alunos a serem matriculados" [state]="matriculasState" [disabled]="isMatriculasDisabled">
+              <ng-template td-step-label><b [ngClass]="{'tc-teal-500' : matriculasStep.active}">DADOS DE MATRÍCULA</b></ng-template>
+              <div class="matricula-form-container">
+                <dados-matricula [(compra)]="compra" [turma]="turma" (onComplete)="dadosMatriculaCompleted(pagamentoStep)"
+                                 (onChange)="goToMatriculasStep();" (onCompleteCompra)="realizarMatriculas()"></dados-matricula>
+              </div>
+            </td-step>
+            <!-- TODO esconder esse passo quando compra.valor == 0 -->
+            <td-step  #pagamentoStep sublabel="Informações do comprador e pagamento" [disabled]="isPagamentoDisabled">
+              <ng-template td-step-label><b [ngClass]="{'tc-teal-500' : pagamentoStep.active}">DADOS DE PAGAMENTO</b></ng-template>
+              <div class="matricula-form-container">
+                <dados-pagamento [(compra)]="compra" [(turma)]="turma" (onComplete)="realizarMatriculas()"></dados-pagamento>
+              </div>
+            </td-step>
+          </td-steps>
+
+        </mat-card-content>
+      </mat-card>
+
+      <div flex></div>
+      <turma-info flex-gt-md="30" [turma]="turma" [(compra)]="compra"></turma-info>
+    </div>
+  </home-container>
+</div>

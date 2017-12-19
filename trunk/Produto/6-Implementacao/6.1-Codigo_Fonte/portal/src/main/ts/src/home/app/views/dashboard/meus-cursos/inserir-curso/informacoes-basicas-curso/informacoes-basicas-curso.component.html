@@ -1,0 +1,28 @@
+<mat-vertical-stepper #stepper [linear]="true">
+
+  <!--PASSO 1  -->
+  <mat-step #dadosCursoStep>
+    <ng-template matStepLabel>
+      <div style="white-space: pre-line">
+        <b [ngClass]="{'tc-teal-500' : stepper.selectedIndex == 0, 'tc-grey-500':  stepper.selectedIndex != 0}">INFORMAÇÕES DO CURSO</b>
+        <span class="md-body-1 tc-grey-500">Informações e descrição do curso que serão apresentados na página</span>
+      </div>
+    </ng-template>
+
+    <dados-curso [curso]="curso" (onComplete)="saveCurso(stepper)"></dados-curso>
+
+  </mat-step>
+
+  <!--PASSO 2  -->
+
+  <mat-step *ngIf="!curso.isGratuito" #dadosDepositoStep>
+    <ng-template matStepLabel>
+      <div style="white-space: pre-line">
+        <b [ngClass]="{'tc-teal-500' : stepper.selectedIndex == 1, 'tc-grey-500':  stepper.selectedIndex != 1}">DADOS PARA DEPÓSITO</b>
+        <span class="md-body-1 tc-grey-500">Informações para depósito referente ao pagamento dos alunos</span>
+      </div>
+    </ng-template>
+    <dados-deposito [curso]="curso" (onComplete)="save(dadosCursoStep, dadosDepositoStep)"></dados-deposito>
+  </mat-step>
+
+  <mat-vertical-stepper>

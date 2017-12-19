@@ -1,0 +1,90 @@
+{
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"project": {
+		"name": "TFC"
+	},
+	"apps": [
+		{
+			"name": "home",
+			"root": "src/home",
+			"deployUrl": "modules/home/",
+			"outDir": "../../../target/classes/META-INF/resources/modules/home",
+			"assets": [],
+			"index": "index.html",
+			"main": "main.ts",
+			"polyfills": "../polyfills.ts",
+			"tsconfig": "../tsconfig.app.json",
+			"styles": [
+				"../../node_modules/@covalent/core/common/platform.scss",
+				"../theme.scss",
+				"../../node_modules/ng2-toasty/style-material.css",
+				"../../node_modules/ng2-toasty/style-bootstrap.css",
+				"../../node_modules/ng2-toasty/style-default.css"
+			],
+			"scripts": [
+				"../../node_modules/showdown/dist/showdown.js"
+			],
+			"environmentSource": "../environments/environment.ts",
+			"environments": {
+				"dev": "../environments/environment.ts",
+				"prod": "../environments/environment.prod.ts"
+			}
+		},
+		{
+			"name": "public",
+			"root": "src/public",
+			"deployUrl": "modules/public/",
+			"outDir": "../../../target/classes/META-INF/resources/modules/public",
+			"assets": [],
+			"index": "index.html",
+			"main": "main.ts",
+			"polyfills": "../polyfills.ts",
+			"tsconfig": "../tsconfig.app.json",
+			"prefix": "public",
+			"styles": [
+				"../../node_modules/@covalent/core/common/platform.scss",
+				"../theme.scss",
+				"../../node_modules/ng2-toasty/style-material.css",
+				"../../node_modules/ng2-toasty/style-bootstrap.css",
+				"../../node_modules/ng2-toasty/style-default.css"
+			],
+			"scripts": [],
+			"environmentSource": "../environments/environment.ts",
+			"environments": {
+				"dev": "../environments/environment.ts",
+				"prod": "../environments/environment.prod.ts"
+			}
+		},
+		{
+			"name": "authentication",
+			"root": "src/authentication",
+			"deployUrl": "modules/authentication/",
+			"outDir": "../../../target/classes/META-INF/resources/modules/authentication",
+			"assets": [],
+			"index": "index.html",
+			"main": "main.ts",
+			"polyfills": "../polyfills.ts",
+			"tsconfig": "../tsconfig.app.json",
+			"prefix": "authentication",
+			"styles": [
+				"../../node_modules/@covalent/core/common/platform.scss",
+				"../theme.scss",
+				"../../node_modules/ng2-toasty/style-material.css",
+				"../../node_modules/ng2-toasty/style-bootstrap.css",
+				"../../node_modules/ng2-toasty/style-default.css"
+			],
+			"scripts": [],
+			"environmentSource": "../environments/environment.ts",
+			"environments": {
+				"dev": "../environments/environment.ts",
+				"prod": "../environments/environment.prod.ts"
+			}
+		}
+	],
+	"defaults": {
+		"styleExt": "css",
+		"component": {
+			"spec": false
+		}
+	}
+}

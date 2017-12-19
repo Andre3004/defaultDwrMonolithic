@@ -1,0 +1,19 @@
+<div layout-margin>
+  <h3 matDialogTitle> Bloquear {{(alunos.length > 1)? "Alunos": "Aluno"}}</h3>
+</div>
+<form (ngSubmit)="bloquear()" ngNativeValidate>
+  <mat-dialog-content>
+    <div layout="row" layout-margin>
+      <md2-datepicker [(ngModel)]="dataBloqueio" name="dataBloqueio" [min]="today" type="date" placeholder="data de bloqueio"></md2-datepicker>
+      <md2-datepicker [(ngModel)]="dataDesbloqueio" name="dataDesbloqueio" [min]="today" type="date" placeholder="data de desbloqueio"></md2-datepicker>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <div layout="row" layout-align="end end" flex>
+      <div flex></div>
+      <button matDialogClose mat-button type="button">CANCELAR</button>
+      <button mat-button color="primary">BLOQUEAR ALUNO</button>
+    </div>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,31 @@
+.visualizar-curso-background{
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    background-position: 50%;
+    position: absolute;
+    z-index: -1;
+}
+
+.visualizar-curso-background-mask{
+    width: 100%;
+    height: 400px;
+    background-color: rgba(4, 142, 136, 0.9);
+}
+.curso-image{
+    height: 449px;
+    width: 100%;
+}
+
+.curso-image-semipresencial{
+    height: 493px;
+    width: 100%;
+}
+
+.area-conhecimento a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+

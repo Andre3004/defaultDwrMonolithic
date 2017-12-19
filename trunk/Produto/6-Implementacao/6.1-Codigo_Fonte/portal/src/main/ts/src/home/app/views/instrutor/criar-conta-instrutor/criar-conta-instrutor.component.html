@@ -1,0 +1,15 @@
+<usuario-form [usuario]="usuario" *ngIf="usuario" (save)="save(usuario)">
+  <div layout="row" layout-margin>
+    <h1 class="md-headline tc-grey-500" flex>Seja um instrutor</h1>
+  </div>
+
+  <div termo>
+    <termos-uso [(termosUso)]="termosUso" flex></termos-uso>
+
+    <div layout="row" layout-margin flex>
+      <mat-error [tdToggle]="!termosUso.requiredError || termosUso.isAccepted" fa-file-text-o>
+        É necessário concordar com os termos de uso para finalizar o cadastro
+      </mat-error>
+    </div>
+  </div>
+</usuario-form>

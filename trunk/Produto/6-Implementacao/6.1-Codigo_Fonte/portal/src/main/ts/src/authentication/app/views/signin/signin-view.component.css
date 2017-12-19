@@ -1,0 +1,35 @@
+.background-image {
+  background: no-repeat center center fixed;
+  background-size: cover;
+  display: block;
+  left: -5px;
+  top:-5px;
+  bottom:-5px;
+  position: fixed;
+  right: -5px;
+  z-index: 1;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  margin:-5px;
+
+}
+
+.page-footer-container{
+  height: 100%;
+  width: 100%;
+}
+
+.page-footer-background{
+  background-size: cover;
+  background-position:50%;
+}
+
+.page-footer-container-mask{
+  background-color: rgba(244, 67, 54, 0.8);
+}

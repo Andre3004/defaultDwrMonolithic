@@ -1,0 +1,20 @@
+<div mat-dialog-content class="tfc-content-dialog">
+
+  <h1 matDialogTitle>Sugerir área de conhecimento</h1>
+
+  <div layout="column" flex>
+    <mat-form-field flex>
+      <textarea matInput placeholder="Descrição da sugestão" [(ngModel)]="sugestaoAreaConhecimento.descricao"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div layout="row" layout-margin>
+    <div flex></div>
+    <button mat-button color="primary" (click)="dialogRef.close(sugestaoAreaConhecimento)">
+      <b>ENVIAR</b>
+    </button>
+    <button mat-button class="tc-grey-600" (click)="dialogRef.close()">
+      <b>CANCELAR</b>
+    </button>
+  </div>
+</div>

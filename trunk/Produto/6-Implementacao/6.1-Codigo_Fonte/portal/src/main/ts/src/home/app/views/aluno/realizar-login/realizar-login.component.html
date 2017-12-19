@@ -1,0 +1,95 @@
+<div layout="row" layout-align="center center">
+  <div layout="row" layout-align="center center" hide-xs
+       style="background-size: cover; background-image: url('static/images/authentication-background.jpg'); height: 588px; width: 100%; margin: -24px 24px -24px -24px;">
+    <div layout="column" layout-margin layout-align="center center" hide-xs>
+      <div layout="row" flex layout-margin>
+        <img src="../static/images/logo-large-white.png" style="height: 120px;">
+      </div>
+
+      <div layout="row" flex layout-margin hide-md hide-sm>
+        <h1 class="md-title tc-white-4" flex>
+          <b>Seja bem vindo a THE FULL CLASS</b>
+        </h1>
+      </div>
+      <div layout="row" flex routerLink="/conta/criar-conta/aluno" (click)="dialogRef.close()" style="cursor: pointer"
+           layout-margin hide-md hide-sm>
+        <h1 class="md-subhead tc-blue-grey-200" flex>
+          <u>NÃO POSSUI CONTA? CLIQUE AQUI</u>
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div layout="column" style="width: 700px; background-color: white;">
+    <div>
+      <form #signinForm="ngForm">
+        <div layout="column" layout-margin>
+
+          <div layout="row" flex layout-margin hide-gt-md>
+            <h1 class="md-title tc-grey-600" flex>
+              <span>Seja bem vindo a THE FULL CLASS</span>
+            </h1>
+          </div>
+
+          <div layout="row" flex layout-margin>
+            <mat-form-field flex>
+              <input matInput
+                     placeholder="Acesse com seu email ou CPF/CNPJ"
+                     [(ngModel)]="usuario.email"
+                     required name="email"/>
+            </mat-form-field>
+          </div>
+
+          <div layout="column" flex layout-margin>
+            <div layout="row" flex="">
+              <mat-form-field flex>
+                <input type="password" matInput
+                       placeholder="Sua senha"
+                       [(ngModel)]="usuario.password"
+                       required name="password"/>
+              </mat-form-field>
+            </div>
+            <div layout="row" layout-align="end start" flex="">
+              <span class="tc-grey-600" style="margin-top:-12px;cursor: pointer" (click)="goToRecuperarSenha()">Esqueceu sua senha?</span>
+            </div>
+          </div>
+
+          <div layout="row" flex layout-margin>
+            <button style="height: 55px" mat-raised-button color="accent"
+                    (click)="onSignIn()" flex>
+              ENTRAR
+            </button>
+          </div>
+
+          <!--<div layout="row" flex layout-margin>-->
+            <!--<div flex layout-align="center center" layout="row">-->
+              <!--<span class="tc-grey-600">Ou acesse com </span>-->
+            <!--</div>-->
+          <!--</div>-->
+
+          <!--<div layout="row" flex layout-margin>-->
+
+            <!--<button type="button" style="height: 55px; background-color: #d8deea" mat-raised-button flex>-->
+              <!--<div flex>-->
+                <!--<img style="width: 20px; float: left; padding-top: 10px; padding-left: 15px"-->
+                     <!--src="../static/images/facebook-icon.png">-->
+              <!--</div>-->
+              <!--<div flex>-->
+                <!--<b style="margin-left: -39px; color: #3c5a99">-->
+                  <!--Facebook-->
+                <!--</b>-->
+              <!--</div>-->
+            <!--</button>-->
+          <!--</div>-->
+
+        </div>
+      </form>
+      <div layout="column" flex routerLink="/conta/criar-conta/aluno"
+           (click)="dialogRef.close()" style="cursor: pointer"
+           layout-margin hide-gt-md layout-align="center center">
+        <h1 class="md-subhead tc-blue-grey-200" flex layout-align="center center">
+          <u>NÃO POSSUI CONTA? CLIQUE AQUI</u>
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>

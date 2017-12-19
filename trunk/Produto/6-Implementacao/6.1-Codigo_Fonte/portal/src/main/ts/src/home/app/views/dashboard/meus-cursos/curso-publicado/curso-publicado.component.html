@@ -1,0 +1,81 @@
+<div *ngIf="!isLoading">
+  <div *ngIf="cursoIsPendente" layout="column" layout-margin layout-align="center center" class="push">
+    <img src="../static/images/curso-publicado.png">
+    <h1 class="tc-teal-500" style="font-size: 34px" flex>Parabéns</h1>
+    <span class="tc-grey-700 md-subhead text-center" style="line-height: 20px" flex>
+      Seu curso foi enviado para aprovação!
+    </span>
+    <span class="tc-grey-700 md-body-1" flex>
+      Logo mais você será notificado sobre o status do curso. Fique atento. ;)
+    </span>
+    <div class="push">
+      <button mat-raised-button color="primary" class="curso-publicado-button" routerLink="../../../" flex>
+        <b class="curso-publicado-button-text">VOLTAR A LISTA DE CURSOS</b>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!cursoIsPendente && cursoIsValid" class="push">
+
+    <div layout="column" layout-margin layout-align="center center">
+      <img src="../static/images/curso-pronto.png">
+
+      <h1 class="tc-teal-500" style="font-size: 34px" flex>Quase lá</h1>
+
+      <span class="tc-grey-700 md-subhead text-center" style="line-height: 20px" flex>
+        Só falta enviar o seu curso para análise para que possamos avaliá-lo e publicá-lo.
+      </span>
+    </div>
+
+    <div layout="column" layout-align="center start" style="margin-left: 40px" flex>
+      <div layout="row" layout-align="start center" flex>
+        <mat-icon>check</mat-icon>
+        <span class="tc-grey-700 md-body-1">
+          <b>Verifique as informações inseridas.</b>
+        </span>
+      </div>
+      <div layout="row" layout-align="start center" flex>
+        <mat-icon>check</mat-icon>
+        <span class="tc-grey-700 md-body-1">
+          <b>Ao enviar o curso para análise, ele não poderá ser alterado.</b>
+        </span>
+      </div>
+    </div>
+
+    <div class="push">
+      <span class="tc-grey-700 md-body-1" flex>
+        Selecione uma das opções abaixo para finalizar este passo.
+      </span>
+    </div>
+
+    <div layout-gt-xs="row" layout-xs="column" layout-align="center center" layout-margin class="push">
+      <button mat-raised-button color="primary" class="curso-publicado-button" (click)="updateCursoWithStatusPendente()" flex>
+        <b class="curso-publicado-button-text">ENVIAR PARA ANÁLISE</b>
+      </button>
+      <button mat-raised-button class="curso-publicado-button bgc-grey-700" routerLink="../../../" flex>
+        <b class="curso-publicado-button-text tc-white">SALVAR CURSO COMO RASCUNHO</b>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!cursoIsPendente && !cursoIsValid" layout="column" layout-margin layout-align="center center" class="push">
+    <img src="../static/images/curso-invalido.png">
+    <h1 class="tc-amber-A400" style="font-size: 34px" flex>Ops!</h1>
+    <span class="tc-grey-700 md-subhead text-center" style="line-height: 20px" flex>
+      Ainda faltam algumas coisas a preencher no seu curso antes de enviá-lo para publicação
+    </span>
+    <span class="tc-grey-700 md-body-1" flex>
+      Volte aos passos anteriores e finalize o que é necessário. Após isso, volte aqui e tente novamente. :)
+    </span>
+    <div class="push">
+      <button mat-raised-button class="curso-publicado-button bgc-grey-700" (click)="validateCursoById()" flex>
+        <b class="curso-publicado-button-text tc-white">VERIFICAR O QUE FALTA</b>
+      </button>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" class="curso-publicado-button" routerLink="../turmas" flex>
+        <b class="curso-publicado-button-text">VOLTAR A LISTA DE TURMAS</b>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+<div [formGroup]="form.controls.endereco">
+  <div layout="row" layout-margin layout-align="center center">
+    <mat-icon class="tc-grey-600">search</mat-icon>
+    <mat-form-field flex>
+      <input matInput #autocomplete noSubmit placeholder="Insira o endereço" id="autocompleteInput" >
+    </mat-form-field>
+    <button *ngIf="myAddresOption && authenticatedUser?.endereco" color="primary" mat-raised-button type="button" (click)="fillWithMyAddress()">Utilizar meu endereço</button>
+  </div>
+
+  <div layout-gt-xs="row" layout-xs="column" layout-margin>
+    <mat-form-field flex *ngIf="endereco">
+      <input matInput placeholder="Logradouro" [(ngModel)]="endereco.logradouro" maxlength="45" required formControlName="logradouro"
+        id="logradouro" name="logradouro">
+      <mat-error *ngIf="form.controls.endereco.controls['logradouro'].hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field flex="20" *ngIf="endereco">
+      <input matInput placeholder="Número" id="numero" name="numero" [textMask]="{mask: masks.streetNumber, guide: false}" [(ngModel)]="endereco.numero"
+        required formControlName="numero">
+      <mat-error *ngIf="form.controls.endereco.controls['numero'].hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field flex *ngIf="endereco">
+      <input matInput placeholder="Bairro" id="bairro" name="bairro" formControlName="bairro" [(ngModel)]="endereco.bairro" maxlength="45"
+        required>
+      <mat-error *ngIf="form.controls.endereco.controls['bairro'].hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div layout-gt-xs="row" layout-xs="column" layout-margin>
+    <mat-form-field flex="20" *ngIf="endereco">
+      <input [textMask]="{mask: masks.cep, guide: false}" placeholder="CEP" [(ngModel)]="endereco.cep" matInput id="cep" name="cep"
+        required formControlName="cep">
+      <mat-error *ngIf="form.controls.endereco.controls['cep'].hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+    <!-- CIDADE -->
+    <mat-form-field flex *ngIf="endereco?.cidade">
+      <input (blur)="findCidadeByNomeAndEstadoUf(endereco?.cidade?.nome, endereco?.cidade?.estado?.uf)" placeholder="Cidade" somenteLetras matInput (ngModelChange)="findCidadesByFilters($event)" [(ngModel)]="endereco.cidade.nome"
+        required id="cidade" name="cidade" formControlName="cidade" [matAutocomplete]="auto">
+      <!--<mat-hint class="mat-hint-error" *ngIf="cidadeNotFind">Cidade não encontrada</mat-hint>-->
+      <mat-error *ngIf="form?.controls?.endereco?.controls['cidade']?.hasError('exception')">
+        {{form?.controls?.endereco?.controls['cidade']?.errors.exception}}
+      </mat-error>
+      <mat-error *ngIf="form.controls.endereco.controls['cidade'].hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let cidade of filteredCidades" (onSelectionChange)="setCidade(cidade)" [value]="cidade?.nome">
+          {{cidade?.nome}} ({{cidade?.estado?.uf}})
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- ESTADO -->
+    <mat-form-field flex="10" *ngIf="endereco?.cidade?.estado && !isEstrangeiro">
+      <input matInput placeholder="UF" 
+        (blur)="findCidade(endereco?.cidade?.nome, endereco?.cidade?.estado?.uf)" 
+        somenteLetras [(ngModel)]="endereco.cidade.estado.uf"
+        id="estado" name="uf" formControlName="uf">
+      <mat-error *ngIf="form.controls.endereco.controls['uf'].hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <!-- ESTADO ESTRANGEIRO -->
+    <mat-form-field flex *ngIf="endereco?.cidade?.estado && isEstrangeiro">
+      <input placeholder="Estado" 
+        somenteLetras matInput
+        (blur)="findEstadoByNomeAndPais(endereco?.cidade?.estado?.nome, endereco?.cidade?.estado?.pais?.nome)" 
+        (ngModelChange)="findEstadosEstrangeirosByFilters($event); findEstadoByNomeAndPais($event, endereco?.cidade?.estado?.pais?.nome)" 
+        [(ngModel)]="endereco.cidade.estado.nome"
+        required id="estado" name="estado" 
+        formControlName="estado" [matAutocomplete]="auto">
+      <!--<mat-hint class="mat-hint-error" *ngIf="cidadeNotFind">Cidade não encontrada</mat-hint>-->
+      <mat-error *ngIf="form?.controls?.endereco?.controls['estado']?.hasError('exception')">
+        {{form?.controls?.endereco?.controls['estado']?.errors.exception}}
+      </mat-error>
+      <mat-error *ngIf="form.controls.endereco.controls['estado'].hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let estado of filteredEstados" (onSelectionChange)="setEstado(estado)" [value]="estado?.nome">
+          {{estado?.nome}} ({{estado?.pais?.nome}})
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- PAIS -->
+    <mat-form-field flex *ngIf="isEstrangeiro && endereco?.cidade?.estado?.pais">
+      <input 
+        placeholder="País" (ngModelChange)="findPaisesByFilters($event); findPaisByNome($event)" 
+        [matAutocomplete]="auto" somenteLetras matInput required id="pais" 
+        name="pais" [(ngModel)]="endereco.cidade.estado.pais.nome"
+        formControlName="pais">
+      <mat-error *ngIf="form?.controls?.endereco?.controls['pais']?.hasError('exception')">
+        {{form?.controls?.endereco?.controls['pais']?.errors.exception}}
+      </mat-error>
+      <mat-error *ngIf="form.controls.endereco.controls['pais'].hasError('required')">
+        Esse campo é obrigatório
+      </mat-error>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let pais of filteredPaises" (onSelectionChange)="clearEstadoEstrangeiro()" [value]="pais?.nome">
+          {{pais?.nome}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+  </div>
+  <div layout-gt-xs="row" layout-margin>
+    <mat-form-field flex *ngIf="endereco">
+      <input matInput placeholder="Complemento" maxlength="45" id="complemento" name="complemento" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="endereco.complemento">
+      <mat-hint align="end">{{endereco.complemento ? endereco.complemento.length: 0}} / 45</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="wasSearched || endereco?.cidade?.id">
+    <div layout="row" layout-margin>
+      <agm-map flex layout-margin *ngIf="viewLoaded && showMap" [latitude]="extend?.latitude" [longitude]="extend?.longitude" [zoom]="zoom"
+        [disableDefaultUI]="false" [zoomControl]="true" style="height: 300px">
+        <agm-marker flex [latitude]="endereco?.latitude" [longitude]="endereco?.longitude" [markerDraggable]=true (dragEnd)="markerDragEnd($event)"></agm-marker>
+      </agm-map>
+    </div>
+  </div>
+</div>

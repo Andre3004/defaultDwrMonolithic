@@ -1,0 +1,57 @@
+<!--áreas de conhecimento div-->
+<div flex class="push-top">
+    <div layout="column" layout-margin flex>
+      <div layout="row">
+        <h1 class="md-subhead tc-grey-500">ÁREAS DE CONHECIMENTO
+          <button flex mat-button color="primary" type="button" (click)="insertAreaConhecimentoAndSendMailSugerirAreaConhecimento()">
+            (Sugerir Área de Conhecimento)
+          </button></h1>
+
+        <div flex-lg="60"></div>
+      </div>
+    </div>
+
+  <!--áreas de interesse-->
+  <div layout="row" layout-margin flex>
+    <td-chips [items]="areaInteresseSelected" [(ngModel)]="areasInteresse"
+              matTooltip="Áreas de conhecimento para receber notificações de cursos"
+              placeholder="Insira a área de interesse"
+              requireMatch name="areasInteresse" flex
+              (remove)="removeAreaInteresse($event)"
+              (add)="insertAreaInteresse($event)"
+              (inputChange)="listAreasInteresseByFilters($event)"
+              [readOnly]="disabled"
+              style="margin: 4px">
+      <ng-template td-chip let-chip="chip">
+        <span *ngIf="chip?.areaConhecimentoSuperior?.id">{{chip?.nome}} ({{chip?.areaConhecimentoSuperior?.nome}})</span>
+        <span *ngIf="!chip?.areaConhecimentoSuperior?.id">{{chip?.nome}}</span>
+      </ng-template>
+      <ng-template td-autocomplete-option let-option="option">
+        <span *ngIf="option?.areaConhecimentoSuperior?.id">{{option?.nome}} ({{option?.areaConhecimentoSuperior?.nome}})</span>
+        <span *ngIf="!option?.areaConhecimentoSuperior?.id">{{option?.nome}}</span>
+      </ng-template>
+    </td-chips>
+  </div>
+
+  <!--áreas de atuação-->
+  <div layout="row" layout-margin flex style="margin-top: 27px" *ngIf="usuario?.isInstrutor">
+    <td-chips [items]="areaAtuacaoSelected" [(ngModel)]="areasAtuacao"
+              matTooltip="Área de conhecimento para lecionar"
+              placeholder="Insira a área de atuação"
+              requireMatch name="areasAtuacao" flex
+              (remove)="removeAreaAtuacao($event)"
+              (add)="insertAreaAtuacao($event)"
+              (inputChange)="listAreasAtuacaoByFilters($event)"
+              [readOnly]="disabled"
+              style="margin: 4px">
+      <ng-template td-chip let-chip="chip">
+        <span *ngIf="chip?.areaConhecimentoSuperior?.id">{{chip?.nome}} ({{chip?.areaConhecimentoSuperior?.nome}})</span>
+        <span *ngIf="!chip?.areaConhecimentoSuperior?.id">{{chip?.nome}}</span>
+      </ng-template>
+      <ng-template td-autocomplete-option let-option="option">
+        <span *ngIf="option?.areaConhecimentoSuperior?.id">{{option?.nome}} ({{option?.areaConhecimentoSuperior?.nome}})</span>
+        <span *ngIf="!option?.areaConhecimentoSuperior?.id">{{option?.nome}}</span>
+      </ng-template>
+    </td-chips>
+  </div>
+</div>
